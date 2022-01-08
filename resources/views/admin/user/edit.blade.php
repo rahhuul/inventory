@@ -58,13 +58,24 @@
                      {!! Form::text('name',$result->name, ['id' => "name", 'class' => 'form-control', 'placeholder' => "Enter Name"]) !!}
                   </div>
                   <div class="form-group">
-                     {!! Form::label('Email', 'Email') !!}
-                     {!! Form::text('email',$result->email, ['id' => "email", 'class' => 'form-control', 'placeholder' => "Enter Email"]) !!}
+                     {!! Form::label('Mobile No', 'Mobile No') !!}
+                     {!! Form::text('mobile',$result->mobile, ['id' => "mobile", 'class' => 'form-control', 'placeholder' => "Enter mobile"]) !!}
+                  </div>
+                  
+                  <div class="form-group">
+                     {!! Form::label('Reference Name', 'Reference Name') !!}
+                     {!! Form::text('reference_name',$result->reference_name, ['id' => "reference_name", 'class' => 'form-control', 'placeholder' => "Enter Reference Name"]) !!}
                   </div>
                   <div class="form-group">
-                     {!! Form::label('Address', 'Address') !!}
+                     {!! Form::label('Reference Address', 'Reference Address') !!}
                      {!! Form::textarea('address',$result->address, ['id' => "address", 'class' => 'form-control', 'placeholder' => "Enter address",'rows' => 4, 'cols' => 40]) !!}
                   </div>
+
+                  <div class="form-group">
+                     {!! Form::label('Reference Mobile', 'Reference Mobile') !!}
+                     {!! Form::text('reference_mobile',$result->reference_mobile, ['id' => "reference_mobile", 'class' => 'form-control', 'placeholder' => "Enter mobile"]) !!}
+                  </div>
+
                   <div class="form-group">
                      {!! Form::label('Customer Type', 'Customer Type') !!}
                      <select name="user_type" class="form-control select2">
@@ -73,10 +84,7 @@
                         <option value="1" {{ $result->type == 1 ? 'selected' : '' }}>provider</option>
                      </select>
                   </div>
-                  <div class="form-group">
-                     {!! Form::label('Mobile No', 'Mobile No') !!}
-                     {!! Form::text('mobile',$result->mobile, ['id' => "mobile", 'class' => 'form-control', 'placeholder' => "Enter mobile"]) !!}
-                  </div>
+                  
                </div>
                <!-- /.card-body -->
             </div>

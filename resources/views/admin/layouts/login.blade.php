@@ -5,7 +5,7 @@
 
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b>Admin</b>LTE</a>
+    <a href="../../index2.html"><b>Inventory</b>Management</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">

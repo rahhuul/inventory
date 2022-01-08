@@ -55,29 +55,34 @@
                <!--  {!! Form::open(['id' => 'category_form']) !!} --> 
                <div class="card-body">
                   <div class="form-group">
-                     {!! Form::label('Name', 'Name') !!}
+                     {!! Form::label('Customer Name', 'Customer Name') !!}
                      {!! Form::text('name','', ['id' => "name", 'class' => 'form-control', 'placeholder' => "Enter Name"]) !!}
-                  </div>
-                  <div class="form-group">
-                     {!! Form::label('Email', 'Email') !!}
-                     {!! Form::text('email','', ['id' => "email", 'class' => 'form-control', 'placeholder' => "Enter Email"]) !!}
-                  </div>
-                  <div class="form-group">
-                     {!! Form::label('Address', 'Address') !!}
-                     {!! Form::textarea('address','', ['id' => "address", 'class' => 'form-control', 'placeholder' => "Enter address",'rows' => 4, 'cols' => 40]) !!}
-                  </div>
-                  <div class="form-group">
-                     {!! Form::label('Customer Type', 'Customer Type') !!}
-                     <select name="user_type" class="form-control select2">
-                        <option value="">Select Customer Tyoe</option>
-                        <option value="0">rental</option>
-                        <option value="1">provider</option>
-                     </select>
                   </div>
                   <div class="form-group">
                      {!! Form::label('Mobile No', 'Mobile No') !!}
                      {!! Form::text('mobile','', ['id' => "mobile", 'class' => 'form-control', 'placeholder' => "Enter mobile"]) !!}
                   </div>
+                  <div class="form-group">
+                     {!! Form::label('Reference Name', 'Reference Name') !!}
+                     {!! Form::text('reference_name','', ['id' => "reference_name", 'class' => 'form-control', 'placeholder' => "Enter Reference Name"]) !!}
+                  </div>
+                  <div class="form-group">
+                     {!! Form::label('Reference Address', 'Reference Address') !!}
+                     {!! Form::textarea('address','', ['id' => "address", 'class' => 'form-control', 'placeholder' => "Enter address",'rows' => 4, 'cols' => 40]) !!}
+                  </div>
+                  <div class="form-group">
+                     {!! Form::label('Reference Mobile', 'Reference Mobile') !!}
+                     {!! Form::text('reference_mobile','', ['id' => "reference_mobile", 'class' => 'form-control', 'placeholder' => "Enter mobile"]) !!}
+                  </div>
+                  <div class="form-group">
+                     {!! Form::label('Customer Type', 'Customer Type') !!}
+                     <select name="user_type" class="form-control select2" style="width: 100%;">
+                        <option value="">Select Customer Tyoe</option>
+                        <option value="0">Rental</option>
+                        <option value="1">Provider</option>
+                     </select>
+                  </div>
+                  
                </div>
                <!-- /.card-body -->
             </div>
