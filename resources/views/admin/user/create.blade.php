@@ -33,7 +33,7 @@
       </div>
    </div>
 </div>
-{!! Form::open(['url' => '/admin/user/store','method'=>'POST', 'id' => 'user_form']) !!}
+{!! Form::open(['route' => 'user.store','method'=>'POST', 'id' => 'user_form']) !!}
 @csrf
 <section class="content">
    <div class="container-fluid">
@@ -76,8 +76,8 @@
                   </div>
                   <div class="form-group">
                      {!! Form::label('Customer Type', 'Customer Type') !!}
-                     <select name="user_type" class="form-control select2" style="width: 100%;">
-                        <option value="">Select Customer Tyoe</option>
+                     <select name="type" class="form-control select2" style="width: 100%;">
+                        <option value="">Select Customer Type</option>
                         <option value="0">Rental</option>
                         <option value="1">Provider</option>
                      </select>

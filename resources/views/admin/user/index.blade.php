@@ -53,9 +53,8 @@
                                  <tr>
                                     <th>No</th>
                                     <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Address</th>
                                     <th>Mobile</th>
+                                    <th>Type</th>
                                     <th>Action</th>
                                  </tr>
                               </thead>
@@ -65,15 +64,15 @@
                                  <tr>
                                     <th>{{$i}}</th>
                                     <th>{{$data->name}}</th>
-                                    <th>{{$data->email}}</th>
-                                    <th>{{$data->address}}</th>
                                     <th>{{$data->mobile}}</th>
+                                    <th>{{($data->type == 0) ? "Rental" : "Provider"}}</th>
                                     <th>
-                                       <a href="{{url('/admin/user/edit/'.$data->id)}}" class="btn btn-info btn-sm">
+                                       <a href="{{route('user.edit', $data->id)}}" class="btn btn-info btn-sm">
                                        <i class="fas fa-pencil-alt">
                                        </i>
                                        </a>
-                                       <a href="{{url('/admin/user/delete/'.$data->id)}}" class="btn btn-danger btn-sm">
+                                       {{-- <a data-id="{{$qualification->id}}" href="{{route('user.delete', $data->id)}}" class="btn btn-danger btn-sm"> --}}
+                                       <a data-id="{{$data->id}}" data-name="{{$data->name}}" href="javascript:void(0)" class="btn btn-danger btn-sm">
                                        <i class="fas fa-trash">
                                        </i>
                                        </a>
@@ -85,9 +84,8 @@
                                  <tr>
                                     <th>No</th>
                                     <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Address</th>
                                     <th>Mobile</th>
+                                    <th>Type</th>
                                     <th>Action</th>
                                  </tr>
                               </tfoot>
@@ -108,13 +106,54 @@
 @section('script')
 <script type="text/javascript">
     $(document).ready(function () {
-    var table = $('#ex1').DataTable({
-           
-            paging:true,
-            searching: true,
-            ordering:true
-           });
-});
+      var table = $('#ex1').DataTable({
+         paging:true,
+         searching: true,
+         ordering:true
+      });
+
+      $(".btn-danger").on('click', function() {
+         var id   = $(this).data('id');
+         var name   = $(this).data('name');
+         console.log("id >>> ", id);
+
+         Swal.fire({
+            title: "Delete User",
+            html: "Want to delete, <b>"+name+"</b> ?",
+            buttonsStyling: false,
+            confirmButtonText: "<i class='la la-times'></i> Yes",
+            showCancelButton: true,
+            cancelButtonText: "Cancel",
+            customClass: {
+               confirmButton: "btn btn-danger",
+               cancelButton: "btn btn-default"
+            }
+         }).then(function(result) {
+            if (result.value) {
+               $.ajax({
+                     headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                     },
+                     url: "/admin/user/" + id,
+                     type: 'delete',
+                     dataType: "JSON",
+                     data: {
+                        "id": id
+                     },
+                     complete: function (response) {
+                        toastr.error(name+" removed");
+                        //t.row("#"+id).remove().draw();
+                        //table.draw()
+                     },
+                     error: function(xhr) {
+
+                     }
+               });
+            }
+         });
+         });
+
+   });
      
    // transction_deposit._fetch_data_dep();
 </script>

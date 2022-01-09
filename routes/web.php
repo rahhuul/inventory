@@ -27,12 +27,15 @@ Route::group(['middleware' => ['adminlogin']], function() {
  /*dasbhboard routes*/
 
     Route::get('admin/dashboard','Admin\Dashboard_Controller@index')->name('admin_dashboard.index');
-    Route::get('admin/user','Admin\UserController@index');
+
+    Route::resource('admin/user', Admin\UserController::class); 
+
+    /* Route::get('admin/user','Admin\UserController@index');
     Route::get('admin/user/delete/{id}','Admin\UserController@destroy');
     Route::get('admin/user/edit/{id}','Admin\UserController@edit');
     Route::post('admin/user/update/{id}','Admin\UserController@update');
     Route::get('admin/user/create','Admin\UserController@create');
-    Route::post('admin/user/store','Admin\UserController@store');
+    Route::post('admin/user/store','Admin\UserController@store'); */
     //Route::get('admin/event','Admin\UserController@index');
     //Route::get('admin/event/getdata','Admin\UserController@getdata');
 });

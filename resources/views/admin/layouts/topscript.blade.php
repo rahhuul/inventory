@@ -34,3 +34,4 @@
   <!-- <link rel="stylesheet" href="{{URL('/')}}/assets/admin/admin/css/style.css"> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/admin/owl.carousel.css" integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A==" crossorigin="anonymous" />
   <link rel="stylesheet" type="text/css" href="{{URL('/')}}/assets/admin/css/sports_slider.css">
+  <link rel="stylesheet" href="{{URL('/')}}/assets/admin/css/sweetalert2/sweetalert2.min.css">

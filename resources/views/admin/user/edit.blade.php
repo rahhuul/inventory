@@ -33,7 +33,8 @@
       </div>
    </div>
 </div>
-{!! Form::open(['url' => '/admin/user/update/'.$result->id,'method'=>'POST', 'id' => 'user_form','enctype' => 'multipart/form-data']) !!}
+{{-- {!! Form::open(['url' => '/admin/user/update/'.$user->id,'method'=>'POST', 'id' => 'user_form','enctype' => 'multipart/form-data']) !!} --}}
+{!! Form::model($user, ['id' => 'user_form', 'method' => 'PATCH','route' => ['user.update', $user->id]]) !!}
 <section class="content">
    <div class="container-fluid">
       <div class="row">
@@ -54,34 +55,34 @@
                <!--  {!! Form::open(['id' => 'category_form']) !!} --> 
                <div class="card-body">
                   <div class="form-group">
-                     {!! Form::label('Name', 'Name') !!}
-                     {!! Form::text('name',$result->name, ['id' => "name", 'class' => 'form-control', 'placeholder' => "Enter Name"]) !!}
+                     {!! Form::label('Customer Name', 'Customer Name') !!}
+                     {!! Form::text('name',$user->name, ['id' => "name", 'class' => 'form-control', 'placeholder' => "Enter Name"]) !!}
                   </div>
                   <div class="form-group">
                      {!! Form::label('Mobile No', 'Mobile No') !!}
-                     {!! Form::text('mobile',$result->mobile, ['id' => "mobile", 'class' => 'form-control', 'placeholder' => "Enter mobile"]) !!}
+                     {!! Form::text('mobile',$user->mobile, ['id' => "mobile", 'class' => 'form-control', 'placeholder' => "Enter mobile"]) !!}
                   </div>
                   
                   <div class="form-group">
                      {!! Form::label('Reference Name', 'Reference Name') !!}
-                     {!! Form::text('reference_name',$result->reference_name, ['id' => "reference_name", 'class' => 'form-control', 'placeholder' => "Enter Reference Name"]) !!}
+                     {!! Form::text('reference_name',$user->reference_name, ['id' => "reference_name", 'class' => 'form-control', 'placeholder' => "Enter Reference Name"]) !!}
                   </div>
                   <div class="form-group">
                      {!! Form::label('Reference Address', 'Reference Address') !!}
-                     {!! Form::textarea('address',$result->address, ['id' => "address", 'class' => 'form-control', 'placeholder' => "Enter address",'rows' => 4, 'cols' => 40]) !!}
+                     {!! Form::textarea('address',$user->address, ['id' => "address", 'class' => 'form-control', 'placeholder' => "Enter address",'rows' => 4, 'cols' => 40]) !!}
                   </div>
 
                   <div class="form-group">
                      {!! Form::label('Reference Mobile', 'Reference Mobile') !!}
-                     {!! Form::text('reference_mobile',$result->reference_mobile, ['id' => "reference_mobile", 'class' => 'form-control', 'placeholder' => "Enter mobile"]) !!}
+                     {!! Form::text('reference_mobile',$user->reference_mobile, ['id' => "reference_mobile", 'class' => 'form-control', 'placeholder' => "Enter mobile"]) !!}
                   </div>
 
                   <div class="form-group">
                      {!! Form::label('Customer Type', 'Customer Type') !!}
-                     <select name="user_type" class="form-control select2">
-                        <option value="">Select category</option>
-                        <option value="0" {{ $result->type == 0 ? 'selected' : '' }}>rental</option>
-                        <option value="1" {{ $result->type == 1 ? 'selected' : '' }}>provider</option>
+                     <select name="type" class="form-control select2">
+                        <option value="">Select Customer Type</option>
+                        <option value="0" {{ $user->type == 0 ? 'selected' : '' }}>Rental</option>
+                        <option value="1" {{ $user->type == 1 ? 'selected' : '' }}>Provider</option>
                      </select>
                   </div>
                   

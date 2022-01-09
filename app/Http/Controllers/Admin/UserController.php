@@ -46,17 +46,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $userresult = new User();
-        $userresult->name = $request->post('name');
-        $userresult->email = $request->post('email');
-        $userresult->address = $request->post('address');
-        $userresult->type = $request->post('user_type');
-        $userresult->mobile = $request->post('mobile');
-        $userresult->created = Carbon::now();
-        $userresult->save();
-        if($userresult)
-        {
-         return redirect('/admin/user')->with('message', 'User Added Successfully')->with('type', 'success');
+        $inputs = $request->input();
+        $customer = User::create($inputs);
+        if($customer){
+         //return redirect('/admin/user')->with('message', 'User Added Successfully')->with('type', 'success');
+         return redirect()->route('user.index')
+         ->with('message','User added successfully')
+         ->with('type', 'success');
         }
     }
 
@@ -77,12 +73,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
         
         $title = "Edit Customer";
-        $result =  User::where('id',$id)->first();
-        return view('admin/user/edit',compact('title','result'));
+        return view('admin/user/edit',compact('title','user'));
     }
 
     /**
@@ -92,19 +87,15 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        $userdata =User::where('id',$id)->first();
-        $userdata->name = $request->post('name');
-        $userdata->email = $request->post('email');
-        $userdata->address = $request->post('address');
-        $userdata->type = $request->post('user_type');
-        $userdata->mobile = $request->post('mobile');
-        $userdata->created = Carbon::now();
-        $userdata->save();
-        if($userdata)
-        {
-         return redirect('/admin/user')->with('message', 'User Updated Successfully')->with('type', 'success');
+        $userdata = $user->update($request->all());
+
+        if($userdata){
+         //return redirect('/admin/user')->with('message', 'User Updated Successfully')->with('type', 'success');
+         return redirect()->route('user.index')
+         ->with('message','User updated successfully')
+         ->with('type', 'success');
         }
     }
 
@@ -114,9 +105,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        User::find($id)->delete();
-        return redirect('/admin/user')->with('message', 'User Deleted Successfully')->with('type', 'success');
+        $user->delete();
+        return redirect()->route('user.index')
+                        ->with('message','User deleted successfully')
+                        ->with('type', 'success');
     }
 }
