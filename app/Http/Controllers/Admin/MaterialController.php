@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Material;
 use Carbon\Carbon;
 
-class UserController extends Controller
+class MaterialController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,13 +17,13 @@ class UserController extends Controller
     public function index()
     {
 
-        $title = "All Customer";
-        $listusers  = User::get();
-        return view('admin/user/index',compact('title','listusers'));
+        $title = "All Material";
+        $listMaterials  = Material::get();
+        return view('admin/material/index',compact('title','listMaterials'));
     }
 
     /*public function getdata(){
-        $listusers             = User::get();
+        $listusers             = Material::get();
         return $listusers;
     }*/
 
@@ -34,8 +34,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        $title = "Add Customer";
-        return view('admin/user/create',compact('title'));
+        $title = "Add Material";
+        return view('admin/material/create',compact('title'));
     }
 
     /**
@@ -47,11 +47,10 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
-        $customer = User::create($inputs);
+        $customer = Material::create($inputs);
         if($customer){
-         //return redirect('/admin/user')->with('message', 'User Added Successfully')->with('type', 'success');
-         return redirect()->route('user.index')
-         ->with('message','User added successfully')
+        return redirect()->route('material.index')
+         ->with('message','Material added successfully')
          ->with('type', 'success');
         }
     }
@@ -73,11 +72,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(Material $material)
     {
-        
-        $title = "Edit Customer";
-        return view('admin/user/edit',compact('title','user'));
+        $title = "Edit Material";
+        return view('admin/material/edit', compact('title','material'));
     }
 
     /**
@@ -87,14 +85,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Material $material)
     {
-        $userdata = $user->update($request->all());
+        $userdata = $material->update($request->all());
 
         if($userdata){
-         //return redirect('/admin/user')->with('message', 'User Updated Successfully')->with('type', 'success');
-         return redirect()->route('user.index')
-         ->with('message','User updated successfully')
+        return redirect()->route('material.index')
+         ->with('message','Material updated successfully')
          ->with('type', 'success');
         }
     }
@@ -105,11 +102,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Material $material)
     {
-        $user->delete();
-        return redirect()->route('user.index')
-                        ->with('message','User deleted successfully')
+        $material->delete();
+        return redirect()->route('material.index')
+                        ->with('message','Material deleted successfully')
                         ->with('type', 'success');
     }
 }

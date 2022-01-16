@@ -10,13 +10,13 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Traits\Uuids;
 
 
-class User extends Authenticatable
+class Material extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable,Uuids;
-    protected $table = "bt_user"; // table name
+    protected $table = "bt_material"; // table name
     protected $keyType = 'string';
     public $incrementing = false;
     public $timestamps = true;
-    public $fillable = ['name', 'reference_name','address','created','type','mobile', 'reference_mobile'];
-    protected $primaryKey = "user_id";
+    public $fillable = ['name', 'quantity', 'damagePrice', 'rentPrice'];
+    protected $primaryKey = "material_id";
 }

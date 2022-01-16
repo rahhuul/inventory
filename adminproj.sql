@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jan 08, 2022 at 01:41 PM
--- Server version: 5.7.21
--- PHP Version: 7.3.29
+-- Generation Time: Jan 16, 2022 at 08:13 PM
+-- Server version: 5.7.31
+-- PHP Version: 7.3.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -25,29 +24,75 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `bt_category`
+--
+
+DROP TABLE IF EXISTS `bt_category`;
+CREATE TABLE IF NOT EXISTS `bt_category` (
+  `category_id` char(36) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`category_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `bt_category`
+--
+
+INSERT INTO `bt_category` (`category_id`, `name`, `created_at`, `updated_at`, `deleted_at`) VALUES
+('1457b1d4-be68-4abb-88b5-3ebb64642c06', 'Cat 1', '2022-01-16 07:25:45', '2022-01-16 07:25:45', NULL),
+('5c9860e1-f798-498e-995e-f1034ee2dea5', 'Cat 2', '2022-01-16 07:26:09', '2022-01-16 07:26:09', NULL),
+('cae2d498-f570-45f8-b94a-105b29888761', 'Cat 3', '2022-01-16 07:34:09', '2022-01-16 07:34:09', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bt_material`
+--
+
+DROP TABLE IF EXISTS `bt_material`;
+CREATE TABLE IF NOT EXISTS `bt_material` (
+  `material_id` char(36) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `quantity` varchar(20) DEFAULT NULL,
+  `damagePrice` varchar(20) DEFAULT NULL,
+  `rentPrice` varchar(20) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `bt_user`
 --
 
 DROP TABLE IF EXISTS `bt_user`;
 CREATE TABLE IF NOT EXISTS `bt_user` (
-  `id` char(36) NOT NULL,
+  `user_id` char(36) NOT NULL,
   `name` varchar(50) DEFAULT NULL,
-  `email` varchar(50) DEFAULT NULL,
+  `reference_name` varchar(255) DEFAULT NULL,
   `address` varchar(100) DEFAULT NULL,
   `type` tinyint(1) DEFAULT '0' COMMENT '0 -rental 1-provider',
   `mobile` varchar(50) DEFAULT NULL,
-  `created` datetime(6) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `reference_mobile` varchar(50) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `bt_user`
 --
 
-INSERT INTO `bt_user` (`id`, `name`, `email`, `address`, `type`, `mobile`, `created`) VALUES
-('ce812181-960b-44fd-b0ff-4b3bdd4718ed', 'mnp1', 'mnp@gmail.com', 'sdgfsdg', 0, '47658476489e6', '2022-01-08 13:19:08.000000'),
-('bcda2cc1-4fe4-4b1a-b5e3-4979f3a543eb', 'pno', 'pno@gmail.com', 'sdfdsf', 0, '972415600534', '2022-01-08 12:24:12.000000'),
-('42c06fb7-d128-44c4-8656-f1fd5a742a7f', 'xyz', 'xyz@gmail.com', 'dgfdg', 0, '87978980890', '2022-01-08 13:14:24.000000');
+INSERT INTO `bt_user` (`user_id`, `name`, `reference_name`, `address`, `type`, `mobile`, `reference_mobile`, `created_at`, `updated_at`) VALUES
+('117674fa-cd17-4c11-a264-b55181cb828a', 'developer new 123', 'developer reference new', 'reference address', 0, '9787878787', '6525252525', '2022-01-09 15:17:42', '2022-01-14 06:31:20'),
+('effe56a1-2ee5-49bd-9806-e7447589242d', 'New Customer', 'New Customer', 'New Customer', 0, '8888888888', '77777777777', '2022-01-14 06:30:42', '2022-01-14 06:30:42'),
+('f80ab359-0560-4d32-9c6a-de2ca01e0d7f', 'developer 123', 'developer reference new', '1490, Moti Vasan Sheri\r\nSaraspur Ahmedabad', 1, '8033043379', '8999999999', '2022-01-09 12:53:03', '2022-01-09 13:03:48'),
+('5f098b8d-f729-4676-94dc-7596b3adb7d0', 'Rahul Dushyantbhai Patel', 'Rahul Dushyantbhai Patel', '1490, Moti Vasan Sheri\r\nSaraspur', 0, '09033043379', '09033043379', '2022-01-09 11:51:12', '2022-01-09 11:51:12');
 
 -- --------------------------------------------------------
 

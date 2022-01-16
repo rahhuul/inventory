@@ -14,13 +14,23 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{URL('/admin/user')}}" class="nav-link  @if((url()->current()) == url('/admin/event'))active @endif">
+                    <a href="{{URL('/admin/user')}}" class="nav-link  @if((url()->current()) == url('/admin/user'))active @endif">
                         <i class="nav-icon fas fa-user"></i>
                         <p>Customers</p>
                     </a>
                 </li>
-                 
-                
+                <li class="nav-item">
+                    <a href="{{URL('/admin/category')}}" class="nav-link  @if((url()->current()) == url('/admin/category'))active @endif">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>Category</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{URL('/admin/material')}}" class="nav-link  @if((url()->current()) == url('/admin/material'))active @endif">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>Material</p>
+                    </a>
+                </li>
 
             </ul>
         </nav>

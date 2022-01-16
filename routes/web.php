@@ -29,6 +29,8 @@ Route::group(['middleware' => ['adminlogin']], function() {
     Route::get('admin/dashboard','Admin\Dashboard_Controller@index')->name('admin_dashboard.index');
 
     Route::resource('admin/user', Admin\UserController::class); 
+    Route::resource('admin/category', Admin\CategoryController::class); 
+    Route::resource('admin/material', Admin\MaterialController::class); 
 
     /* Route::get('admin/user','Admin\UserController@index');
     Route::get('admin/user/delete/{id}','Admin\UserController@destroy');

@@ -40,12 +40,12 @@
                <div class="card">
                   <div class="card-body">
                      <div>
-                        <a href="{{URL('/admin/user/create')}}" class="btn btn-primary addcat">Add Customer</a>
+                        <a href="{{URL('/admin/category/create')}}" class="btn btn-primary addcat">Add Category</a>
                      </div>
                      <br> 
                      <div class="card">
                         <div class="card-header">
-                           <h3 class="card-title">Customer</h3>
+                           <h3 class="card-title">Category</h3>
                         </div>
                         <div class="card-body table-responsive col-sm-12">
                            <table id="ex1" class="table table-bordered table-striped data-table_funddep">
@@ -53,26 +53,21 @@
                                  <tr>
                                     <th>No</th>
                                     <th>Name</th>
-                                    <th>Mobile</th>
-                                    <th>Type</th>
                                     <th>Action</th>
                                  </tr>
                               </thead>
                               <tbody>
                                  @php  $i=1; @endphp
-                                 @foreach ($listusers as $key => $data)
+                                 @foreach ($listcategorys as $key => $data)
                                  <tr>
                                     <th>{{$i}}</th>
                                     <th>{{$data->name}}</th>
-                                    <th>{{$data->mobile}}</th>
-                                    <th>{{($data->type == 0) ? "Rental" : "Provider"}}</th>
                                     <th>
-                                       <a href="{{route('user.edit', $data->user_id)}}" class="btn btn-info btn-sm">
+                                       <a href="{{route('category.edit', $data->category_id)}}" class="btn btn-info btn-sm">
                                        <i class="fas fa-pencil-alt">
                                        </i>
                                        </a>
-                                       {{-- <a data-id="{{$qualification->id}}" href="{{route('user.delete', $data->id)}}" class="btn btn-danger btn-sm"> --}}
-                                       <a data-id="{{$data->user_id}}" data-name="{{$data->name}}" href="javascript:void(0)" class="btn btn-danger btn-sm">
+                                       <a data-id="{{$data->category_id}}" data-name="{{$data->name}}" href="javascript:void(0)" class="btn btn-danger btn-sm">
                                        <i class="fas fa-trash">
                                        </i>
                                        </a>
@@ -84,8 +79,6 @@
                                  <tr>
                                     <th>No</th>
                                     <th>Name</th>
-                                    <th>Mobile</th>
-                                    <th>Type</th>
                                     <th>Action</th>
                                  </tr>
                               </tfoot>
@@ -115,9 +108,10 @@
       $(".btn-danger").on('click', function() {
          var id   = $(this).data('id');
          var name   = $(this).data('name');
+         console.log("id >>> ", id);
 
          Swal.fire({
-            title: "Delete User",
+            title: "Delete Category",
             html: "Want to delete, <b>"+name+"</b> ?",
             buttonsStyling: false,
             confirmButtonText: "<i class='la la-times'></i> Yes",
@@ -133,7 +127,7 @@
                      headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                      },
-                     url: "/admin/user/" + id,
+                     url: "/admin/category/" + id,
                      type: 'delete',
                      dataType: "JSON",
                      data: {
