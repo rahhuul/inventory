@@ -40,12 +40,12 @@
                <div class="card">
                   <div class="card-body">
                      <div>
-                        <a href="{{URL('/admin/category/create')}}" class="btn btn-primary addcat">Add Category</a>
+                        <a href="{{URL('/admin/material/create')}}" class="btn btn-primary addcat">Add Material</a>
                      </div>
                      <br> 
                      <div class="card">
                         <div class="card-header">
-                           <h3 class="card-title">Category</h3>
+                           <h3 class="card-title">Material</h3>
                         </div>
                         <div class="card-body table-responsive col-sm-12">
                            <table id="ex1" class="table table-bordered table-striped data-table_funddep">
@@ -53,21 +53,27 @@
                                  <tr>
                                     <th>No</th>
                                     <th>Name</th>
+                                    <th>Quantity</th>
+                                    <th>Rent Price</th>
+                                    <th>Damaged Price</th>
                                     <th>Action</th>
                                  </tr>
                               </thead>
                               <tbody>
                                  @php  $i=1; @endphp
-                                 @foreach ($listcategorys as $key => $data)
+                                 @foreach ($listMaterials as $key => $data)
                                  <tr>
                                     <th>{{$i}}</th>
                                     <th>{{$data->name}}</th>
+                                    <th>{{$data->quantity}}</th>
+                                    <th>{{$data->rentPrice}}</th>
+                                    <th>{{$data->damagePrice}}</th>
                                     <th>
-                                       <a href="{{route('category.edit', $data->category_id)}}" class="btn btn-info btn-sm">
+                                       <a href="{{route('material.edit', $data->material_id)}}" class="btn btn-info btn-sm">
                                        <i class="fas fa-pencil-alt">
                                        </i>
                                        </a>
-                                       <a data-id="{{$data->category_id}}" data-name="{{$data->name}}" href="javascript:void(0)" class="btn btn-danger btn-sm">
+                                       <a data-id="{{$data->material_id}}" data-name="{{$data->name}}" href="javascript:void(0)" class="btn btn-danger btn-sm">
                                        <i class="fas fa-trash">
                                        </i>
                                        </a>
@@ -79,6 +85,9 @@
                                  <tr>
                                     <th>No</th>
                                     <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Rent Price</th>
+                                    <th>Damaged Price</th>
                                     <th>Action</th>
                                  </tr>
                               </tfoot>
@@ -111,7 +120,7 @@
          console.log("id >>> ", id);
 
          Swal.fire({
-            title: "Delete Category",
+            title: "Delete Material",
             html: "Want to delete, <b>"+name+"</b> ?",
             buttonsStyling: false,
             confirmButtonText: "<i class='la la-times'></i> Yes",
@@ -127,7 +136,7 @@
                      headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                      },
-                     url: "/admin/category/" + id,
+                     url: "/admin/material/" + id,
                      type: 'delete',
                      dataType: "JSON",
                      data: {

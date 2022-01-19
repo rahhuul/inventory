@@ -2,17 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuids;
+use App\Traits\ModelEventLogger;
 
 
-class Material extends Authenticatable
+class Material extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable,Uuids;
+    use HasFactory,Uuids;
     protected $table = "bt_material"; // table name
     protected $keyType = 'string';
     public $incrementing = false;

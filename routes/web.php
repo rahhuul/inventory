@@ -30,7 +30,9 @@ Route::group(['middleware' => ['adminlogin']], function() {
 
     Route::resource('admin/user', Admin\UserController::class); 
     Route::resource('admin/category', Admin\CategoryController::class); 
-    Route::resource('admin/material', Admin\MaterialController::class); 
+    Route::resource('admin/material', Admin\MaterialController::class);
+
+    Route::post('customers', 'Admin\UserController@allCustomers' )->name('customers');
 
     /* Route::get('admin/user','Admin\UserController@index');
     Route::get('admin/user/delete/{id}','Admin\UserController@destroy');

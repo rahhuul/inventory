@@ -59,26 +59,6 @@
                                  </tr>
                               </thead>
                               <tbody>
-                                 @php  $i=1; @endphp
-                                 @foreach ($listusers as $key => $data)
-                                 <tr>
-                                    <th>{{$i}}</th>
-                                    <th>{{$data->name}}</th>
-                                    <th>{{$data->mobile}}</th>
-                                    <th>{{($data->type == 0) ? "Rental" : "Provider"}}</th>
-                                    <th>
-                                       <a href="{{route('user.edit', $data->user_id)}}" class="btn btn-info btn-sm">
-                                       <i class="fas fa-pencil-alt">
-                                       </i>
-                                       </a>
-                                       {{-- <a data-id="{{$qualification->id}}" href="{{route('user.delete', $data->id)}}" class="btn btn-danger btn-sm"> --}}
-                                       <a data-id="{{$data->user_id}}" data-name="{{$data->name}}" href="javascript:void(0)" class="btn btn-danger btn-sm">
-                                       <i class="fas fa-trash">
-                                       </i>
-                                       </a>
-                                 </tr>
-                                 @php  $i+=1; @endphp
-                                 @endforeach
                               </tbody>
                               <tfoot>
                                  <tr>
@@ -107,12 +87,24 @@
 <script type="text/javascript">
     $(document).ready(function () {
       var table = $('#ex1').DataTable({
-         paging:true,
-         searching: true,
-         ordering:true
+         processing: true,
+         serverSide: true,
+         ajax: {
+            "url": "{{ url('customers') }}",
+            "dataType": "json",
+            "type": "POST",
+            "data":{ _token: "{{csrf_token()}}"}
+         },
+         "columns": [
+                { "data": "id" },
+                { "data": "name" },
+                { "data": "mobile" },
+                { "data": "type" },
+                { "data": "options" }
+         ]	
       });
 
-      $(".btn-danger").on('click', function() {
+      $(document).on('click', ".btn-danger", function() {
          var id   = $(this).data('id');
          var name   = $(this).data('name');
 

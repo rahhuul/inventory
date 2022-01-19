@@ -34,7 +34,7 @@
    </div>
 </div>
 {{-- {!! Form::open(['url' => '/admin/user/update/'.$user->id,'method'=>'POST', 'id' => 'user_form','enctype' => 'multipart/form-data']) !!} --}}
-{!! Form::model($user, ['id' => 'user_form', 'method' => 'PATCH','route' => ['user.update', $user->id]]) !!}
+{!! Form::model($user, ['id' => 'user_form', 'method' => 'PATCH','route' => ['user.update', $user->user_id]]) !!}
 <section class="content">
    <div class="container-fluid">
       <div class="row">

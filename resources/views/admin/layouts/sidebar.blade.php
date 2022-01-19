@@ -21,7 +21,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{URL('/admin/category')}}" class="nav-link  @if((url()->current()) == url('/admin/category'))active @endif">
-                        <i class="nav-icon fas fa-user"></i>
+                        <i class="nav-icon fas fa-list-ul"></i>
                         <p>Category</p>
                     </a>
                 </li>
