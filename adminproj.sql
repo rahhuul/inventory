@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jan 16, 2022 at 08:13 PM
+-- Generation Time: Jan 20, 2022 at 07:17 PM
 -- Server version: 5.7.31
 -- PHP Version: 7.3.21
 
@@ -24,11 +24,11 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bt_category`
+-- Table structure for table `category`
 --
 
-DROP TABLE IF EXISTS `bt_category`;
-CREATE TABLE IF NOT EXISTS `bt_category` (
+DROP TABLE IF EXISTS `category`;
+CREATE TABLE IF NOT EXISTS `category` (
   `category_id` char(36) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -38,22 +38,37 @@ CREATE TABLE IF NOT EXISTS `bt_category` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `bt_category`
+-- Dumping data for table `category`
 --
 
-INSERT INTO `bt_category` (`category_id`, `name`, `created_at`, `updated_at`, `deleted_at`) VALUES
+INSERT INTO `category` (`category_id`, `name`, `created_at`, `updated_at`, `deleted_at`) VALUES
 ('1457b1d4-be68-4abb-88b5-3ebb64642c06', 'Cat 1', '2022-01-16 07:25:45', '2022-01-16 07:25:45', NULL),
 ('5c9860e1-f798-498e-995e-f1034ee2dea5', 'Cat 2', '2022-01-16 07:26:09', '2022-01-16 07:26:09', NULL),
-('cae2d498-f570-45f8-b94a-105b29888761', 'Cat 3', '2022-01-16 07:34:09', '2022-01-16 07:34:09', NULL);
+('85cde456-22cf-448e-ba9e-57fb03c46ff9', 'Cat 4', '2022-01-20 18:57:32', '2022-01-20 18:57:32', NULL),
+('cae2d498-f570-45f8-b94a-105b29888761', 'Cat 3', '2022-01-16 07:34:09', '2022-01-20 18:57:11', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bt_material`
+-- Table structure for table `category_material`
 --
 
-DROP TABLE IF EXISTS `bt_material`;
-CREATE TABLE IF NOT EXISTS `bt_material` (
+DROP TABLE IF EXISTS `category_material`;
+CREATE TABLE IF NOT EXISTS `category_material` (
+  `category_id` char(36) DEFAULT NULL,
+  `material_id` char(36) DEFAULT NULL,
+  KEY `category_id` (`category_id`),
+  KEY `material_id` (`material_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `material`
+--
+
+DROP TABLE IF EXISTS `material`;
+CREATE TABLE IF NOT EXISTS `material` (
   `material_id` char(36) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `quantity` varchar(20) DEFAULT NULL,
@@ -67,13 +82,13 @@ CREATE TABLE IF NOT EXISTS `bt_material` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bt_user`
+-- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS `bt_user`;
-CREATE TABLE IF NOT EXISTS `bt_user` (
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
   `user_id` char(36) NOT NULL,
-  `name` varchar(50) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
   `reference_name` varchar(255) DEFAULT NULL,
   `address` varchar(100) DEFAULT NULL,
   `type` tinyint(1) DEFAULT '0' COMMENT '0 -rental 1-provider',
@@ -85,23 +100,22 @@ CREATE TABLE IF NOT EXISTS `bt_user` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `bt_user`
+-- Dumping data for table `user`
 --
 
-INSERT INTO `bt_user` (`user_id`, `name`, `reference_name`, `address`, `type`, `mobile`, `reference_mobile`, `created_at`, `updated_at`) VALUES
-('117674fa-cd17-4c11-a264-b55181cb828a', 'developer new 123', 'developer reference new', 'reference address', 0, '9787878787', '6525252525', '2022-01-09 15:17:42', '2022-01-14 06:31:20'),
+INSERT INTO `user` (`user_id`, `name`, `reference_name`, `address`, `type`, `mobile`, `reference_mobile`, `created_at`, `updated_at`) VALUES
+('117674fa-cd17-4c11-a264-b55181cb828a', 'developer new 123', 'developer reference new', 'reference address', 0, '9787878787', '6525252525', '2022-01-09 15:17:42', '2022-01-19 18:56:05'),
 ('effe56a1-2ee5-49bd-9806-e7447589242d', 'New Customer', 'New Customer', 'New Customer', 0, '8888888888', '77777777777', '2022-01-14 06:30:42', '2022-01-14 06:30:42'),
-('f80ab359-0560-4d32-9c6a-de2ca01e0d7f', 'developer 123', 'developer reference new', '1490, Moti Vasan Sheri\r\nSaraspur Ahmedabad', 1, '8033043379', '8999999999', '2022-01-09 12:53:03', '2022-01-09 13:03:48'),
 ('5f098b8d-f729-4676-94dc-7596b3adb7d0', 'Rahul Dushyantbhai Patel', 'Rahul Dushyantbhai Patel', '1490, Moti Vasan Sheri\r\nSaraspur', 0, '09033043379', '09033043379', '2022-01-09 11:51:12', '2022-01-09 11:51:12');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bt_usermaster`
+-- Table structure for table `usermaster`
 --
 
-DROP TABLE IF EXISTS `bt_usermaster`;
-CREATE TABLE IF NOT EXISTS `bt_usermaster` (
+DROP TABLE IF EXISTS `usermaster`;
+CREATE TABLE IF NOT EXISTS `usermaster` (
   `id` char(36) NOT NULL,
   `firstname` varchar(200) NOT NULL,
   `lastname` varchar(200) DEFAULT NULL,
@@ -113,10 +127,10 @@ CREATE TABLE IF NOT EXISTS `bt_usermaster` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `bt_usermaster`
+-- Dumping data for table `usermaster`
 --
 
-INSERT INTO `bt_usermaster` (`id`, `firstname`, `lastname`, `email`, `username`, `password`, `created`) VALUES
+INSERT INTO `usermaster` (`id`, `firstname`, `lastname`, `email`, `username`, `password`, `created`) VALUES
 ('1', 'Global1', 'Admin', 'Admin@winterwood.com', 'admin', '$2y$10$Dg8CzQGMmrfrmcb9dhjeB.29D02blpsSFJ.L9EqATcfyvb7eilz0W', '2017-06-01 01:08:18');
 COMMIT;
 

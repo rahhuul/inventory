@@ -22,10 +22,86 @@ class MaterialController extends Controller
         return view('admin/material/index',compact('title','listMaterials'));
     }
 
-    /*public function getdata(){
-        $listusers             = Material::get();
-        return $listusers;
-    }*/
+    public function allMaterials(){
+        $columns = array( 
+            0 =>'user_id', 
+            1 =>'name',
+            2=> 'mobile',
+            3=> 'type'
+        );
+
+        $totalData = Material::count();
+
+        $totalFiltered = $totalData; 
+
+        $limit = $request->input('length');
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        if(empty($request->input('search.value')))
+        {            
+        $materials = Material::offset($start)
+                ->limit($limit)
+                ->orderBy($order,$dir)
+                ->get();
+        }
+        else {
+        $search = $request->input('search.value'); 
+
+        $materials =  Material::where('user_id','LIKE',"%{$search}%")
+                    ->orWhere('name', 'LIKE',"%{$search}%")
+                    ->orWhere('mobile', 'LIKE',"%{$search}%")
+                    ->offset($start)
+                    ->limit($limit)
+                    ->orderBy($order,$dir)
+                    ->get();
+
+        $totalFiltered = Material::where('user_id','LIKE',"%{$search}%")
+                    ->orWhere('name', 'LIKE',"%{$search}%")
+                    ->orWhere('mobile', 'LIKE',"%{$search}%")
+                    ->count();
+        }
+
+        $data = array();
+        if(!empty($materials))
+        {
+            $c = 1;
+            foreach ($materials as $post){
+            //$show =  route('user.show',$post->id);
+                $edit =  route('user.edit',$post->user_id);
+                $view =  route('user.show',$post->user_id);
+                $nestedData['id'] = $c;
+                $nestedData['name'] = $post->name;
+                $nestedData['mobile'] = $post->mobile;
+                $nestedData['type'] = ($post->type == 0) ? "Rental" : "Provider";
+                $nestedData['options'] = "<a href='{$edit}' class='btn btn-info btn-sm'>
+                <i class='fas fa-edit'>
+                </i>
+                </a>
+                <a data-id='{$post->user_id}' data-name='{$post->name}' href='javascript:void(0)' class='btn btn-danger btn-sm'>
+                <i class='fas fa-trash'>
+                </i>
+                </a>
+                <button onClick='showAjaxModal(\"$view\", \"$post->name\")' class='btn btn-success btn-sm'>
+                <i class='fas fa-play'>
+                </i>
+                </button>";
+                
+                $data[] = $nestedData;
+                $c++;
+            }
+        }
+
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),  
+            "recordsTotal"    => intval($totalData),  
+            "recordsFiltered" => intval($totalFiltered), 
+            "data"            => $data   
+            );
+
+        echo json_encode($json_data);
+    }
 
     /**
      * Show the form for creating a new resource.

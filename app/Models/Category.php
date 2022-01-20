@@ -11,7 +11,7 @@ use App\Traits\ModelEventLogger;
 class Category extends Model
 {
     use HasFactory,Uuids;
-    protected $table = "bt_category"; // table name
+    protected $table = "category"; // table name
     protected $keyType = 'string';
     public $incrementing = false;
     public $timestamps = true;

@@ -109,12 +109,25 @@
 <script type="text/javascript">
     $(document).ready(function () {
       var table = $('#ex1').DataTable({
-         paging:true,
-         searching: true,
-         ordering:true
+         processing: true,
+         serverSide: true,
+         ajax: {
+            "url": "{{ url('materials') }}",
+            "dataType": "json",
+            "type": "POST",
+            "data":{ _token: "{{csrf_token()}}"}
+         },
+         "columns": [
+                { "data": "id" },
+                { "data": "name" },
+                { "data": "category" },
+                { "data": "rentprice" },
+                { "data": "damageprice" },
+                { "data": "options" }
+         ]	
       });
 
-      $(".btn-danger").on('click', function() {
+      $(document).on('click', ".btn-danger", function() {
          var id   = $(this).data('id');
          var name   = $(this).data('name');
          console.log("id >>> ", id);

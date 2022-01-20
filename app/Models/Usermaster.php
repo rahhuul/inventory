@@ -10,7 +10,7 @@ class Usermaster extends Model
 {
    use HasFactory, Uuids;
     
-    protected $table = "bt_usermaster"; // table name
+    protected $table = "usermaster"; // table name
     protected $keyType = 'string';
     public $incrementing = false;
     public $timestamps = false;

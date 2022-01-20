@@ -12,7 +12,7 @@ use App\Traits\Uuids;
 class User extends Authenticatable
 {
     use HasFactory,Uuids;
-    protected $table = "bt_user"; // table name
+    protected $table = "user"; // table name
     protected $keyType = 'string';
     public $incrementing = false;
     public $timestamps = true;
