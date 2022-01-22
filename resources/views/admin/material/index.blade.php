@@ -60,26 +60,6 @@
                                  </tr>
                               </thead>
                               <tbody>
-                                 @php  $i=1; @endphp
-                                 @foreach ($listMaterials as $key => $data)
-                                 <tr>
-                                    <th>{{$i}}</th>
-                                    <th>{{$data->name}}</th>
-                                    <th>{{$data->quantity}}</th>
-                                    <th>{{$data->rentPrice}}</th>
-                                    <th>{{$data->damagePrice}}</th>
-                                    <th>
-                                       <a href="{{route('material.edit', $data->material_id)}}" class="btn btn-info btn-sm">
-                                       <i class="fas fa-pencil-alt">
-                                       </i>
-                                       </a>
-                                       <a data-id="{{$data->material_id}}" data-name="{{$data->name}}" href="javascript:void(0)" class="btn btn-danger btn-sm">
-                                       <i class="fas fa-trash">
-                                       </i>
-                                       </a>
-                                 </tr>
-                                 @php  $i+=1; @endphp
-                                 @endforeach
                               </tbody>
                               <tfoot>
                                  <tr>

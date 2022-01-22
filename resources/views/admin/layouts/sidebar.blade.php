@@ -31,7 +31,12 @@
                         <p>Material</p>
                     </a>
                 </li>
-
+                <li class="nav-item">
+                    <a href="{{URL('/admin/rent')}}" class="nav-link  @if((url()->current()) == url('/admin/rent'))active @endif">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>Rent</p>
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>

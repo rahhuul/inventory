@@ -33,8 +33,8 @@
       </div>
    </div>
 </div>
-{{-- {!! Form::open(['url' => '/admin/category/update/'.$category->id,'method'=>'POST', 'id' => 'category_form','enctype' => 'multipart/form-data']) !!} --}}
-{!! Form::model($category, ['id' => 'category_form', 'method' => 'PATCH','route' => ['category.update', $category->category_id]]) !!}
+{{-- {!! Form::open(['url' => '/admin/material/update/'.$material->id,'method'=>'POST', 'id' => 'material_form','enctype' => 'multipart/form-data']) !!} --}}
+{!! Form::model($material, ['id' => 'material_form', 'method' => 'PATCH','route' => ['material.update', $material->material_id]]) !!}
 <section class="content">
    <div class="container-fluid">
       <div class="row">
@@ -43,7 +43,7 @@
             <!-- general form elements -->
             <div class="card card-primary">
                <div class="card-header">
-                  <h3 class="card-title">Category</h3>
+                  <h3 class="card-title">Material</h3>
                   <div class="card-tools">
                      <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                      <i class="fas fa-minus"></i>
@@ -52,11 +52,28 @@
                </div>
                <!-- /.card-header -->
                <!-- form start -->
-               <!--  {!! Form::open(['id' => 'category_form']) !!} --> 
+               <!--  {!! Form::open(['id' => 'material_form']) !!} --> 
                <div class="card-body">
                   <div class="form-group">
-                     {!! Form::label('Category Name', 'Category Name') !!}
-                     {!! Form::text('name',$category->name, ['id' => "name", 'class' => 'form-control', 'placeholder' => "Enter Name"]) !!}
+                     {!! Form::label('Material Name', 'Material Name') !!}
+                     {!! Form::text('name',$material->name, ['id' => "name", 'class' => 'form-control', 'placeholder' => "Material Name"]) !!}
+                  </div>
+
+                  <div class="form-group">
+                     {!! Form::label('Quantity', 'Quantity') !!}
+                     {!! Form::text('quantity',$material->quantity, ['id' => "quantity", 'class' => 'form-control', 'placeholder' => "Enter Quantity"]) !!}
+                  </div>
+                  <div class="form-group">
+                     {!! Form::label('Damage Price', 'Damage Price') !!}
+                     {!! Form::text('damagePrice',$material->damagePrice, ['id' => "damagePrice", 'class' => 'form-control', 'placeholder' => "Enter Damage Price"]) !!}
+                  </div>
+                  <div class="form-group">
+                     {!! Form::label('Rental Price', 'Rental Price') !!}
+                     {!! Form::text('rentPrice',$material->rentPrice, ['id' => "rentPrice", 'class' => 'form-control', 'placeholder' => "Enter Rental Price"]) !!}
+                  </div>
+                  <div class="form-group">
+                     {!! Form::label('Category', 'Category') !!}
+                     {!! Form::select('category_id', $categories, $material->category_id, ['id' => 'category_id', 'class' => 'form-control select2']) !!}
                   </div>
                </div>
                <!-- /.card-body -->

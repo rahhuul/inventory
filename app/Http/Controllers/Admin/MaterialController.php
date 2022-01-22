@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Material;
+use App\Models\Category;
 use Carbon\Carbon;
 
 class MaterialController extends Controller
@@ -22,12 +23,13 @@ class MaterialController extends Controller
         return view('admin/material/index',compact('title','listMaterials'));
     }
 
-    public function allMaterials(){
+    public function allMaterials(Request $request){
         $columns = array( 
-            0 =>'user_id', 
+            0 =>'material_id', 
             1 =>'name',
-            2=> 'mobile',
-            3=> 'type'
+            2=> 'category',
+            3=> 'rentprice',
+            4=> 'damageprice',
         );
 
         $totalData = Material::count();
@@ -41,7 +43,8 @@ class MaterialController extends Controller
 
         if(empty($request->input('search.value')))
         {            
-        $materials = Material::offset($start)
+        $materials = Material::with('category')
+                ->offset($start)
                 ->limit($limit)
                 ->orderBy($order,$dir)
                 ->get();
@@ -49,37 +52,43 @@ class MaterialController extends Controller
         else {
         $search = $request->input('search.value'); 
 
-        $materials =  Material::where('user_id','LIKE',"%{$search}%")
+        $materials =  Material::with('category')
                     ->orWhere('name', 'LIKE',"%{$search}%")
-                    ->orWhere('mobile', 'LIKE',"%{$search}%")
+                    ->orWhere('quantity', 'LIKE',"%{$search}%")
+                    ->orWhere('damagePrice', 'LIKE',"%{$search}%")
+                    ->orWhere('rentPrice', 'LIKE',"%{$search}%")
                     ->offset($start)
                     ->limit($limit)
                     ->orderBy($order,$dir)
                     ->get();
 
-        $totalFiltered = Material::where('user_id','LIKE',"%{$search}%")
+        $totalFiltered = Material::with('category')
                     ->orWhere('name', 'LIKE',"%{$search}%")
-                    ->orWhere('mobile', 'LIKE',"%{$search}%")
+                    ->orWhere('quantity', 'LIKE',"%{$search}%")
+                    ->orWhere('damagePrice', 'LIKE',"%{$search}%")
+                    ->orWhere('rentPrice', 'LIKE',"%{$search}%")
                     ->count();
         }
 
         $data = array();
+
         if(!empty($materials))
         {
             $c = 1;
             foreach ($materials as $post){
             //$show =  route('user.show',$post->id);
-                $edit =  route('user.edit',$post->user_id);
-                $view =  route('user.show',$post->user_id);
+                $edit =  route('material.edit',$post->material_id);
+                $view =  route('material.show',$post->material_id);
                 $nestedData['id'] = $c;
                 $nestedData['name'] = $post->name;
-                $nestedData['mobile'] = $post->mobile;
-                $nestedData['type'] = ($post->type == 0) ? "Rental" : "Provider";
+                $nestedData['category'] = $post->category->name;
+                $nestedData['rentprice'] = $post->rentPrice;
+                $nestedData['damageprice'] = $post->damagePrice;
                 $nestedData['options'] = "<a href='{$edit}' class='btn btn-info btn-sm'>
                 <i class='fas fa-edit'>
                 </i>
                 </a>
-                <a data-id='{$post->user_id}' data-name='{$post->name}' href='javascript:void(0)' class='btn btn-danger btn-sm'>
+                <a data-id='{$post->material_id}' data-name='{$post->name}' href='javascript:void(0)' class='btn btn-danger btn-sm'>
                 <i class='fas fa-trash'>
                 </i>
                 </a>
@@ -111,7 +120,8 @@ class MaterialController extends Controller
     public function create()
     {
         $title = "Add Material";
-        return view('admin/material/create',compact('title'));
+        $categories = Category::all()->pluck('name', 'category_id');
+        return view('admin/material/create',compact('title', 'categories'));
     }
 
     /**
@@ -137,9 +147,9 @@ class MaterialController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Material $material)
     {
-        //
+        return view('admin/material/show',compact('material'));
     }
 
     /**
@@ -151,7 +161,8 @@ class MaterialController extends Controller
     public function edit(Material $material)
     {
         $title = "Edit Material";
-        return view('admin/material/edit', compact('title','material'));
+        $categories = Category::all()->pluck('name', 'category_id');
+        return view('admin/material/edit', compact('title','material', 'categories'));
     }
 
     /**

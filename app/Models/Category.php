@@ -17,4 +17,9 @@ class Category extends Model
     public $timestamps = true;
     public $fillable = ['name'];
     protected $primaryKey = "category_id";
+
+    public function materials()
+    {
+        return $this->hasMany(Material::class);
+    }
 }

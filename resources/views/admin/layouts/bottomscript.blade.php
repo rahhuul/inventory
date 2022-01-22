@@ -29,8 +29,6 @@
 <script src="{{URL('/')}}/assets/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="{{URL('/')}}/assets/admin/dist/js/adminlte.js"></script>
-<script type="text/javascript" src="{{URL('/')}}/assets/admin/front/js/moment.min.js"></script>
-<script type="text/javascript" src="{{URL('/')}}/assets/admin/front/js/datetimepicker.min.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <!-- <script src="{{URL('/')}}/assets/admin/dist/js/pages/dashboard.js"></script> -->
 <!-- AdminLTE for demo purposes -->

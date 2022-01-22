@@ -33,7 +33,7 @@
       </div>
    </div>
 </div>
-{!! Form::open(['route' => 'category.store','method'=>'POST', 'id' => 'category_form']) !!}
+{!! Form::open(['route' => 'material.store','method'=>'POST', 'id' => 'material_form']) !!}
 @csrf
 <section class="content">
    <div class="container-fluid">
@@ -43,7 +43,7 @@
             <!-- general form elements -->
             <div class="card card-primary">
                <div class="card-header">
-                  <h3 class="card-title">Category</h3>
+                  <h3 class="card-title">Material</h3>
                   <div class="card-tools">
                      <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                      <i class="fas fa-minus"></i>
@@ -54,8 +54,24 @@
                <!-- form start -->
                <div class="card-body">
                   <div class="form-group">
-                     {!! Form::label('Category Name', 'Category Name') !!}
+                     {!! Form::label('Material Name', 'Material Name') !!}
                      {!! Form::text('name','', ['id' => "name", 'class' => 'form-control', 'placeholder' => "Enter Name"]) !!}
+                  </div>
+                  <div class="form-group">
+                     {!! Form::label('Quantity', 'Quantity') !!}
+                     {!! Form::text('quantity','', ['id' => "quantity", 'class' => 'form-control', 'placeholder' => "Enter Quantity"]) !!}
+                  </div>
+                  <div class="form-group">
+                     {!! Form::label('Damage Price', 'Damage Price') !!}
+                     {!! Form::text('damagePrice','', ['id' => "damagePrice", 'class' => 'form-control', 'placeholder' => "Enter Damage Price"]) !!}
+                  </div>
+                  <div class="form-group">
+                     {!! Form::label('Rental Price', 'Rental Price') !!}
+                     {!! Form::text('rentPrice','', ['id' => "rentPrice", 'class' => 'form-control', 'placeholder' => "Enter Rental Price"]) !!}
+                  </div>
+                  <div class="form-group">
+                     {!! Form::label('Category', 'Category') !!}
+                     {!! Form::select('category_id', $categories, null, ['id' => 'category_id', 'class' => 'form-control select2']) !!}
                   </div>
                </div>
                <div class="card-footer">
