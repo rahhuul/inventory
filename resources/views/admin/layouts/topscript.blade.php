@@ -24,11 +24,10 @@
 
   <link rel="stylesheet" href="{{URL('/')}}/assets/admin/plugins/toastr/toastr.min.css">
   <link rel="stylesheet" href="{{URL('/')}}/assets/admin/plugins/select2/css/select2.min.css">
-  
+  <link rel="stylesheet" href="{{URL('/')}}/assets/admin/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
   {{-- extra css added --}}
   <link rel="stylesheet" href="{{URL('/')}}/assets/admin/css/style.css">
   <link rel="stylesheet" href="{{URL('/')}}/assets/admin/css/noty.css">
   <link rel="stylesheet" type="text/css" href="{{URL('/')}}/assets/admin/css/animations.min.css">
   <!-- <link rel="stylesheet" href="{{URL('/')}}/assets/admin/admin/css/style.css"> -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/admin/owl.carousel.css" integrity="sha512-UTNP5BXLIptsaj5WdKFrkFov94lDx+eBvbKyoe1YAfjeRPC+gT5kyZ10kOHCfNZqEui1sxmqvodNUx3KbuYI/A==" crossorigin="anonymous" />
   <link rel="stylesheet" type="text/css" href="{{URL('/')}}/assets/admin/css/sports_slider.css">

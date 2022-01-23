@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jan 20, 2022 at 07:17 PM
+-- Generation Time: Jan 23, 2022 at 04:52 PM
 -- Server version: 5.7.31
 -- PHP Version: 7.3.21
 
@@ -50,34 +50,62 @@ INSERT INTO `category` (`category_id`, `name`, `created_at`, `updated_at`, `dele
 -- --------------------------------------------------------
 
 --
--- Table structure for table `category_material`
---
-
-DROP TABLE IF EXISTS `category_material`;
-CREATE TABLE IF NOT EXISTS `category_material` (
-  `category_id` char(36) DEFAULT NULL,
-  `material_id` char(36) DEFAULT NULL,
-  KEY `category_id` (`category_id`),
-  KEY `material_id` (`material_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `material`
 --
 
 DROP TABLE IF EXISTS `material`;
 CREATE TABLE IF NOT EXISTS `material` (
   `material_id` char(36) NOT NULL,
+  `category_id` char(36) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `quantity` varchar(20) DEFAULT NULL,
   `damagePrice` varchar(20) DEFAULT NULL,
   `rentPrice` varchar(20) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`material_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `material`
+--
+
+INSERT INTO `material` (`material_id`, `category_id`, `name`, `quantity`, `damagePrice`, `rentPrice`, `created_at`, `updated_at`, `deleted_at`) VALUES
+('a9101aa4-2e5f-4573-8f3e-0f886b9f6ba1', 'cae2d498-f570-45f8-b94a-105b29888761', 'Mat 1', '100', '120', '80', '2022-01-22 20:26:42', '2022-01-22 20:26:42', NULL),
+('db787888-2a07-4d66-afae-8909105deaf9', '85cde456-22cf-448e-ba9e-57fb03c46ff9', 'Mat 2', '150', '50', '20', '2022-01-23 09:09:19', '2022-01-23 09:09:19', NULL),
+('ad880abf-a124-45d5-adf5-9fe653812da2', '1457b1d4-be68-4abb-88b5-3ebb64642c06', 'Mat c1', '100', '180', '120', '2022-01-23 15:50:23', '2022-01-23 15:50:23', NULL),
+('3ecd9100-dd43-4441-a82a-6dfa884be416', '5c9860e1-f798-498e-995e-f1034ee2dea5', 'Mat c2', '500', '580', '200', '2022-01-23 15:50:39', '2022-01-23 15:50:39', NULL),
+('fbef61d6-c4de-43a9-97b4-e650c4e4c1bf', '1457b1d4-be68-4abb-88b5-3ebb64642c06', 'Mat c11', '1000', '1200', '400', '2022-01-23 15:51:02', '2022-01-23 15:51:02', NULL),
+('08af3b06-e817-4dbb-a077-b058301a3cbe', '5c9860e1-f798-498e-995e-f1034ee2dea5', 'Mat C22', '2000', '2400', '1700', '2022-01-23 15:51:19', '2022-01-23 15:51:19', NULL),
+('3f09bd52-905f-4d66-8d56-22338514cfd5', 'cae2d498-f570-45f8-b94a-105b29888761', 'Mat c3', '100', '1000', '620', '2022-01-23 15:51:40', '2022-01-23 15:51:40', NULL),
+('fa063916-f109-4b57-a58f-7b7f933084af', '85cde456-22cf-448e-ba9e-57fb03c46ff9', 'Mat c4', '50', '10000', '8000', '2022-01-23 15:51:57', '2022-01-23 15:51:57', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rent_material`
+--
+
+DROP TABLE IF EXISTS `rent_material`;
+CREATE TABLE IF NOT EXISTS `rent_material` (
+  `rent_id` char(36) NOT NULL,
+  `customer_id` char(36) DEFAULT NULL,
+  `category_id` char(36) DEFAULT NULL,
+  `material_id` char(36) DEFAULT NULL,
+  `quantity` varchar(50) DEFAULT NULL,
+  `ordered_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `rent_material`
+--
+
+INSERT INTO `rent_material` (`rent_id`, `customer_id`, `category_id`, `material_id`, `quantity`, `ordered_at`, `created_at`, `updated_at`, `deleted_at`) VALUES
+('50c396d3-1bbe-4fa8-8a38-9a1bd9090658', 'effe56a1-2ee5-49bd-9806-e7447589242d', '5c9860e1-f798-498e-995e-f1034ee2dea5', '3ecd9100-dd43-4441-a82a-6dfa884be416', '150', NULL, '2022-01-23 16:30:37', '2022-01-23 16:30:37', NULL);
 
 -- --------------------------------------------------------
 
