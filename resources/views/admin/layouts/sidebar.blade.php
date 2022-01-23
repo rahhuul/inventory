@@ -32,11 +32,22 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{URL('/admin/rent')}}" class="nav-link  @if((url()->current()) == url('/admin/rent'))active @endif">
-                        <i class="nav-icon fas fa-user"></i>
-                        <p>Rent</p>
+                    <a href="javascript:void(0)" class="nav-link">
+                      <i class="nav-icon fas fa-tree"></i>
+                      <p>
+                        Rent
+                        <i class="fas fa-angle-left right"></i>
+                      </p>
                     </a>
-                </li>
+                    <ul class="nav nav-treeview" style="display: none;">
+                        <li class="nav-item">
+                            <a href="{{URL('/admin/rent')}}" class="nav-link  @if((url()->current()) == url('/admin/rent'))active @endif">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>Rent</p>
+                            </a>
+                        </li>
+                    </ul>
+                  </li>
             </ul>
         </nav>
     </div>

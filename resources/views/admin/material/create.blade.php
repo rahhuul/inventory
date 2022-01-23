@@ -71,7 +71,7 @@
                   </div>
                   <div class="form-group">
                      {!! Form::label('Category', 'Category') !!}
-                     {!! Form::select('category_id', $categories, null, ['id' => 'category_id', 'class' => 'form-control select2']) !!}
+                     {!! Form::select('category_id', $categories, null, ['id' => 'category_id', 'class' => 'form-control select2', 'style' => 'width:100%']) !!}
                   </div>
                </div>
                <div class="card-footer">
