@@ -55,6 +55,7 @@
                                     <th>Customer</th>
                                     <th>Category</th>
                                     <th>Material</th>
+                                    <th>Date</th>
                                     <th>Quantity</th>
                                     <th>Action</th>
                                  </tr>
@@ -92,6 +93,7 @@
                 { "data": "customer" },
                 { "data": "category" },
                 { "data": "material" },
+                { "data": "ordered_at" },
                 { "data": "quantity" },
                 { "data": "options" }
          ]	
