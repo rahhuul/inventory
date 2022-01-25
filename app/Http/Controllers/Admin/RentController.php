@@ -79,6 +79,7 @@ class RentController extends Controller
                 $nestedData['customer'] = $post->customer->name;
                 $nestedData['category'] = $post->category->name;
                 $nestedData['material'] = $post->material->name;
+                $nestedData['ordered_at'] = date('d-m-Y',strtotime($post->ordered_at));
                 $nestedData['quantity'] = $post->quantity;
                 $nestedData['options'] = "<a href='{$edit}' class='btn btn-info btn-sm'>
                 <i class='fas fa-edit'>
@@ -152,7 +153,11 @@ class RentController extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        $inputs['ordered_at'] = date("Y-m-d", strtotime($inputs['ordered_at']));
         $customer = Rent::create($inputs);
+        $material = Material::find($inputs['material_id']);
+        $material->quantity = $material->quantity - $inputs['quantity'];
+        $material->save();
         if($customer){
         return redirect()->route('rent.index')
          ->with('message','Rent added successfully')
@@ -182,7 +187,7 @@ class RentController extends Controller
         $title = "Edit Rent";
         $customers = User::all()->pluck('name', 'user_id');
         $categories = Category::all()->pluck('name', 'category_id');
-        $materials = Material::all()->pluck('name', 'marerial_id');
+        $materials = Material::all()->pluck('name', 'material_id');
         return view('admin/rent/edit', compact('title', 'rent', 'customers', 'categories', 'materials'));
     }
 
@@ -195,7 +200,27 @@ class RentController extends Controller
      */
     public function update(Request $request, Rent $rent)
     {
-        $userdata = $rent->update($request->all());
+        $inputs = $request->input();
+        $inputs['ordered_at'] = date("Y-m-d", strtotime($inputs['ordered_at']));
+        $material = Material::find($inputs['exist_material_id']);
+        if($inputs['exist_material_id'] == $inputs['material_id']){
+            if($inputs['exist_quantity'] > $inputs['quantity']){
+                $material->quantity = $material->quantity + ($inputs['exist_quantity'] - $inputs['quantity']);
+                $material->save();
+            }
+            if($inputs['exist_quantity'] < $inputs['quantity']){
+                $material->quantity = $material->quantity - ($inputs['quantity'] - $inputs['exist_quantity']);
+                $material->save();
+            }
+        }else{
+            $material->quantity = $material->quantity + $inputs['exist_quantity'];
+            $material->save();
+
+            $new_material = Material::find($inputs['material_id']);
+            $new_material->quantity = $new_material->quantity - $inputs['quantity'];
+            $new_material->save();
+        }
+        $userdata = $rent->update($inputs);
 
         if($userdata){
         return redirect()->route('rent.index')
@@ -212,6 +237,9 @@ class RentController extends Controller
      */
     public function destroy(Rent $rent)
     {
+        $material = Material::find($rent->material_id);
+        $material->quantity = $material->quantity + $rent->quantity;
+        $material->save();
         $rent->delete();
         return redirect()->route('rent.index')
                         ->with('message','Rent deleted successfully')

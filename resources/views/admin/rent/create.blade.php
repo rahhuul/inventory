@@ -69,7 +69,17 @@
                      {!! Form::label('Quantity', 'Quantity') !!}
                      {!! Form::text('quantity','', ['id' => "quantity", 'class' => 'form-control', 'placeholder' => "Enter Quantity"]) !!}
                   </div>
-
+                  <div class="form-group">
+                  {!! Form::label('Order Date', 'Order Date') !!}
+                  <div class="input-group">
+                     <div class="input-group-prepend">
+                       <span class="input-group-text">
+                         <i class="far fa-calendar-alt"></i>
+                       </span>
+                     </div>
+                     <input type="text" name="ordered_at" class="form-control float-right" id="reservation">
+                   </div>
+                  </div>
                   <div class="form-group">
                      {!! Form::label('Total Quantity', 'Total Quantity') !!}: 
                      {!! Form::label('0', '0', ['id' => 'totalQuantity']) !!}
@@ -78,6 +88,7 @@
                      {!! Form::label('Remain Quantity', 'Remain Quantity') !!}: 
                      {!! Form::label('0', '0', ['id' => 'remainQuantity']) !!}
                   </div>
+                  
                </div>
                <div class="card-footer">
                   {!! Form::submit('save', ["class" => "btn btn-primary"]) !!}
@@ -99,6 +110,23 @@
 
 @section('script')
 <script>
+   let mindate = moment().format("DD-MM-YYYY");
+   $('#reservation').daterangepicker({
+      singleDatePicker: true,
+      "locale": {
+         "format": "DD-MM-YYYY",
+         "separator": " - ",
+      },
+      minDate: mindate,
+      startDate:mindate,
+      showDropdowns: true,
+      autoApply: true
+   });
+
+   $('#reservation').on('apply.daterangepicker', function(ev, picker) {
+      console.log(picker.startDate.format('DD-MM-YYYY'));
+   });
+
    $('#category_id').on('select2:select', function (e) {
       var data = e.params.data;
       let category_id = data.id;
