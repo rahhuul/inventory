@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 });*/
 
 /*login routes*/
+Route::get('/','Admin\Login_Controller@index');
 Route::get('admin','Admin\Login_Controller@index');
 Route::get('admin/login','Admin\Login_Controller@index');
 Route::get('admin/logout','Admin\Login_Controller@logout');
