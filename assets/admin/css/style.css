@@ -1,0 +1,297 @@
+.error{
+	color:red;
+}
+.help-block1{
+	color:red;
+	margin-left: 186px;
+}
+
+.pending_btn{
+	margin-left:5px; 
+	/*margin-top:1px !important;*/
+	border:1px solid black;
+	border-radius: 50% ;
+	padding: 0px 6px;
+	cursor: pointer;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #fff !important;
+    background-color: #17a2b8 !important;
+}
+.d-sm-inline-block a{
+    color: #17a2b8 !important;
+}
+
+.nav-link p{
+	color : #fff !important;
+}
+
+/*a{	
+	color: #FFFFFF !important;
+}*/
+.page-link{
+    color: #0056b3 !important;
+}
+
+.login-logo a{
+	color:#000 !important;
+}
+.wbalance{
+	color: #17a2b8 !important;
+    margin-top: 3px;
+}
+.inplayname{
+	/*background: rgb(26, 33, 42);*/
+    font-size: 0.875rem;
+    line-height: 1rem;
+    padding: 1.5rem 1.5rem 0px;
+    border-radius: 1rem 1rem 0px 0px;
+    grid-template-columns: minmax(0px, 1fr);
+    display: grid;
+    gap: 1rem;
+
+}
+#gamename{
+	margin-left: 5px;
+
+}
+.navigation{
+	border-radius: 1rem 1rem 0px 0px;
+	border-bottom: 1px solid #aaa;
+}
+.bXwSvB {
+    list-style-type: none;
+    display: grid;
+    margin: 0px;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr auto auto auto 2rem;
+    gap: 1rem;
+    padding: 0.25rem 0.75rem;
+}
+.teamlist{
+	list-style-type:none;
+}
+.match{
+	height: 100%;
+    display: flex;
+    flex-direction: row;
+    -webkit-box-align: center;
+    align-items: center;
+    max-width: 3.75rem;
+}
+.matchstatus{
+	    margin: 0px 0.625rem 0px auto;
+    font-size: 0.75rem;
+    line-height: 1;
+    color: rgb(134, 151, 162);
+    text-align: center;
+}
+.blockd{
+	   /* border: 1px solid black;
+    padding: 20px 5px 20px 5px;
+    line-height: 1rem;*/
+
+
+    list-style-type: none;
+    display: grid;
+    margin: 0px;
+    border-bottom: 1px solid rgb(49, 55, 63);
+    grid-template-columns: 1fr auto auto auto 2rem;
+    grid-template-rows: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+}
+.teamlist{
+	grid-area: 1 / 1 / auto / auto;
+}
+.EdWff {
+    display: flex;
+    flex-direction: row;
+}
+.fhbAMd {
+    display: grid;
+    gap: 0.5rem;
+}
+.dStbqR {
+    font-size: 0.875rem;
+    line-height: 1rem;
+    margin: 0px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 18.75rem;
+    letter-spacing: inherit;
+}
+.fHmfSh {
+    margin-left: 100px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    flex-direction: row;
+
+
+}
+.hwvevL {
+    margin: 0px 0.625rem 0px auto;
+    font-size: 0.75rem;
+    line-height: 1;
+    color: rgb(134, 151, 162);
+    text-align: center;
+}
+.libVaR {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    -webkit-box-align: center;
+    align-items: center;
+    max-width: 3.75rem;
+}
+.cCASKJ {
+    grid-area: 1 / 2 / auto / auto;
+}
+.dJiLXF {
+    border-radius: 0.125rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-evenly;
+    min-width: 5.5rem;
+    min-height: 2rem;
+    margin-left: 0.5rem;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+.cOzEQD {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+.ilfAV{
+
+	color:#FFFFFF;
+}
+.lgINkj {
+    grid-area: 1 / 5 / auto / auto;
+}
+.doONrY {
+    margin: 0px;
+    font-size: 0.625rem;
+    line-height: 1.2;
+    color: rgb(134, 151, 162);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    text-align: center;
+}
+.koDody {
+    grid-area: 1 / 1 / auto / auto;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    min-height: 1.5rem;
+}
+.bXwSvB {
+    list-style-type: none;
+    display: grid;
+    margin: 0px;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr auto auto auto 2rem;
+    gap: 11rem;
+    padding: 0.25rem 0.75rem;
+}
+.hcp, .tot ,.win {
+    /*border-color: #17a2b8!important;
+    box-sizing: border-box; 
+    border-color: #17a2b8 solid !important;
+    display:flex;*/
+    border-color: #17a2b8!important;
+    border-radius: 0.125rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+    height: 100%;
+    box-sizing: border-box;
+    display: inline-block;
+    -webkit-box-align: center;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-evenly;
+    min-width: 5.5rem;
+    min-height: 2rem;
+}
+
+
+/*.hKIOXr {
+    list-style-type: none;
+    display: grid;
+    margin: 0px;
+    background-color: rgb(26, 33, 42);
+    border-bottom: 1px solid rgb(49, 55, 63);
+    grid-template-columns: 1fr auto auto auto 2rem;
+    grid-template-rows: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+}
+.exFYiz {
+    grid-area: 1 / 1 / auto / auto;
+}
+.cCASKJ {
+    grid-area: 1 / 2 / auto / auto;
+}
+
+
+.dStbqR {
+    font-size: 0.875rem;
+    line-height: 1rem;
+    margin: 0px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 18.75rem;
+    letter-spacing: inherit;
+}
+.fHmfSh {
+    margin-left: auto;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.libVaR {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    -webkit-box-align: center;
+    align-items: center;
+    max-width: 3.75rem;
+}
+
+
+.fHmfSh > * + * {
+    margin-left: 1rem;
+}
+.CEQom {
+    padding: 0px;
+    margin: 0px;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    min-width: 16px;
+    color: rgb(12, 212, 99);
+    text-align: center;
+}
+
+
+.fHmfSh > * + * {
+    margin-left: 1rem;
+}*/
+

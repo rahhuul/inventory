@@ -71,10 +71,10 @@
                      {!! Form::label('Rental Price', 'Rental Price') !!}
                      {!! Form::text('rentPrice',$material->rentPrice, ['id' => "rentPrice", 'class' => 'form-control', 'placeholder' => "Enter Rental Price"]) !!}
                   </div>
-                  <div class="form-group">
+                  {{-- <div class="form-group">
                      {!! Form::label('Category', 'Category') !!}
                      {!! Form::select('category_id', $categories, $material->category_id, ['id' => 'category_id', 'class' => 'form-control select2']) !!}
-                  </div>
+                  </div> --}}
                </div>
                <!-- /.card-body -->
                <div class="card-footer">

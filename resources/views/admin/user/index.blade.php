@@ -21,14 +21,16 @@
    <div class="content-header">
       <div class="container-fluid">
          <div class="row mb-2">
-            <div class="col-sm-6">
+            <div class="col-lg-6 col-6">
                <h1 class="m-0 text-dark"><small>{{$title}}</small></h1>
             </div>
-            <div class="col-sm-6">
-               <ol class="breadcrumb float-sm-right">
+            
+            <div class="col-lg-6 col-6" style="text-align: right;">
+            <a href="{{URL('/admin/user/create')}}" class="btn btn-primary addcat">Add Customer</a>
+               <!-- <ol class="breadcrumb float-sm-right">
                   <li class="breadcrumb-item"><a href="#">Home</a></li>
                   <li class="breadcrumb-item active">{{$title}}</li>
-               </ol>
+               </ol> -->
             </div>
          </div>
       </div>
@@ -38,15 +40,15 @@
          <div class="row">
             <div class="col-md-12">
                <div class="card">
-                  <div class="card-body">
-                     <div>
+                  <div class="card-body" style="padding: 0px;">
+                     <!-- <div>
                         <a href="{{URL('/admin/user/create')}}" class="btn btn-primary addcat">Add Customer</a>
                      </div>
-                     <br> 
+                     <br>  -->
                      <div class="card">
-                        <div class="card-header">
+                        <!-- <div class="card-header">
                            <h3 class="card-title">Customer</h3>
-                        </div>
+                        </div> -->
                         <div class="card-body table-responsive col-sm-12">
                            <table id="ex1" class="table table-bordered table-striped data-table_funddep">
                               <thead>
@@ -54,8 +56,9 @@
                                     <th>No</th>
                                     <th>Name</th>
                                     <th>Mobile</th>
+                                    <th>Balance</th>
                                     <th>Type</th>
-                                    <th>Action</th>
+                                    <th style="width: 150px;">Action</th>
                                  </tr>
                               </thead>
                               <tbody>
@@ -65,8 +68,9 @@
                                     <th>No</th>
                                     <th>Name</th>
                                     <th>Mobile</th>
+                                    <th>Balance</th>
                                     <th>Type</th>
-                                    <th>Action</th>
+                                    <th style="width: 150px;">Action</th>
                                  </tr>
                               </tfoot>
                            </table>
@@ -96,11 +100,12 @@
             "data":{ _token: "{{csrf_token()}}"}
          },
          "columns": [
-                { "data": "id" },
+                { "data": "id",orderable: false },
                 { "data": "name" },
                 { "data": "mobile" },
+                { "data": "amount" },
                 { "data": "type" },
-                { "data": "options" }
+                { "data": "options",orderable: false }
          ]	
       });
 

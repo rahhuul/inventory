@@ -12,6 +12,10 @@
     @yield('css')
     <base id="myBase" href="{{ URL('/') }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
+     <script type="text/javascript">
+          window.baseUrl = "{{ URL('/') }}";
+    </script>
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 
@@ -30,6 +34,9 @@
     </div>
     <!-- bottomscript call -->
     @include('admin.layouts.bottomscript')
+    <script type="text/javascript">
+         window.mindate = moment().format("DD-MM-YYYY");
+    </script>
     <!-- Script content -->
     @yield('script')
 </body>

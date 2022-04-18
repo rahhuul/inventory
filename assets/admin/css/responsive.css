@@ -1,0 +1,256 @@
+@media only screen and ( max-width: 1199px ) {
+
+	.footer_content ul li p {
+		font-size: 14px;
+		line-height: 24px;
+	}
+	.tab_list .nav-tabs li {
+	    padding: 30px 20px;
+	    font-size: 16px;
+	}
+	.tab-pane .col-md-2 h4 {
+	    font-size: 14px;
+	}
+	.banner_wrapp .bluid h1 br {
+	    display: none;
+	}
+	.banner_wrapp .bluid h1 {
+		font-size: 42px;
+    	line-height: 50px;
+    	padding-bottom: 20px;
+	}
+	.banner_wrapp .bluid p {
+		padding-bottom: 35px;
+	}
+	.banner_wrapp .bluid .read_more {
+		max-width: 210px;
+	}
+	#myCarousel a.carousel-control-prev {
+	    left: 42%;
+	}
+	#myCarousel a.carousel-control-next {
+	    right: 42%;
+	}
+	.modal-dialog {
+	    max-width: 75%;
+	}
+
+}
+
+@media only screen and ( min-width: 992px ) and ( max-width: 1199px ) {
+
+
+
+}
+
+@media only screen and ( max-width: 991px ) {
+
+	.window_content {
+		text-align: center;
+		line-height: 22px;
+		margin-bottom: 10px;
+	}
+	.window_btn {
+	    float: unset;
+	    text-align: center;
+	}
+
+	.banner_wrapp .bluid h1 {
+		font-size: 30px;
+    	line-height: 36px;
+    	padding-bottom: 20px;
+	}
+	.banner_wrapp .bluid h1 br {
+		display: none;
+	}
+	.banner_wrapp .bluid p {
+		font-size: 16px;
+		line-height: 24px;
+		padding-bottom: 25px;
+	}
+	.bluid a.read_more:last-child {
+	    display: none;
+	}
+	.banner_wrapp {
+	    padding: 40px 0;
+	}
+	.banner_wrapp {
+	    padding: 30px 0 40px;
+	}
+	#myCarousel a.carousel-control-next, #myCarousel a.carousel-control-prev {
+		width: 60px;
+    	height: 60px;
+	}
+	#myCarousel a.carousel-control-prev {
+	    left: 40%;
+	}
+	#myCarousel a.carousel-control-next {
+	    right: 40%;
+	}
+
+	.about_main {
+		padding: 40px;
+	}
+	.about_content h2 {
+		font-size: 32px;
+		line-height: 36px;
+	}
+	.about_content p {
+		line-height: 28px;
+    	padding-top: 10px;
+    	padding-bottom: 30px;
+    	font-size: 16px;
+	}
+	.tab_list .nav-tabs li {
+	    padding: 20px 10px;
+	    font-size: 13px;
+	}
+	.footer_content h3 {
+		font-size: 22px;
+	}
+
+    .affiliate_first {
+	    margin-left: 0;
+	}
+	.affiliate_second {
+	    margin-right: 0;
+	}
+	.affiliate_box {
+	    text-align: center;
+	}
+
+	.pricing_box {
+	    margin-bottom: 30px;
+	}
+
+	.modal-dialog {
+	    max-width: 80%;
+	}
+
+
+
+}
+
+@media only screen and ( min-width: 768px ) and ( max-width: 991px ) {
+
+
+
+}
+
+@media only screen and ( max-width: 767px ) {
+
+	.bluid {
+	    text-align: center;
+	    max-width: 100%;
+	}
+	.banner_wrapp {
+	    padding: 30px 0 60px;
+	}
+	.banner_wrapp .bluid h1 br {
+		display: none;
+	}
+	.banner_wrapp .bluid h1 {
+		font-size: 28px;
+	    line-height: 34px;
+	    padding-bottom: 15px;
+	}
+	.banner_wrapp .bluid p {
+		padding-bottom: 35px;
+		font-size: 16px;
+		line-height: 22px;
+	}
+	#myCarousel a.carousel-control-next, #myCarousel a.carousel-control-prev {
+		width: 52px;
+	    height: 52px;
+	    top: 105%;
+	}
+	#myCarousel a.carousel-control-prev {
+	    left: 34%;
+	}
+	#myCarousel a.carousel-control-next {
+	    right: 34%;
+	}
+	.feature_wrapp {
+	    padding: 70px 0 30px;
+	}
+	.about_main {
+		padding: 30px;
+	}
+	.tab_wrapp .tab-pane .col-md-2 h4 {
+	    border: 1px solid;
+	    margin: 10px 0;
+	    padding: 10px;
+	}
+	.tab-content {
+		padding-bottom: 40px;
+	}
+	.total_growth, .liv_trades {
+		padding: 0;
+	}
+	.testimonial_wrapp {
+	    margin-top: 50px;
+	}
+	.testimonial_main {
+		margin: 0;
+	}
+	.howtowork_wrapp {
+	    padding: 50px 0;
+	}
+	.testimonial_heading h1 {
+		font-size: 28px;
+	    line-height: 34px;
+	}
+	.testimonial_heading {
+	    padding-bottom: 30px;
+	}
+	.footer_content h3 {
+		font-size: 22px;
+	}
+	.footer_logo img {
+	    max-width: 55% !important;
+	}
+
+	.main_heading h2 {
+		font-size: 30px;
+    	line-height: 38px;
+	}
+
+	.modal-dialog {
+	    max-width: 100%;
+	}
+
+}
+
+@media only screen and ( min-width: 577px ) and ( max-width: 767px ) {
+
+	.header_social ul li {
+		padding: 0 10px;
+	}
+
+}
+
+@media only screen and ( max-width: 576px ) {
+
+	.header_wrapp {
+		padding: 20px 0 10px; 
+	}
+	.header_wrapp .col-sm-5.col-lg-4 {
+	    text-align: center;
+	    margin-bottom: 10px;
+	}
+	.header_wrapp .col-sm-5.col-lg-4.text-center {
+	    text-align: left !important;
+	}
+	.header_social ul li {
+		padding: 0 10px;
+	}
+	.header_menu {
+	    position: absolute;
+	    right: 15px;
+	    top: -55px;
+	}
+	.bluid a.read_more:last-child {
+	    display: none;
+	}
+
+}

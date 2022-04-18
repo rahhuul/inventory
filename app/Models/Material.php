@@ -15,11 +15,15 @@ class Material extends Model
     protected $keyType = 'string';
     public $incrementing = false;
     public $timestamps = true;
-    public $fillable = ['name', 'category_id', 'quantity', 'damagePrice', 'rentPrice'];
+    public $fillable = ['name', 'quantity', 'damagePrice', 'rentPrice', 'rentperPrice'];
     protected $primaryKey = "material_id";
 
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+
+    // public function received(){
+    //     return $this->belongsTo(Received::class,'material_id');
+    // }
 }

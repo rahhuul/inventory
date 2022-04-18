@@ -5,7 +5,10 @@
 
     <ul class="list-group list-group-unbordered mb-3">
       <li class="list-group-item">
-        <b>Mobile</b> <a class="float-right">{{$user->mobile}}</a>
+        <b>Mobile</b> <a class="float-right">{{$user->mobile}}</a> 
+      </li> 
+      <li class="list-group-item">
+        <b>Balance</b> <a class="float-right">{{($user->amount!='')?$user->amount:0}}</a>
       </li>
       <li class="list-group-item">
         <b>Address</b> <a class="float-right">{{$user->address}}</a>

@@ -4,9 +4,9 @@
     <h3 class="profile-username text-center">{{$material->name}}</h3>
 
     <ul class="list-group list-group-unbordered mb-3">
-      <li class="list-group-item">
+      {{-- <li class="list-group-item">
         <b>Category</b> <a class="float-right">{{$material->category->name}}</a>
-      </li>
+      </li> --}}
       <li class="list-group-item">
         <b>Quantity</b> <a class="float-right">{{$material->quantity}}</a>
       </li>

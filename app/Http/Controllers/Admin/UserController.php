@@ -17,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         $title = "Customers";
-        return view('admin/user/index',compact('title'));
+        return view('admin/user/index',compact('title')); 
     }
 
     public function allCustomers(Request $request){
@@ -25,7 +25,8 @@ class UserController extends Controller
             0 =>'user_id', 
             1 =>'name',
             2=> 'mobile',
-            3=> 'type'
+            3=> 'amount',
+            4=> 'type'
         );
 
         $totalData = User::count();
@@ -69,9 +70,13 @@ class UserController extends Controller
             //$show =  route('user.show',$post->id);
                 $edit =  route('user.edit',$post->user_id);
                 $view =  route('user.show',$post->user_id);
+                //$view =  route('deposit.create',$post->user_id);
+                $add =  URL('user/adddeposit').'/'.$post->user_id;
+            
                 $nestedData['id'] = $c;
                 $nestedData['name'] = $post->name;
                 $nestedData['mobile'] = $post->mobile;
+                $nestedData['amount'] = $post->amount?$post->amount:0;
                 $nestedData['type'] = ($post->type == 0) ? "Rental" : "Provider";
                 $nestedData['options'] = "<a href='{$edit}' class='btn btn-info btn-sm'>
                 <i class='fas fa-edit'>
@@ -84,7 +89,13 @@ class UserController extends Controller
                 <button onClick='showAjaxModal(\"$view\", \"$post->name\")' class='btn btn-success btn-sm'>
                 <i class='fas fa-play'>
                 </i>
-                </button>";
+                </button>
+                <button onClick='showAjaxModal(\"$add\", \"$post->name\")' class='btn btn-primary btn-sm'>
+                <i class='fas fa-rupee-sign'></i>
+                </i>
+                </button>
+
+                ";
                 
                 $data[] = $nestedData;
                 $c++;
@@ -115,6 +126,17 @@ class UserController extends Controller
     {
         $title = "Add Customer";
         return view('admin/user/create',compact('title'));
+    }
+
+    public function adddeposit($id)
+    { 
+        $title = "Add Deposit";
+        //$id = User::find($id);
+        $customers = User::all()->pluck('name', 'user_id');
+       /* echo "<pre>";
+        print_r($);
+        exit;*/
+        return view('admin/user/depositcreate',compact('title','customers','id'));
     }
 
     /**
@@ -168,10 +190,10 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $userdata = $user->update($request->all());
+        $data = $request->all();
+        $userdata = $user->update(['amount'=>($user['amount']=='')?$data['amount']:($user['amount']+$data['amount'])]);
 
         if($userdata){
-         //return redirect('/admin/user')->with('message', 'User Updated Successfully')->with('type', 'success');
          return redirect()->route('user.index')
          ->with('message','User updated successfully')
          ->with('type', 'success');

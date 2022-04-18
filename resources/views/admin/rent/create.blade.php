@@ -53,23 +53,16 @@
                <!-- /.card-header -->
                <!-- form start -->
                <div class="card-body">
+                   <div class="row">
+              <div class="col-md-6">
                   <div class="form-group">
                      {!! Form::label('Select Customer', 'Select Customer') !!}
                      {!! Form::select('customer_id', $customers, null, ['id' => 'customer_id', 'class' => 'form-control select2', 'style' => 'width:100%', 'placeholder' => "Select Customer"]) !!}
                   </div>
-                  <div class="form-group">
-                     {!! Form::label('Select Category', 'Select Category') !!}
-                     {!! Form::select('category_id', $categories, null, ['id' => 'category_id', 'class' => 'form-control select2', 'style' => 'width:100%', 'placeholder' => "Select Category"]) !!}
-                  </div>
-                  <div class="form-group">
-                     {!! Form::label('Select Material', 'Select Material') !!}
-                     {!! Form::select('material_id', [], null, ['id' => 'material_id', 'class' => 'form-control select2', 'style' => 'width:100%', 'placeholder' => "Select Material"]) !!}
-                  </div>
-                  <div class="form-group">
-                     {!! Form::label('Quantity', 'Quantity') !!}
-                     {!! Form::text('quantity','', ['id' => "quantity", 'class' => 'form-control', 'placeholder' => "Enter Quantity"]) !!}
-                  </div>
-                  <div class="form-group">
+               </div>
+            
+<div class="col-md-6">
+            <div class="form-group">
                   {!! Form::label('Order Date', 'Order Date') !!}
                   <div class="input-group">
                      <div class="input-group-prepend">
@@ -80,14 +73,36 @@
                      <input type="text" name="ordered_at" class="form-control float-right" id="reservation">
                    </div>
                   </div>
-                  <div class="form-group">
-                     {!! Form::label('Total Quantity', 'Total Quantity') !!}: 
-                     {!! Form::label('0', '0', ['id' => 'totalQuantity']) !!}
+               </div>
                   </div>
-                  <div class="form-group">
-                     {!! Form::label('Remain Quantity', 'Remain Quantity') !!}: 
-                     {!! Form::label('0', '0', ['id' => 'remainQuantity']) !!}
-                  </div>
+        
+            <div class="row">
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label>Select Material</label>
+
+                   <select name="material_id" id="material_id" class="duallistbox" multiple="true">
+
+  @foreach ($materials as $mat)
+
+    <option value="{{$mat['material_id']}}">{{$mat['name']}}  &nbsp &nbsp &nbsp [{{$mat['quantity']}}]</option>
+   
+
+@endforeach
+ 
+</select>
+
+                </div>
+                <!-- /.form-group -->
+              </div>
+              <!-- /.col -->
+               <div class="col-md-4" id="quantitybox">
+              
+             </div>
+
+            </div>
+            <!-- /.row -->
+         
                   
                </div>
                <div class="card-footer">
@@ -110,6 +125,11 @@
 
 @section('script')
 <script>
+  var demo2 = $('.duallistbox').bootstrapDualListbox({
+   selectedlistlabel: 'Selected',
+   infoText:false,
+  });
+
    let mindate = moment().format("DD-MM-YYYY");
    $('#reservation').daterangepicker({
       singleDatePicker: true,
@@ -117,8 +137,8 @@
          "format": "DD-MM-YYYY",
          "separator": " - ",
       },
-      minDate: mindate,
-      startDate:mindate,
+      // minDate: mindate,
+      // startDate:mindate,
       showDropdowns: true,
       autoApply: true
    });
@@ -126,7 +146,6 @@
    $('#reservation').on('apply.daterangepicker', function(ev, picker) {
       console.log(picker.startDate.format('DD-MM-YYYY'));
    });
-
    $('#category_id').on('select2:select', function (e) {
       var data = e.params.data;
       let category_id = data.id;
@@ -136,7 +155,7 @@
             headers: {
                'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            url: "rent-materials",
+            url: baseUrl+"/rent-materials",
             type: 'POST',
             data: {
                "category_id": category_id,
@@ -153,6 +172,83 @@
       });
    });
 
+   /******************************* Get selected with inputs starts here *******************************/
+
+   let selected_array = [];
+   let inputCreated = [];
+
+   $("select[name ='material_id_helper1']").on('change', function(e) {
+   		updateSelected();
+   		createQuantitybox();
+   })
+
+   $("select[name ='material_id_helper2']").on('change', function(e) {
+   		updateUnSelected();
+   		removeQuantitybox();
+   })
+
+   const createQuantitybox = () => {   	
+   		selected_array.forEach((selected) => {
+   			if(inputCreated.findIndex(el => el == selected.value) > -1){
+
+   			}else{
+				$("#quantitybox").append('<div class="box" id="'+selected.value+'"><label for="'+selected.name+'">'+selected.name+'</label>: <input type="text" name="quantity['+selected.value+']" class="form-control" id="quantity" placeholder = "Enter Quantity" ></div>');
+				inputCreated.push(selected.value)
+   			}
+   		})
+   }
+
+   const removeQuantitybox = () => {
+   		inputCreated.forEach((created) => {
+   			if(selected_array.findIndex(el => el.value == created) > -1){
+   			}else{
+				$("#quantitybox").find('div#'+created).remove();
+				var index = inputCreated.indexOf(created);
+				if (index !== -1) {
+				  	inputCreated.splice(index, 1);
+				}
+   			}
+   		})
+   }
+
+   const updateUnSelected = () => {
+   		let helper2 = $("select[name='material_id_helper2']");
+   		let options = helper2[0].options;
+   		selected_array=[];
+		$(options).each(function(e) {
+			sel_exist = selected_array.findIndex(el => el.value == $(this).val());
+			if(sel_exist >= 0){
+			}else{
+	   			selected_array.push({
+	   				name : $(this).text(),
+	   				value: $(this).val()
+	   			})
+			}
+   		});
+   }
+
+   const updateSelected = () => {
+   		let helper2 = $("select[name='material_id_helper2']");
+   		let options = helper2[0].options;
+   		let sel_exist;
+   		
+		$(options).each(function(e) {
+			sel_exist = selected_array.findIndex(el => el.value == $(this).val());
+			
+			if(sel_exist >= 0){
+			}else{
+	   			selected_array.push({
+	   				name : $(this).text(),
+	   				value: $(this).val()
+	   			})
+			}
+   		});
+	}
+
+
+	/******************************* Get selected with inputs ends here *******************************/
+
+
    $('#material_id').on('select2:select', function (e) {
       var data = e.params.data;
       $("#totalQuantity").html(data.quantity)
@@ -163,7 +259,12 @@
       let current = parseInt($(this).val());
       if(current > total){
          toastr.error("Order value is not more then Total");
+         $(':input[type="submit"]').prop('disabled', true);
          return false;
+      }
+      else
+      {
+         $(':input[type="submit"]').prop('disabled', false);
       }
 
       let remain = total - current;

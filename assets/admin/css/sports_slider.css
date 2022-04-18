@@ -1,0 +1,33 @@
+.owl-item.active .nav-item .active{
+    border-color: #17a2b8!important;
+    background-color: #fff !important;
+}
+   .owl-prev, .owl-next {
+    width: 15px;
+    height: 100px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: block !important;
+    border:0px solid black;
+    font-size: 40px !important;
+}
+.owl-carousel .owl-nav button.owl-next{
+    padding-right:40px !important;
+}
+.owl-carousel .owl-nav button.owl-prev{
+    padding-left:30px !important;
+}
+.owl-stage-outer{
+    margin: 0px 30px !important;
+}
+.owl-prev, .owl-next {
+    height: 0px !important; 
+    top: 0% !important;
+}
+.owl-dots{
+    display: none !important;
+}
+.owl-prev { left: -20px; }
+.owl-next { right: -20px; }
+.owl-prev i, .owl-next i {transform : scale(2,5); color: #ccc;}

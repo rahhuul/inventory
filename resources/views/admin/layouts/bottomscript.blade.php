@@ -49,4 +49,14 @@ $.fn.select2.defaults.reset();
 $.fn.select2.defaults.set("theme", "bootstrap4");
 
 $('.select2').select2()
+
+// $("#recustomer_id").select2({disabled:'readonly'});
+// $("#rematerial_id").select2({disabled:'readonly'});
+
+
+
+
+
+
+
 </script>

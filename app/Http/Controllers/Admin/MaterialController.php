@@ -27,7 +27,7 @@ class MaterialController extends Controller
         $columns = array( 
             0 =>'material_id', 
             1 =>'name',
-            2=> 'category',
+            //2=> 'category',
             3=> 'rentprice',
             4=> 'damageprice',
         );
@@ -52,8 +52,7 @@ class MaterialController extends Controller
         else {
         $search = $request->input('search.value'); 
 
-        $materials =  Material::with('category')
-                    ->orWhere('name', 'LIKE',"%{$search}%")
+        $materials =  Material::orWhere('name', 'LIKE',"%{$search}%")
                     ->orWhere('quantity', 'LIKE',"%{$search}%")
                     ->orWhere('damagePrice', 'LIKE',"%{$search}%")
                     ->orWhere('rentPrice', 'LIKE',"%{$search}%")
@@ -62,8 +61,7 @@ class MaterialController extends Controller
                     ->orderBy($order,$dir)
                     ->get();
 
-        $totalFiltered = Material::with('category')
-                    ->orWhere('name', 'LIKE',"%{$search}%")
+        $totalFiltered = Material::orWhere('name', 'LIKE',"%{$search}%")
                     ->orWhere('quantity', 'LIKE',"%{$search}%")
                     ->orWhere('damagePrice', 'LIKE',"%{$search}%")
                     ->orWhere('rentPrice', 'LIKE',"%{$search}%")
@@ -81,7 +79,8 @@ class MaterialController extends Controller
                 $view =  route('material.show',$post->material_id);
                 $nestedData['id'] = $c;
                 $nestedData['name'] = $post->name;
-                $nestedData['category'] = $post->category->name;
+                //$nestedData['category'] = $post->category->name;
+                $nestedData['quantity'] = $post->quantity;
                 $nestedData['rentprice'] = $post->rentPrice;
                 $nestedData['damageprice'] = $post->damagePrice;
                 $nestedData['options'] = "<a href='{$edit}' class='btn btn-info btn-sm'>
@@ -120,8 +119,8 @@ class MaterialController extends Controller
     public function create()
     {
         $title = "Add Material";
-        $categories = Category::all()->pluck('name', 'category_id');
-        return view('admin/material/create',compact('title', 'categories'));
+        //$categories = Category::all()->pluck('name', 'category_id');
+        return view('admin/material/create',compact('title'));
     }
 
     /**
@@ -133,6 +132,7 @@ class MaterialController extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
+        $inputs['rentpreprice'] = $inputs['rentPrice']/15;
         $customer = Material::create($inputs);
         if($customer){
         return redirect()->route('material.index')
@@ -161,8 +161,8 @@ class MaterialController extends Controller
     public function edit(Material $material)
     {
         $title = "Edit Material";
-        $categories = Category::all()->pluck('name', 'category_id');
-        return view('admin/material/edit', compact('title','material', 'categories'));
+        //$categories = Category::all()->pluck('name', 'category_id');
+        return view('admin/material/edit', compact('title','material'));
     }
 
     /**
@@ -174,7 +174,9 @@ class MaterialController extends Controller
      */
     public function update(Request $request, Material $material)
     {
-        $userdata = $material->update($request->all());
+        $req = $request->all();
+        $req['rentperPrice'] = ($req['rentPrice'])/15;
+        $userdata = $material->update($req);
 
         if($userdata){
         return redirect()->route('material.index')
