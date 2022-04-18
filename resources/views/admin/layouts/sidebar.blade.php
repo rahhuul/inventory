@@ -1,8 +1,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <a href="{{URL('/dashboard')}}" class="brand-link">
+    <a href="{{URL('/admin/dashboard')}}" class="brand-link">
         <img src="{{URL('/')}}/assets/admin/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-        <span class="brand-text font-weight-light text-white">AdminLTE 3</span>
+        <span class="brand-text font-weight-light text-white">Inventory</span>
     </a>
     <div class="sidebar">
         <nav class="mt-2">
@@ -19,35 +19,61 @@
                         <p>Customers</p>
                     </a>
                 </li>
-                <li class="nav-item">
+              {{--   <li class="nav-item">
                     <a href="{{URL('/admin/category')}}" class="nav-link  @if((url()->current()) == url('/admin/category'))active @endif">
                         <i class="nav-icon fas fa-list-ul"></i>
                         <p>Category</p>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a href="{{URL('/admin/material')}}" class="nav-link  @if((url()->current()) == url('/admin/material'))active @endif">
-                        <i class="nav-icon fas fa-user"></i>
+                        <i class="nav-icon fas fa-industry"></i>
                         <p>Material</p>
                     </a>
                 </li>
-                <li class="nav-item">
+             {{--    <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link">
                       <i class="nav-icon fas fa-tree"></i>
-                      <p>
-                        Rent
-                        <i class="fas fa-angle-left right"></i>
-                      </p>
+                      <p>Rent</p>
                     </a>
-                    <ul class="nav nav-treeview" style="display: none;">
-                        <li class="nav-item">
-                            <a href="{{URL('/admin/rent')}}" class="nav-link  @if((url()->current()) == url('/admin/rent'))active @endif">
+                  </li> --}}
+                  <li class="nav-item">
+                  <a href="{{URL('/admin/rent')}}" class="nav-link  @if((url()->current()) == url('/admin/rent'))active @endif">
                                 <i class="nav-icon fas fa-user"></i>
-                                <p>Rent</p>
+                                <p>Rent Material</p>
                             </a>
-                        </li>
-                    </ul>
-                  </li>
+                </li>
+                <li class="nav-item">
+                     <a href="{{URL('/admin/received')}}" class="nav-link @if((url()->current()) == url('/admin/receive'))active @endif">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>Received Material</p>
+                            </a>
+                </li>
+
+                   <li class="nav-item">
+                    <a href="{{URL('/admin/pending')}}" class="nav-link  @if((url()->current()) == url('/admin/pending'))active @endif">
+                        <i class="nav-icon fa fa-list"></i>
+                        <p>Pending Material</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{URL('/admin/customaterial')}}" class="nav-link  @if((url()->current()) == url('/admin/customaterial'))active @endif">
+                        <i class="nav-icon fa fa-list"></i>
+                        <p>Customer Material</p>
+                    </a>
+                </li>
+                 <li class="nav-item">
+                    <a href="{{URL('/admin/bill')}}" class="nav-link  @if((url()->current()) == url('/admin/bill'))active @endif">
+                        <i class="nav-icon fas fa-money-bill"></i> 
+                        <p>Generate Bill</p>
+                    </a>
+                </li>
+                 <li class="nav-item">
+                    <a href="{{URL('/admin/account')}}" class="nav-link  @if((url()->current()) == url('/admin/bill'))active @endif">
+                        <i class="nav-icon fas fa-money-bill"></i> 
+                        <p>Account status</p>
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>

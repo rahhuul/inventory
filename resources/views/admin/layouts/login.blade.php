@@ -50,9 +50,9 @@
 <!-- Main Content section end -->
 {{-- script tag start --}}
 @section('script')
-<script src="{{URL('/')}}/assets/admin/assets/js/jquery.validate.js"></script>
+<script src="{{URL('/')}}/assets/admin/js/jquery.validate.min.js"></script>
 <script src="{{URL('/')}}/assets/admin/js/main_admin.js"></script>
-<script type="text/javascript" src="{{URL('/')}}/assets/js/noty.min.js"></script>
+<script type="text/javascript" src="{{URL('/')}}/assets/admin/js/noty.min.js"></script>
 <script type="text/javascript">
     cubemine_admin.loginvalidate();
 </script>

@@ -53,34 +53,54 @@
                <!-- /.card-header -->
                <!-- form start -->
                <!--  {!! Form::open(['id' => 'rent_form']) !!} --> 
-               <div class="card-body">
+                  <div class="card-body">
+                   <div class="row">
+              <div class="col-md-6">
                   <div class="form-group">
                      {!! Form::label('Select Customer', 'Select Customer') !!}
                      {!! Form::select('customer_id', $customers, $rent->customer_id, ['id' => 'customer_id', 'class' => 'form-control select2', 'style' => 'width:100%', 'placeholder' => "Select Customer"]) !!}
                   </div>
-                  <div class="form-group">
-                     {!! Form::label('Select Category', 'Select Category') !!}
-                     {!! Form::select('category_id', $categories, $rent->category_id, ['id' => 'category_id', 'class' => 'form-control select2', 'style' => 'width:100%', 'placeholder' => "Select Category"]) !!}
-                  </div>
-                  <div class="form-group">
-                     {!! Form::label('Select Material', 'Select Material') !!}
-                     {!! Form::select('material_id', $materials, $rent->material_id, ['id' => 'material_id', 'class' => 'form-control select2', 'style' => 'width:100%', 'placeholder' => "Select Material"]) !!}
-                  </div>
-                  <div class="form-group">
-                     {!! Form::label('Quantity', 'Quantity') !!}
-                     {!! Form::text('quantity',$rent->quantity, ['id' => "quantity", 'class' => 'form-control', 'placeholder' => "Enter Quantity"]) !!}
-                  </div>
-                  <div class="form-group">
-                     {!! Form::label('Order Date', 'Order Date') !!}
-                     <div class="input-group">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">
-                            <i class="far fa-calendar-alt"></i>
-                          </span>
-                        </div>
-                        <input type="text" name="ordered_at" class="form-control float-right" id="reservation">
+               </div>
+            
+<div class="col-md-6">
+            <div class="form-group">
+                  {!! Form::label('Order Date', 'Order Date') !!}
+                  <div class="input-group">
+                     <div class="input-group-prepend">
+                       <span class="input-group-text">
+                         <i class="far fa-calendar-alt"></i>
+                       </span>
                      </div>
+                     <input type="text" name="ordered_at" class="form-control float-right" id="reservation">
+                   </div>
                   </div>
+               </div>
+                  </div>
+        
+            <div class="row">
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label>Select Material</label>
+
+                   <select name="material_id" id="material_id" class="duallistbox" multiple="true">
+                    @foreach ($materials as $mat)
+
+                      <option value="{{$mat['material_id']}}" {{ ($rent->material_id) == $mat['material_id'] ? 'selected' : '' }}>{{$mat['name']}} &nbsp &nbsp &nbsp [{{$mat['quantity']}}]</option>
+                    @endforeach
+                  </select>
+
+                </div>
+                <!-- /.form-group -->
+              </div>
+              <!-- /.col -->
+               <div class="col-md-4" id="quantitybox">
+              <div class="box" id="{{$rent->material_id}}"><label for="{{$rent->material->name}}">{{$rent->material->name}} &nbsp [{{$rent->material->quantity}}]</label>: <input type="text" name="quantity" class="form-control" id="quantity" placeholder = "Enter Quantity" value="{{$rent->quantity}}"></div>
+             </div>
+
+            </div>
+            <!-- /.row -->
+         
+                  
                </div>
                <!-- /.card-body -->
                {!!Form::hidden('exist_material_id',$rent->material_id)!!}
@@ -103,6 +123,10 @@
 <!-- Main Content section end -->
 @section('script')
 <script>
+   var demo2 = $('.duallistbox').bootstrapDualListbox({
+   selectedlistlabel: 'Selected',
+   infoText:false,
+  });
 
    let mindate = '{{Carbon\Carbon::parse($rent->ordered_at)->format("d-m-Y")}}';
    $('#reservation').daterangepicker({
@@ -111,8 +135,8 @@
          "format": "DD-MM-YYYY",
          "separator": " - ",
       },
-      minDate: mindate,
-      startDate:mindate,
+      // minDate: mindate,
+      // startDate:mindate,
       showDropdowns: true,
       autoApply: true
    });
@@ -120,6 +144,19 @@
    $('#reservation').on('apply.daterangepicker', function(ev, picker) {
       console.log(picker.startDate.format('DD-MM-YYYY'));
    });
+
+   /******************************* Get selected with inputs starts here *******************************/
+   // let quantity = '{{$rent->quantity}}';
+   //  $("#quantitybox").append('<div class="box" id="'+selected.value+'"><label for="'+selected.name+'">'+selected.name+'</label>: <input type="text" name="quantity['+quantity+']" class="form-control" id="quantity" placeholder = "Enter Quantity" ></div>');
+   //          inputCreated.push(selected.value)
+            
+
+  
+   $('select[name="material_id_helper1"]').prop('disabled', true);
+   $('select[name="material_id_helper2"]').prop('disabled', true);
+
+   /******************************* Get selected with inputs ends here *******************************/
+
 
    $('#category_id').on('select2:select', function (e) {
       var data = e.params.data;

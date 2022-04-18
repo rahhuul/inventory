@@ -24,12 +24,16 @@
             <div class="col-sm-6">
                <h1 class="m-0 text-dark"><small>{{$title}}</small></h1>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6" style="text-align: right;">
+               <a href="{{URL('/admin/material/create')}}" class="btn btn-primary addcat">Add Material</a>
+            </div>
+            
+            <!-- <div class="col-sm-4" >
                <ol class="breadcrumb float-sm-right">
                   <li class="breadcrumb-item"><a href="#">Home</a></li>
                   <li class="breadcrumb-item active">{{$title}}</li>
                </ol>
-            </div>
+            </div> -->
          </div>
       </div>
    </div>
@@ -38,15 +42,12 @@
          <div class="row">
             <div class="col-md-12">
                <div class="card">
-                  <div class="card-body">
-                     <div>
-                        <a href="{{URL('/admin/material/create')}}" class="btn btn-primary addcat">Add Material</a>
-                     </div>
-                     <br> 
+                  <div class="card-body" style="padding: 0px !important;">
+                     
                      <div class="card">
-                        <div class="card-header">
+                        <!-- <div class="card-header">
                            <h3 class="card-title">Material</h3>
-                        </div>
+                        </div> -->
                         <div class="card-body table-responsive col-sm-12">
                            <table id="ex1" class="table table-bordered table-striped data-table_funddep">
                               <thead>
@@ -65,7 +66,7 @@
                                  <tr>
                                     <th>No</th>
                                     <th>Name</th>
-                                    <th>Category</th>
+                                    <th>Quantity</th>
                                     <th>Rent Price</th>
                                     <th>Damaged Price</th>
                                     <th>Action</th>
@@ -98,12 +99,12 @@
             "data":{ _token: "{{csrf_token()}}"}
          },
          "columns": [
-                { "data": "id" },
+                { "data": "id",orderable: false},
                 { "data": "name" },
-                { "data": "category" },
+                { "data": "quantity" },
                 { "data": "rentprice" },
                 { "data": "damageprice" },
-                { "data": "options" }
+                { "data": "options",orderable: false }
          ]	
       });
 

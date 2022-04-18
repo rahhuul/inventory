@@ -16,6 +16,6 @@ class User extends Authenticatable
     protected $keyType = 'string';
     public $incrementing = false;
     public $timestamps = true;
-    public $fillable = ['name', 'reference_name','address','created','type','mobile', 'reference_mobile'];
+    public $fillable = ['name', 'reference_name','address','created','type','mobile', 'reference_mobile','amount'];
     protected $primaryKey = "user_id";
 }

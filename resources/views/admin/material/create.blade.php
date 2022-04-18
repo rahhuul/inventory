@@ -69,10 +69,10 @@
                      {!! Form::label('Rental Price', 'Rental Price') !!}
                      {!! Form::text('rentPrice','', ['id' => "rentPrice", 'class' => 'form-control', 'placeholder' => "Enter Rental Price"]) !!}
                   </div>
-                  <div class="form-group">
+                  {{-- <div class="form-group">
                      {!! Form::label('Category', 'Category') !!}
                      {!! Form::select('category_id', $categories, null, ['id' => 'category_id', 'class' => 'form-control select2', 'style' => 'width:100%']) !!}
-                  </div>
+                  </div> --}}
                </div>
                <div class="card-footer">
                   {!! Form::submit('save', ["class" => "btn btn-primary"]) !!}

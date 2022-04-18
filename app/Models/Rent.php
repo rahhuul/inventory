@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\Uuids;
 use App\Traits\ModelEventLogger;
 
-
+ 
 class Rent extends Model
 {
     use HasFactory,Uuids;
@@ -15,7 +15,7 @@ class Rent extends Model
     protected $keyType = 'string';
     public $incrementing = false;
     public $timestamps = true;
-    public $fillable = [ 'customer_id', 'category_id', 'material_id', 'quantity', 'ordered_at'];
+    public $fillable = [ 'customer_id', 'category_id', 'material_id', 'quantity', 'ordered_at','return_quantity','remain_quantity'];
     protected $primaryKey = "rent_id";
 
     public function customer()
@@ -31,5 +31,10 @@ class Rent extends Model
     public function material()
     {
         return $this->belongsTo(Material::class, 'material_id');
+    }
+    
+    public function received()
+    {
+        return $this->hasMany(Received::class,'rent_id');
     }
 }

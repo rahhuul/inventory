@@ -29,5 +29,8 @@
   <link rel="stylesheet" href="{{URL('/')}}/assets/admin/css/style.css">
   <link rel="stylesheet" href="{{URL('/')}}/assets/admin/css/noty.css">
   <link rel="stylesheet" type="text/css" href="{{URL('/')}}/assets/admin/css/animations.min.css">
+  <!-- Bootstrap4 Duallistbox -->
+  <link rel="stylesheet" type="text/css" href="{{URL('/')}}/assets/admin/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+    
   <!-- <link rel="stylesheet" href="{{URL('/')}}/assets/admin/admin/css/style.css"> -->
   <link rel="stylesheet" type="text/css" href="{{URL('/')}}/assets/admin/css/sports_slider.css">
