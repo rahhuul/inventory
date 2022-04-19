@@ -126,7 +126,11 @@ class ReceivedController extends Controller
                             $orders[$mKey][$k]['received_quantity'] = $quantity;
                             $orders[$mKey][$k]['pending'] = 0;
                         }else{
-                            $orders[$mKey][$k]['status'] = '1';
+                            if(abs($quantity - $end['remain']) == 0){
+                                $orders[$mKey][$k]['status'] = '2';
+                            }else{
+                                $orders[$mKey][$k]['status'] = '1';
+                            }
                             $orders[$mKey][$k]['remain'] = 0;
                             $orders[$mKey][$k]['received_quantity'] = $end['remain'];
                             $orders[$mKey][$k]['pending'] = abs($quantity - $end['remain']);
@@ -341,6 +345,7 @@ class ReceivedController extends Controller
                 $nestedData['customer'] = $post->rent->customer->name;
                 $nestedData['material'] = $post->rent->material->name;
                 $nestedData['price'] = $post->rent->material->rentPrice;
+                $nestedData['from_date'] = date('d-m-Y',strtotime($post->rent->ordered_at));
                 $nestedData['receive_date'] = date('d-m-Y',strtotime($post->receive_date));
                 $nestedData['days'] = $diff;
                 $nestedData['received_quantity'] = $post->received_quantity;
