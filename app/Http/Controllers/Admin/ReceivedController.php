@@ -104,16 +104,16 @@ class ReceivedController extends Controller
             ->get()
             ->toArray();
 
-        /* echo "<pre>";
+        echo "<pre>";
         print_r($rents);
         print_r($materials);
-        echo "</pre>"; */
+        echo "</pre>";
         
 
         $orders = [];
         foreach($rents as $k => $v){
             $mKey = $v['material_id'];
-            $quantity = $v['remain_quantity'];
+            $quantity = $v['quantity'];
             if(array_key_exists($v['material_id'],$materials)){
                 $rcvMat = $materials[$mKey]['received_quantity'];
                 if($rcvMat > $quantity){
@@ -137,11 +137,18 @@ class ReceivedController extends Controller
                         }
 
                     }else{
-                        $materials[$mKey]['remain'][] = $rcvMat - $quantity;
-                        $orders[$mKey][$k]['status'] = '2';
-                        $orders[$mKey][$k]['remain'] = $rcvMat - $quantity;
-                        $orders[$mKey][$k]['received_quantity'] = $quantity;
-                        $orders[$mKey][$k]['pending'] = 0;
+
+                        $materials[$mKey]['remain'][] = abs($rcvMat - $quantity);
+                        $orders[$mKey][$k]['remain'] = abs($rcvMat - $quantity);
+                        if($rcvMat >= $quantity){
+                            $orders[$mKey][$k]['received_quantity'] = $quantity;
+                            $orders[$mKey][$k]['status'] = '2';
+                            $orders[$mKey][$k]['pending'] = 0;
+                        }else{
+                            $orders[$mKey][$k]['received_quantity'] = $rcvMat;
+                            $orders[$mKey][$k]['status'] = '1';
+                            $orders[$mKey][$k]['pending'] = abs($rcvMat - $quantity);
+                        }
                     }
                 }else{
                     if($quantity == $rcvMat){
@@ -162,11 +169,6 @@ class ReceivedController extends Controller
                 $orders[$mKey][$k]['rent_id'] = $v['rent_id'];
             }
         }
-
-        /* echo "<pre>"; 
-        print_r($orders);
-        echo "</pre>";
-        exit; */
 
         foreach($orders as $orderKey => $orderVal){
             $totalrcvQty = 0;
