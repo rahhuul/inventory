@@ -116,7 +116,10 @@ class PendingController extends Controller
         if(!empty($customer_id)){ 
 
                
-                 $rentdata = Rent::with('customer')->where('customer_id', $customer_id )->get();
+                 $rentdata = Rent::with('customer')
+                            ->where('customer_id', $customer_id )
+                            ->where('status', 0)
+                            ->get();
                 foreach($rentdata as $k=>$val)
                 {
                     if($val->quantity != $val->return_quantity){
@@ -152,6 +155,7 @@ class PendingController extends Controller
         $rents = Rent::whereHas('customer',function ($query) use($customer_id) {
                  $query->where('customer_id', $customer_id );
                 })
+                ->where('status', 0)
                 ->offset($start)
                 ->limit($limit)
                 ->orderBy($order,$dir)
@@ -169,7 +173,7 @@ class PendingController extends Controller
         $rents =  Rent::with('customer', 'category', 'material')
                     ->orWhere('quantity', 'LIKE',"%{$search}%")
                     ->orWhere('ordered_at',$dt)
-
+                    ->where('status', 0)
                     ->offset($start)
                     ->limit($limit)
                     ->orderBy($order,$dir)
@@ -178,6 +182,7 @@ class PendingController extends Controller
         $totalFiltered = Rent::with('customer', 'category', 'material')
                     ->orWhere('quantity', 'LIKE',"%{$search}%")
                     ->orWhere('ordered_at',$dt)
+                    ->where('status', 0)
                     ->count();
         }
         foreach($rents as $k=>$val)

@@ -57,7 +57,7 @@
               <div class="col-md-6">
                   <div class="form-group">
                      {!! Form::label('Select Customer', 'Select Customer') !!}
-                     {!! Form::select('customer_id',$customers, null, ['id' => 'customer_id', 'class' => 'form-control select2', 'style' => 'width:100%', 'placeholder' => "Select Customer"]) !!}
+                     {!! Form::select('customer_id',$customers, null, ['id' => 'customer_id', 'class' => 'form-control select2', 'style' => 'width:100%', 'placeholder' => "Select Customer", "required" => "required"]) !!}
                   </div>
                </div>
             
@@ -163,22 +163,23 @@
             complete: function (response) {
                let newRes = JSON.parse(response.responseText);
                let u_exist;
+               demo2.empty();
                $.each(newRes.data, function(key, value) {
                   //$('<input>').attr({type: 'hidden',id: 'orderdate['+value.id+']',name:'orderdate',value:value.orderdate}).appendTo("#quantitybox");
                 demo2.append($('<option>', {
-                  value: value.id,
-                  text: `${value.name} - [${value.status}/${value.rentquantity}]`,
-                  //text: value.name +" "+'[Date-'+value.orderdate+"] "+' [Received Quantity-'+value.status+"] "
-                  //+''+'[Rent Quantity-'+''+value.rentquantity+']',
-                  data_rentid:value.rentid,
-                  orderdate:value.orderdate,
-                  rentquantity:value.rentquantity,
-				        }
+                        value: value.id,
+                        text: `${value.name} - [${value.status}/${value.rentquantity}]`,
+                        //text: value.name +" "+'[Date-'+value.orderdate+"] "+' [Received Quantity-'+value.status+"] "
+                        //+''+'[Rent Quantity-'+''+value.rentquantity+']',
+                        data_rentid:value.rentid,
+                        orderdate:value.orderdate,
+                        rentquantity:value.rentquantity,
+                    }
                 ));
               
                demo2.bootstrapDualListbox('refresh', true);
-               
-              });
+            });
+            demo2.bootstrapDualListbox('refresh', true);
             },
       }); 
    })
@@ -261,9 +262,12 @@
         if(selected_array.findIndex(el => el.value == created.value && el.name == created.name  ) > -1){
         }else{
             $("#quantitybox").find('div#'+created.value).remove();
-            var index = inputCreated.indexOf(created.value);
-            if (index !== -1) {
-                inputCreated.splice(index, 1);
+            console.log("created.value >>>>>> ", created.value)
+            //var index = inputCreated.indexOf(created.value);
+            sel_exist = inputCreated.findIndex(el => el.value == created.value && el.name == created.name);
+            console.log("index >>>>>> ", sel_exist)
+            if (sel_exist !== -1) {
+                inputCreated.splice(sel_exist, 1);
             }
         }
       })
@@ -280,9 +284,7 @@
           selected_array.push({
             name : $(this).text(),
             value: $(this).val(),
-            data_rentid:$(this).attr("data_rentid"),
-            orderdate:$(this).attr('orderdate'),
-            rentquantity:$(this).attr('rentquantity'),
+            //data_rentid:$(this).attr("data_rentid"),
           })
       }
       });
@@ -302,9 +304,7 @@
           selected_array.push({
             name : $(this).text(),
             value: $(this).val(),
-            data_rentid:$(this).attr("data_rentid"),
-            orderdate:$(this).attr("orderdate"),
-            rentquantity:$(this).attr('rentquantity'),
+            //data_rentid:$(this).attr("data_rentid"),
           })
       }
       });

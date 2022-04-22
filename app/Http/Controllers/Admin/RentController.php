@@ -221,6 +221,7 @@ class RentController extends Controller
         foreach ($inputs['quantity'] as $key => $value) {
             $inputs['material_id'] = $key;
             $inputs['quantity'] = $value;
+            $inputs['remain_quantity'] = $value;
         
             $material = Material::find($key);
             $material->quantity = $material->quantity - $value;

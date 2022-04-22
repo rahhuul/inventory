@@ -69,7 +69,7 @@
                     </a>
                 </li>
                  <li class="nav-item">
-                    <a href="{{URL('/admin/account')}}" class="nav-link  @if((url()->current()) == url('/admin/bill'))active @endif">
+                    <a href="{{URL('/admin/account')}}" class="nav-link  @if((url()->current()) == url('/admin/account'))active @endif">
                         <i class="nav-icon fas fa-money-bill"></i> 
                         <p>Account status</p>
                     </a>

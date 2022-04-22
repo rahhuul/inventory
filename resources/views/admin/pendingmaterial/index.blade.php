@@ -100,6 +100,7 @@
          } )
             }
          },
+         "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]],
          "columns": [
                 { "data": "id",orderable: false },
                 { "data": "customer" },

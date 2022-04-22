@@ -57,7 +57,7 @@
               <div class="col-md-6">
                   <div class="form-group">
                      {!! Form::label('Select Customer', 'Select Customer') !!}
-                     {!! Form::select('customer_id', $customers, null, ['id' => 'customer_id', 'class' => 'form-control select2', 'style' => 'width:100%', 'placeholder' => "Select Customer"]) !!}
+                     {!! Form::select('customer_id', $customers, null, ['id' => 'customer_id', 'class' => 'form-control select2', 'style' => 'width:100%', 'placeholder' => "Select Customer", "required" => 'required']) !!}
                   </div>
                </div>
             

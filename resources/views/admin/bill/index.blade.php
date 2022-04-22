@@ -133,6 +133,7 @@
             
             // }
          },
+         "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]],
          "columns": [
                 { "data": "id",orderable: false },
                 { "data": "material"},
@@ -186,7 +187,7 @@
         $('#customer_id').bind("keyup change", function(){
           var  customer_id = $("#customer_id").val();
            var edit = "{{ url('admin/bill')}}"+'/'+customer_id;
-           $("a").attr("href", edit);
+           $("#pdf").attr("href", edit);
          
         table.draw();
         });
