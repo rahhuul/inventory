@@ -45,9 +45,9 @@
                      </div>
                      <br> 
                    <ul class="list-group list-group-unbordered mb-3">
-<li class="list-group-item">
+{{--  <li class="list-group-item">
 <b>A/C Amount</b> <a class="float-right" id="amount">0</a> 
-</li>
+</li>  --}}
 <li class="list-group-item">
 <b>Pending Material Bill</b> <a class="float-right" id="pendingbill">0</a>
 </li>

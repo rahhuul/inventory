@@ -33,7 +33,7 @@
 
     <!-- Main content -->
      <section class="content">
-      <div class="container-fluid">
+      {{--  <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row" style="text-align: center;">
           <div class="col-lg-3 col-6">
@@ -118,7 +118,7 @@
         <!-- /.row -->
        
         <!-- /.row (main row) -->
-      </div><!-- /.container-fluid -->
+      </div><!-- /.container-fluid -->  --}}
     </section>
     <!-- /.content -->
   </div>

@@ -70,7 +70,7 @@
                          <i class="far fa-calendar-alt"></i>
                        </span>
                      </div>
-                     <input type="text" name="ordered_at" class="form-control float-right" id="reservation">
+                     <input required='required' type="text" name="ordered_at" class="form-control float-right" id="reservation">
                    </div>
                   </div>
                </div>
@@ -81,7 +81,7 @@
                 <div class="form-group">
                   <label>Select Material</label>
 
-                   <select name="material_id" id="material_id" class="duallistbox" multiple="true">
+                   <select required='required' name="material_id" id="material_id" class="duallistbox" multiple="true">
 
   @foreach ($materials as $mat)
 
@@ -192,7 +192,7 @@
    			if(inputCreated.findIndex(el => el == selected.value) > -1){
 
    			}else{
-				$("#quantitybox").append('<div class="box" id="'+selected.value+'"><label for="'+selected.name+'">'+selected.name+'</label>: <input type="text" name="quantity['+selected.value+']" class="form-control" id="quantity" placeholder = "Enter Quantity" ></div>');
+				$("#quantitybox").append('<div class="box" id="'+selected.value+'"><label for="'+selected.name+'">'+selected.name+'</label>: <input type="text" required="required" name="quantity['+selected.value+']" class="form-control" id="quantity" placeholder = "Enter Quantity" ></div>');
 				inputCreated.push(selected.value)
    			}
    		})

@@ -115,7 +115,6 @@ class PendingController extends Controller
         $customer_id = $request->input('filter_option');
         if(!empty($customer_id)){ 
 
-               
                  $rentdata = Rent::with('customer')
                             ->where('customer_id', $customer_id )
                             ->where('status', 0)
@@ -131,9 +130,7 @@ class PendingController extends Controller
                 $totalData = count($pendingmaterial);
 
                 $totalFiltered = $totalData; 
-        }
-        else
-        {
+        } else {
              $rentdata = Rent::get();
              foreach($rentdata as $k=>$val)
                 {
@@ -150,9 +147,8 @@ class PendingController extends Controller
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
 
-        if(empty($request->input('search.value')) && !empty($customer_id))
-        {            
-        $rents = Rent::whereHas('customer',function ($query) use($customer_id) {
+        if(empty($request->input('search.value')) && !empty($customer_id)) {            
+            $rents = Rent::whereHas('customer',function ($query) use($customer_id) {
                  $query->where('customer_id', $customer_id );
                 })
                 ->where('status', 0)
@@ -161,10 +157,7 @@ class PendingController extends Controller
                 ->orderBy($order,$dir)
                 //->groupBy('customer_id')
                 ->get();
-
-
-       // Rent::with('customer', 'category', 'material')
-                
+       // Rent::with('customer', 'category', 'material')      
         }
         else {
         $search = $request->input('search.value'); 
@@ -219,6 +212,8 @@ class PendingController extends Controller
                 $nestedData['ordered_at'] = date('d-m-Y',strtotime($post->ordered_at));
                 $nestedData['days'] = $diff;
                 $nestedData['quantity'] = $remainQty;
+                $nestedData['perdayprice'] = round($post->material->rentperPrice, 2);
+                $nestedData['quantityprice'] = round(($post->material->rentperPrice*$remainQty),2);
                 $nestedData['price'] = round(($post->material->rentperPrice*$remainQty)*$diff,2);
                 $nestedData['options'] = "<button onClick='showAjaxModal(\"$view\", \"Pending Material\")' class='btn btn-success btn-sm'>
                 <i class='fas fa-play'>

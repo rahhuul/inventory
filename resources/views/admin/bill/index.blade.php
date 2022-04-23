@@ -56,6 +56,7 @@
                                     <th>Quantity</th>
                                     <th>Order Date</th>
                                     <th>Received Date</th>
+                                    <th>Days</th>
                                     <th>Price</th>
                                     <th>Total</th>
                                  </tr>
@@ -64,7 +65,7 @@
                               </tbody>
                                <tfoot>
                                     <tr>
-                                      <th colspan="5"></th>
+                                      <th colspan="6"></th>
                                         <th style="text-align:right">Total:</th>
                                         <th></th>
                                     </tr>
@@ -140,6 +141,7 @@
                 { "data": "quantity",orderable: false},
                 { "data": "ordered_date",orderable: false},
                 { "data": "received_date",orderable: false},
+                { "data": "days",orderable: false},
                 { "data": "price",orderable: false }, 
                 { "data": "total" ,orderable: false},
          ],
@@ -160,7 +162,7 @@
  
             // Total over all pages
             total = api
-                .column(6)
+                .column(7)
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -168,14 +170,14 @@
  
             // Total over this page
             pageTotal = api
-                .column(6, { page: 'current'} )
+                .column(7, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
  
             // Update footer
-            $( api.column(6).footer() ).html('₹'+pageTotal
+            $( api.column(7).footer() ).html('₹'+pageTotal
             );
         },
       

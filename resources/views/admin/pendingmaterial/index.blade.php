@@ -58,6 +58,8 @@
                                     <th>Date</th>
                                     <th>Days</th>
                                     <th>Quantity</th>
+                                    <th>Price / Day</th>
+                                    <th>QuantityPrice / Day</th>
                                     <th>Price</th>
                                     <th>Action</th>
                                  </tr>
@@ -66,7 +68,9 @@
                               </tbody>
                               <tfoot>
                                  <tr>
-                                    <th colspan="6" style="text-align:right">Pending Total:</th>
+                                    <th colspan="6" style="text-align:right"></th>
+                                    <th style="text-align:right"></th>
+                                    <th style="text-align:right"></th>
                                     <th></th>
                                  </tr>
                            </tfoot>
@@ -107,7 +111,9 @@
                 { "data": "material" },
                 { "data": "ordered_at" },
                 { "data": "days" },
-                { "data": "quantity" }, 
+                { "data": "quantity" },
+                { "data": "perdayprice" },
+                { "data": "quantityprice" },
                 { "data": "price" }, 
                 { "data": "options",orderable: false }
          ],
@@ -121,17 +127,37 @@
                     typeof i === 'number' ?
                         i : 0;
             };
- 
-            // Total over all pages
-            total = api
-                .column(6)
+  
+            // Total over this page
+            pageTotal = api
+                .column(8, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
  
+            // Update footer
+            $( api.column(8).footer() ).html(
+                '₹'+pageTotal.toFixed(3)
+            );
+
+ 
             // Total over this page
-            pageTotal = api
+            pagequantity = api
+                .column(7, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column(7).footer() ).html(
+                'Per day Quantity:  ₹'+pagequantity.toFixed(3)
+            );
+
+
+            // Total over this page
+            pageper = api
                 .column(6, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
@@ -140,8 +166,10 @@
  
             // Update footer
             $( api.column(6).footer() ).html(
-                '₹'+pageTotal
+                'Per day:  ₹'+pageper.toFixed(3)
             );
+
+
         }
       });
 

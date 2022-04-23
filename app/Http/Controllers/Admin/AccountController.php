@@ -21,7 +21,7 @@ class AccountController extends Controller
      */
     public function index()
     {
-        $title = "Generate Bill";
+        $title = "Account status";
         $customers = User::all()->pluck('name', 'user_id');
         return view('admin/account/index',compact('title','customers'));
     }
@@ -34,7 +34,6 @@ class AccountController extends Controller
         $rentdata = Rent::with('customer','material')->where('customer_id',$customer_id)->where('status',0)->get();
         $receeiveddata = Received::with('customer', 'material', 'rent')
                         ->where('customer_id', $customer_id)
-                        ->where('receive_status', '1')
                         ->get();
         
         $pending = 0;

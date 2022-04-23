@@ -132,7 +132,8 @@ class MaterialController extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
-        $inputs['rentpreprice'] = $inputs['rentPrice']/15;
+        $inputs['rentperPrice'] = $inputs['rentPrice']/15;
+        
         $customer = Material::create($inputs);
         if($customer){
         return redirect()->route('material.index')

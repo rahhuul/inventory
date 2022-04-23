@@ -55,11 +55,11 @@
                <div class="card-body">
                   <div class="form-group">
                      {!! Form::label('Material Name', 'Material Name') !!}
-                     {!! Form::text('name','', ['id' => "name", 'class' => 'form-control', 'placeholder' => "Enter Name"]) !!}
+                     {!! Form::text('name','', ['id' => "name", 'class' => 'form-control', 'placeholder' => "Enter Name", "required" => "required"]) !!}
                   </div>
                   <div class="form-group">
                      {!! Form::label('Quantity', 'Quantity') !!}
-                     {!! Form::text('quantity','', ['id' => "quantity", 'class' => 'form-control', 'placeholder' => "Enter Quantity"]) !!}
+                     {!! Form::text('quantity','', ['id' => "quantity", 'class' => 'form-control', 'placeholder' => "Enter Quantity", "required" => "required"]) !!}
                   </div>
                   <div class="form-group">
                      {!! Form::label('Damage Price', 'Damage Price') !!}
@@ -67,7 +67,7 @@
                   </div>
                   <div class="form-group">
                      {!! Form::label('Rental Price', 'Rental Price') !!}
-                     {!! Form::text('rentPrice','', ['id' => "rentPrice", 'class' => 'form-control', 'placeholder' => "Enter Rental Price"]) !!}
+                     {!! Form::text('rentPrice','', ['id' => "rentPrice", 'class' => 'form-control', 'placeholder' => "Enter Rental Price", "required" => "required"]) !!}
                   </div>
                   {{-- <div class="form-group">
                      {!! Form::label('Category', 'Category') !!}
@@ -92,5 +92,6 @@
 @endsection
 <!-- Main Content section end -->
 
-
-
+@section('script')
+<script src="{{URL('/')}}/assets/admin/js/jquery.validate.min.js"></script>
+@endsection
