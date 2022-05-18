@@ -29,7 +29,7 @@ Route::group(['middleware' => ['adminlogin']], function() {
 
     Route::get('admin/dashboard','Admin\Dashboard_Controller@index')->name('admin_dashboard.index');
 
-    Route::resource('admin/user', Admin\UserController::class); 
+    Route::resource('admin/user', Admin\UserController::class);
     Route::resource('admin/category', Admin\CategoryController::class); 
     Route::resource('admin/material', Admin\MaterialController::class);
     Route::resource('admin/rent', Admin\RentController::class);
@@ -40,6 +40,8 @@ Route::group(['middleware' => ['adminlogin']], function() {
     Route::resource('admin/account', Admin\AccountController::class);
     Route::resource('admin/customaterial', Admin\CustomaterialController::class);
 
+    Route::post('admin/user/delete', 'Admin\UserController@userdelete' )->name('deleteuser');
+    Route::post('admin/material/delete', 'Admin\MaterialController@materialdelete' )->name('deletematerial');
 
     Route::get('rent/addreceive/{id}','Admin\RentController@addreceive' );
     Route::get('user/adddeposit/{id}','Admin\UserController@adddeposit' );

@@ -52,7 +52,6 @@
                </div>
                <!-- /.card-header -->
                <!-- form start -->
-               <!--  {!! Form::open(['id' => 'category_form']) !!} --> 
                <div class="card-body">
                   <div class="form-group">
                      {!! Form::label('Customer Name', 'Customer Name') !!}
@@ -63,12 +62,12 @@
                      {!! Form::text('mobile','', ['id' => "mobile", 'class' => 'form-control', 'placeholder' => "Enter mobile"]) !!}
                   </div>
                   <div class="form-group">
+                     {!! Form::label('Address', 'Address') !!}
+                     {!! Form::textarea('address','', ['id' => "address", 'class' => 'form-control', 'placeholder' => "Enter address",'rows' => 4, 'cols' => 40]) !!}
+                  </div>
+                  {{-- <div class="form-group">
                      {!! Form::label('Reference Name', 'Reference Name') !!}
                      {!! Form::text('reference_name','', ['id' => "reference_name", 'class' => 'form-control', 'placeholder' => "Enter Reference Name"]) !!}
-                  </div>
-                  <div class="form-group">
-                     {!! Form::label('Reference Address', 'Reference Address') !!}
-                     {!! Form::textarea('address','', ['id' => "address", 'class' => 'form-control', 'placeholder' => "Enter address",'rows' => 4, 'cols' => 40]) !!}
                   </div>
                   <div class="form-group">
                      {!! Form::label('Reference Mobile', 'Reference Mobile') !!}
@@ -81,7 +80,7 @@
                         <option value="0">Rental</option>
                         <option value="1">Provider</option>
                      </select>
-                  </div>
+                  </div> --}}
                   
                </div>
                <!-- /.card-body -->
@@ -92,7 +91,7 @@
       </div>
       <!-- /.container-fluid -->
       <div class="card-footer">
-         {!! Form::submit('save', ["class" => "btn btn-primary"]) !!}
+         {!! Form::submit('save', ["class" => "btn btn-primary", "id" => "save_user"]) !!}
       </div>
       <!-- </form> -->
 </section>
@@ -101,6 +100,51 @@
 
 @endsection
 <!-- Main Content section end -->
+@section('script')
+    <script src="{{URL('/')}}/assets/admin/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="{{URL('/')}}/assets/admin/plugins/jquery-validation/additional-methods.min.js"></script>
 
-
-
+    <script>
+        $(document).ready(function(){
+            $('#user_form').validate({ // initialize the plugin
+                rules: {
+                    name: {
+                        required: true
+                    },
+                    mobile: {
+                        required: true
+                    },
+                    address: {
+                        required: true
+                    }
+                },
+                messages: {
+                    name: {
+                        required : "Please enter your name."
+                    },
+                    mobile: {
+                        required: "Please enter a mobile number."
+                    },
+                    address: {
+                        required: "Please enter a address."
+                    },
+                },
+                errorElement: "em",
+                errorPlacement: function (error, element) {
+                    error.addClass("help-block");
+                    error.insertAfter(element);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).parents(".padding-leftright-null").addClass("has-error").removeClass("has-success");
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).parents(".padding-leftright-null").addClass("has-success").removeClass("has-error");
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                    $("#save_user").attr("disabled", true);
+                }
+            })
+        })
+    </script>
+@endsection

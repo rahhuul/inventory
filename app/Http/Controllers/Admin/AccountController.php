@@ -21,7 +21,7 @@ class AccountController extends Controller
      */
     public function index()
     {
-        $title = "Generate Bill";
+        $title = "Account status";
         $customers = User::all()->pluck('name', 'user_id');
         return view('admin/account/index',compact('title','customers'));
     }
@@ -34,7 +34,6 @@ class AccountController extends Controller
         $rentdata = Rent::with('customer','material')->where('customer_id',$customer_id)->where('status',0)->get();
         $receeiveddata = Received::with('customer', 'material', 'rent')
                         ->where('customer_id', $customer_id)
-                        ->where('receive_status', '1')
                         ->get();
         
         $pending = 0;
@@ -51,21 +50,10 @@ class AccountController extends Controller
                 $diff = $diff+1;
                 $diff = ($diff < 15) ? 15 : $diff;
                 
-                $pending += ($value->material->rentperPrice*$pendingQty)*$diff;
-            }
-
-            /* if($receivedQty > 0){
-                $rendDate = Carbon::parse($value->ordered_at);
-                $recDate = Carbon::parse($value->received[0]->receive_date);
-                $recdiff = $rendDate->diffInDays($recDate);
-                $recdiff = $recdiff+1;
-                if($recdiff<15)
-                {
-                    $recdiff= 15;
+                if($value->material){
+                    $pending += ($value->material->rentperPrice*$pendingQty)*$diff;
                 }
-                
-                $received += ($value->material->rentperPrice*$receivedQty)*$recdiff;
-            } */
+            }
         }
 
         foreach ($receeiveddata as $key => $value){
@@ -80,7 +68,9 @@ class AccountController extends Controller
                 $recdiff = $recdiff+1;
                 $recdiff = ($recdiff < 15) ? 15 : $recdiff;
 
-                $received += ($value->material->rentperPrice*$receivedQty)*$recdiff;
+                if($value->material){
+                    $received += ($value->material->rentperPrice*$receivedQty)*$recdiff;
+                }
             }
         }
         $total = $pending + $received;

@@ -64,12 +64,13 @@
                   </div>
                   
                   <div class="form-group">
+                     {!! Form::label('Address', 'Address') !!}
+                     {!! Form::textarea('address',$user->address, ['id' => "address", 'class' => 'form-control', 'placeholder' => "Enter address",'rows' => 4, 'cols' => 40]) !!}
+                  </div>
+
+                  {{-- <div class="form-group">
                      {!! Form::label('Reference Name', 'Reference Name') !!}
                      {!! Form::text('reference_name',$user->reference_name, ['id' => "reference_name", 'class' => 'form-control', 'placeholder' => "Enter Reference Name"]) !!}
-                  </div>
-                  <div class="form-group">
-                     {!! Form::label('Reference Address', 'Reference Address') !!}
-                     {!! Form::textarea('address',$user->address, ['id' => "address", 'class' => 'form-control', 'placeholder' => "Enter address",'rows' => 4, 'cols' => 40]) !!}
                   </div>
 
                   <div class="form-group">
@@ -84,7 +85,7 @@
                         <option value="0" {{ $user->type == 0 ? 'selected' : '' }}>Rental</option>
                         <option value="1" {{ $user->type == 1 ? 'selected' : '' }}>Provider</option>
                      </select>
-                  </div>
+                  </div> --}}
                   
                </div>
                <!-- /.card-body -->

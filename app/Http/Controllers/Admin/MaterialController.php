@@ -78,11 +78,12 @@ class MaterialController extends Controller
                 $edit =  route('material.edit',$post->material_id);
                 $view =  route('material.show',$post->material_id);
                 $nestedData['id'] = $c;
+                $nestedData['material_id'] = $post->material_id;
                 $nestedData['name'] = $post->name;
                 //$nestedData['category'] = $post->category->name;
                 $nestedData['quantity'] = $post->quantity;
                 $nestedData['rentprice'] = $post->rentPrice;
-                $nestedData['damageprice'] = $post->damagePrice;
+                //$nestedData['damageprice'] = $post->damagePrice;
                 $nestedData['options'] = "<a href='{$edit}' class='btn btn-info btn-sm'>
                 <i class='fas fa-edit'>
                 </i>
@@ -90,11 +91,7 @@ class MaterialController extends Controller
                 <a data-id='{$post->material_id}' data-name='{$post->name}' href='javascript:void(0)' class='btn btn-danger btn-sm'>
                 <i class='fas fa-trash'>
                 </i>
-                </a>
-                <button onClick='showAjaxModal(\"$view\", \"$post->name\")' class='btn btn-success btn-sm'>
-                <i class='fas fa-play'>
-                </i>
-                </button>";
+                </a>";
                 
                 $data[] = $nestedData;
                 $c++;
@@ -132,7 +129,8 @@ class MaterialController extends Controller
     public function store(Request $request)
     {
         $inputs = $request->input();
-        $inputs['rentpreprice'] = $inputs['rentPrice']/15;
+        $inputs['rentperPrice'] = $inputs['rentPrice']/15;
+        
         $customer = Material::create($inputs);
         if($customer){
         return redirect()->route('material.index')
@@ -194,6 +192,17 @@ class MaterialController extends Controller
     public function destroy(Material $material)
     {
         $material->delete();
+        return redirect()->route('material.index')
+                        ->with('message','Material deleted successfully')
+                        ->with('type', 'success');
+    }
+
+    public function materialdelete(Request $request, Material $material)
+    {
+        $id = $request->input('id');
+        //$user->delete();
+        $item = Material::find($id);
+        $item->delete();
         return redirect()->route('material.index')
                         ->with('message','Material deleted successfully')
                         ->with('type', 'success');

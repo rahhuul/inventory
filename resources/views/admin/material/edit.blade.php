@@ -63,10 +63,10 @@
                      {!! Form::label('Quantity', 'Quantity') !!}
                      {!! Form::text('quantity',$material->quantity, ['id' => "quantity", 'class' => 'form-control', 'placeholder' => "Enter Quantity"]) !!}
                   </div>
-                  <div class="form-group">
+                  <!-- <div class="form-group">
                      {!! Form::label('Damage Price', 'Damage Price') !!}
                      {!! Form::text('damagePrice',$material->damagePrice, ['id' => "damagePrice", 'class' => 'form-control', 'placeholder' => "Enter Damage Price"]) !!}
-                  </div>
+                  </div> -->
                   <div class="form-group">
                      {!! Form::label('Rental Price', 'Rental Price') !!}
                      {!! Form::text('rentPrice',$material->rentPrice, ['id' => "rentPrice", 'class' => 'form-control', 'placeholder' => "Enter Rental Price"]) !!}

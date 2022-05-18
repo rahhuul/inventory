@@ -103,6 +103,7 @@ class PendingController extends Controller
     } 
     public function allpenmaterials(Request $request)
     {
+    	$groupPending = [];
          $columns = array( 
             0 =>'rent_id', 
             1 =>'customer_id',
@@ -115,8 +116,10 @@ class PendingController extends Controller
         $customer_id = $request->input('filter_option');
         if(!empty($customer_id)){ 
 
-               
-                 $rentdata = Rent::with('customer')->where('customer_id', $customer_id )->get();
+                 $rentdata = Rent::with('customer')
+                            ->where('customer_id', $customer_id )
+                            ->where('status', 0)
+                            ->get();
                 foreach($rentdata as $k=>$val)
                 {
                     if($val->quantity != $val->return_quantity){
@@ -128,9 +131,7 @@ class PendingController extends Controller
                 $totalData = count($pendingmaterial);
 
                 $totalFiltered = $totalData; 
-        }
-        else
-        {
+        } else {
              $rentdata = Rent::get();
              foreach($rentdata as $k=>$val)
                 {
@@ -144,23 +145,20 @@ class PendingController extends Controller
 
         $limit = $request->input('length');
         $start = $request->input('start');
-        $order = $columns[$request->input('order.0.column')];
-        $dir = $request->input('order.0.dir');
+        //$order = $columns[$request->input('order.0.column')];
+        //$dir = $request->input('order.0.dir');
 
-        if(empty($request->input('search.value')) && !empty($customer_id))
-        {            
-        $rents = Rent::whereHas('customer',function ($query) use($customer_id) {
+        if(empty($request->input('search.value')) && !empty($customer_id)) {            
+            $rents = Rent::whereHas('customer',function ($query) use($customer_id) {
                  $query->where('customer_id', $customer_id );
                 })
+                ->where('status', 0)
                 ->offset($start)
                 ->limit($limit)
-                ->orderBy($order,$dir)
+                //->orderBy($order,$dir)
                 //->groupBy('customer_id')
                 ->get();
-
-
-       // Rent::with('customer', 'category', 'material')
-                
+       // Rent::with('customer', 'category', 'material')      
         }
         else {
         $search = $request->input('search.value'); 
@@ -169,15 +167,16 @@ class PendingController extends Controller
         $rents =  Rent::with('customer', 'category', 'material')
                     ->orWhere('quantity', 'LIKE',"%{$search}%")
                     ->orWhere('ordered_at',$dt)
-
+                    ->where('status', 0)
                     ->offset($start)
                     ->limit($limit)
-                    ->orderBy($order,$dir)
+                    //->orderBy($order,$dir)
                     ->get();
 
         $totalFiltered = Rent::with('customer', 'category', 'material')
                     ->orWhere('quantity', 'LIKE',"%{$search}%")
                     ->orWhere('ordered_at',$dt)
+                    ->where('status', 0)
                     ->count();
         }
         foreach($rents as $k=>$val)
@@ -194,6 +193,8 @@ class PendingController extends Controller
             foreach ($pending as $post){
 
                 $remainQty = ($post->remain_quantity != null || $post->remain_quantity != 0) ? $post->remain_quantity : $post->quantity;
+                $mainQty = ($post->quantity != null || $post->quantity != 0) ? $post->quantity : $post->quantity;
+                $receivedQty = ($post->return_quantity != null || $post->return_quantity != 0) ? $post->return_quantity : 0;
 
                 $date = Carbon::parse($post->ordered_at);
                 $now = Carbon::now();
@@ -207,29 +208,52 @@ class PendingController extends Controller
                 $edit =  route('rent.edit',$post->rent_id);
                 $view =  route('pending.show',$post->rent_id);
                 //$receive = route('receive.create');
+                
                 $received = URL('rent/addreceive').'/'.$post->rent_id;
-                $nestedData['id'] = $c;
-                $nestedData['customer'] = $post->customer->name;
-                $nestedData['material'] = $post->material->name;
-                $nestedData['ordered_at'] = date('d-m-Y',strtotime($post->ordered_at));
-                $nestedData['days'] = $diff;
-                $nestedData['quantity'] = $remainQty;
-                $nestedData['price'] = round(($post->material->rentperPrice*$remainQty)*$diff,2);
-                $nestedData['options'] = "<button onClick='showAjaxModal(\"$view\", \"Pending Material\")' class='btn btn-success btn-sm'>
-                <i class='fas fa-play'>
-                </i>
-                </button>";
+
+                if($post->customer && $post->material){
+                    
+                    $material_name = ($post->material) ? $post->material->name : null;
+                    $customer_name = ($post->customer) ? $post->customer->name : null;
+                    
+                    if($material_name && $customer_name){
+                        $mat_id = $post->material->material_id;
+                        $groupPending[$mat_id]['material']  = $material_name;
+                        $groupPending[$mat_id]['quantity']  = isset($groupPending[$mat_id]['quantity']) ? $groupPending[$mat_id]['quantity'] + $mainQty : $mainQty;
+                        $groupPending[$mat_id]['pending']  = isset($groupPending[$mat_id]['pending']) ? $groupPending[$mat_id]['pending'] + $remainQty : $remainQty;
+                        $groupPending[$mat_id]['received']  = isset($groupPending[$mat_id]['received']) ? $groupPending[$mat_id]['received'] + $receivedQty : $receivedQty;
+
+                        $nestedData['id'] = $c;
+                        $nestedData['customer'] = $customer_name;
+                        $nestedData['material'] = $material_name;
+                        $nestedData['ordered_at'] = date('d-m-Y',strtotime($post->ordered_at));
+                        $nestedData['days'] = $diff;
+                        $nestedData['quantity'] = $remainQty;
+                        $nestedData['perdayprice'] = ($post->material) ? round($post->material->rentperPrice, 2) : 0;
+                        $nestedData['quantityprice'] = ($post->material) ? round(($post->material->rentperPrice*$remainQty),2) : 0;
+                        $nestedData['price'] = ($post->material) ? round(($post->material->rentperPrice*$remainQty)*$diff,2) : 0;
+                        $nestedData['options'] = "";
+
+                        
+                    }
+                }
                 
                 $data[] = $nestedData;
                 $c++;
             }
         }
 
+        $sortKeys = ['id', 'customer', 'material', 'ordered_at', 'days', 'quantity','perdayprice','quantityprice','price' ];
+
+        $orderDir = ($request->input('order.0.dir') == 'asc') ? SORT_ASC : SORT_DESC;
+        array_multisort(array_column($data, $sortKeys[$request->input('order.0.column')]), $orderDir, SORT_NATURAL|SORT_FLAG_CASE, $data);
+
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
             "recordsTotal"    => intval($totalData),  
             "recordsFiltered" => intval($totalFiltered), 
-            "data"            => $data   
+            'groupPending'    => $groupPending,
+            "data"            => $data
             );
 
         echo json_encode($json_data);

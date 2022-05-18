@@ -70,8 +70,8 @@
                        <span class="input-group-text">
                          <i class="far fa-calendar-alt"></i>
                        </span>
-                     </div>
-                     <input type="text" name="ordered_at" class="form-control float-right" id="reservation">
+                     </div> 
+                     <input type="text" name="ordered_at" class="form-control float-right" id="reservation" value={{Carbon\Carbon::parse($rent->ordered_at)->format("d-m-Y")}}>
                    </div>
                   </div>
                </div>
@@ -128,7 +128,7 @@
    infoText:false,
   });
 
-   let mindate = '{{Carbon\Carbon::parse($rent->ordered_at)->format("d-m-Y")}}';
+   //let mindate = '{{Carbon\Carbon::parse($rent->ordered_at)->format("d-m-Y")}}';
    $('#reservation').daterangepicker({
       singleDatePicker: true,
       "locale": {
@@ -136,7 +136,7 @@
          "separator": " - ",
       },
       // minDate: mindate,
-      // startDate:mindate,
+       //startDate:mindate,
       showDropdowns: true,
       autoApply: true
    });

@@ -56,12 +56,12 @@
                         <p>Pending Material</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                {{--  <li class="nav-item">
                     <a href="{{URL('/admin/customaterial')}}" class="nav-link  @if((url()->current()) == url('/admin/customaterial'))active @endif">
                         <i class="nav-icon fa fa-list"></i>
                         <p>Customer Material</p>
                     </a>
-                </li>
+                </li>  --}}
                  <li class="nav-item">
                     <a href="{{URL('/admin/bill')}}" class="nav-link  @if((url()->current()) == url('/admin/bill'))active @endif">
                         <i class="nav-icon fas fa-money-bill"></i> 
@@ -69,7 +69,7 @@
                     </a>
                 </li>
                  <li class="nav-item">
-                    <a href="{{URL('/admin/account')}}" class="nav-link  @if((url()->current()) == url('/admin/bill'))active @endif">
+                    <a href="{{URL('/admin/account')}}" class="nav-link  @if((url()->current()) == url('/admin/account'))active @endif">
                         <i class="nav-icon fas fa-money-bill"></i> 
                         <p>Account status</p>
                     </a>

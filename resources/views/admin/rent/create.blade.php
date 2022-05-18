@@ -57,7 +57,7 @@
               <div class="col-md-6">
                   <div class="form-group">
                      {!! Form::label('Select Customer', 'Select Customer') !!}
-                     {!! Form::select('customer_id', $customers, null, ['id' => 'customer_id', 'class' => 'form-control select2', 'style' => 'width:100%', 'placeholder' => "Select Customer"]) !!}
+                     {!! Form::select('customer_id', $customers, null, ['id' => 'customer_id', 'class' => 'form-control select2', 'style' => 'width:100%', 'placeholder' => "Select Customer", "required" => 'required']) !!}
                   </div>
                </div>
             
@@ -70,7 +70,7 @@
                          <i class="far fa-calendar-alt"></i>
                        </span>
                      </div>
-                     <input type="text" name="ordered_at" class="form-control float-right" id="reservation">
+                     <input required='required' type="text" name="ordered_at" class="form-control float-right" id="reservation">
                    </div>
                   </div>
                </div>
@@ -81,7 +81,7 @@
                 <div class="form-group">
                   <label>Select Material</label>
 
-                   <select name="material_id" id="material_id" class="duallistbox" multiple="true">
+                   <select required='required' name="material_id" id="material_id" style="height: 360px;" class="duallistbox" multiple="true">
 
   @foreach ($materials as $mat)
 
@@ -106,7 +106,7 @@
                   
                </div>
                <div class="card-footer">
-                  {!! Form::submit('save', ["class" => "btn btn-primary"]) !!}
+                  {!! Form::submit('save', ["class" => "btn btn-primary", "id" => "save_rent"]) !!}
                </div>
                <!-- </form> -->
                <!-- /.card-body -->
@@ -124,7 +124,11 @@
 <!-- Main Content section end -->
 
 @section('script')
+<script src="{{URL('/')}}/assets/admin/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="{{URL('/')}}/assets/admin/plugins/jquery-validation/additional-methods.min.js"></script>
+
 <script>
+
   var demo2 = $('.duallistbox').bootstrapDualListbox({
    selectedlistlabel: 'Selected',
    infoText:false,
@@ -192,7 +196,7 @@
    			if(inputCreated.findIndex(el => el == selected.value) > -1){
 
    			}else{
-				$("#quantitybox").append('<div class="box" id="'+selected.value+'"><label for="'+selected.name+'">'+selected.name+'</label>: <input type="text" name="quantity['+selected.value+']" class="form-control" id="quantity" placeholder = "Enter Quantity" ></div>');
+				$("#quantitybox").append('<div class="box" id="'+selected.value+'"><label for="'+selected.name+'">'+selected.name+'</label>: <input type="text" required="required" name="quantity['+selected.value+']" class="form-control matQty" id="quantity" placeholder = "Enter Quantity" ></div>');
 				inputCreated.push(selected.value)
    			}
    		})
@@ -270,5 +274,50 @@
       let remain = total - current;
       $("#remainQuantity").html(remain)
    });
+
+   //save_rent
+
+      $(document).ready(function(){
+            $('#rent_form').validate({
+               rules: {
+                  customer_id: {
+                     required: true
+                  },
+                  ordered_at: {
+                     required: true
+                  },
+                  material_id: {
+                     required: true
+                  }
+               },
+               messages: {
+                  customer_id: {
+                     required : "Please enter your customer."
+                  },
+                  ordered_at: {
+                     required: "Please select a rent date."
+                  },
+                  material_id: {
+                     required: "Please select a material."
+                  },
+               },
+               errorElement: "em",
+               errorPlacement: function (error, element) {
+                  error.addClass("help-block");
+                  error.insertAfter(element);
+               },
+               highlight: function (element, errorClass, validClass) {
+                  $(element).parents(".padding-leftright-null").addClass("has-error").removeClass("has-success");
+               },
+               unhighlight: function (element, errorClass, validClass) {
+                  $(element).parents(".padding-leftright-null").addClass("has-success").removeClass("has-error");
+               },
+               submitHandler: function (form) {
+                  form.submit();
+                  $("#save_rent").attr("disabled", true);
+               }
+            });
+
+      })
 </script>
 @endsection

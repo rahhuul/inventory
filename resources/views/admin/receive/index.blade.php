@@ -63,6 +63,7 @@
                                     <th>Customer</th>
                                     <th>Material</th>
                                     <th>Price</th>
+                                    <th>From Date</th>
                                     <th>Receive Date</th>
                                     <th>Days</th>
                                     <th>Received Quantity</th>
@@ -75,7 +76,7 @@
                               </tbody>
                               <tfoot>
                                  <tr>
-                                     <th colspan="7" style="text-align:right">Received Total:</th>
+                                     <th colspan="8" style="text-align:right">Received Total:</th>
                                      <th></th>
                                  </tr>
                            </tfoot>
@@ -110,15 +111,18 @@
             }
            
          },
+         "lengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]],
+         "order": [[2, "asc" ]],
          "columns": [
                 { "data": "id",orderable: false },
                 { "data": "customer" },
                 { "data": "material" },
-                { "data": "price" },
-                { "data": "receive_date" },
+                { "data": "price",orderable: false },
+                { "data": "from_date",orderable: false },
+                { "data": "receive_date",orderable: false },
                 { "data": "days" },
-                { "data": "received_quantity" }, 
-                { "data": "received_price" }, 
+                { "data": "received_quantity",orderable: false }, 
+                { "data": "received_price",orderable: false }, 
                 { "data": "options",orderable: false },  
          ],
          "footerCallback": function ( row, data, start, end, display ) {
@@ -134,7 +138,7 @@
  
             // Total over all pages
             total = api
-                .column(7)
+                .column(8)
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -142,14 +146,14 @@
  
             // Total over this page
             pageTotal = api
-                .column(7, { page: 'current'} )
+                .column(8, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
  
             // Update footer
-            $( api.column(7).footer() ).html('₹'+pageTotal);
+            $( api.column(8).footer() ).html('₹'+pageTotal);
         }
       });
 

@@ -49,6 +49,13 @@
                            <h3 class="card-title">Rent</h3>
                         </div>
                         <div class="card-body table-responsive col-sm-12">
+                        	<div class="card">
+                                <div class="card-header">Pending Materials</div>
+                                <div class="card-body col-sm-12">
+                                    <div class="row" id="groupingRow">
+                                    </div>
+                                </div>
+                            </div>
                            <table id="ex1" class="table table-bordered table-striped data-table_funddep">
                               <thead>
                                  <tr>
@@ -58,6 +65,8 @@
                                     <th>Date</th>
                                     <th>Days</th>
                                     <th>Quantity</th>
+                                    <th>Price / Day</th>
+                                    <th>QuantityPrice / Day</th>
                                     <th>Price</th>
                                     <th>Action</th>
                                  </tr>
@@ -66,7 +75,9 @@
                               </tbody>
                               <tfoot>
                                  <tr>
-                                    <th colspan="6" style="text-align:right">Pending Total:</th>
+                                    <th colspan="6" style="text-align:right"></th>
+                                    <th style="text-align:right"></th>
+                                    <th style="text-align:right"></th>
                                     <th></th>
                                  </tr>
                            </tfoot>
@@ -89,25 +100,43 @@
    var table = $('#ex1').DataTable({
          processing: true,
          serverSide: true,
-         ajax: {
-            "url": "{{ url('pendingmaterial') }}",
-            "dataType": "json",
-            "type": "POST",
-            "data":function( d ){
-                return $.extend( {}, d, {
-           "filter_option": $("#customer_id").val().toLowerCase(),
-            _token: "{{csrf_token()}}"
-         } )
-            }
+         ajax: function (data, callback, settings){
+            function a( data ){
+                return $.extend( {}, data, {
+                    "filter_option": $("#customer_id").val().toLowerCase(),
+                    _token: "{{csrf_token()}}"
+                })
+            };
+            let abc = a(data);
+             $.ajax({
+                 "url": "{{ url('pendingmaterial') }}",
+                 "dataType": "json",
+                "type": "POST",
+                "data": abc,
+                success: function(data) {
+                    //groupingRow
+                    let groupHtml = '';
+                    for( let pending in data.groupPending ){
+                        groupHtml += '<div class="col-md-2"><b>'+data.groupPending[pending].material+'[<span style="color:green">'+data.groupPending[pending].received+'</span>/'+data.groupPending[pending].quantity+'] :</b> </div><div class="col-md-2"><span style="color:red">'+data.groupPending[pending].pending+'</span></div>'
+                    }
+
+                    $("#groupingRow").html(groupHtml);
+                    callback(data);
+                }
+            });
          },
+         "lengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]],
+         "order": [[2, "asc" ]],
          "columns": [
                 { "data": "id",orderable: false },
                 { "data": "customer" },
                 { "data": "material" },
                 { "data": "ordered_at" },
                 { "data": "days" },
-                { "data": "quantity" }, 
-                { "data": "price" }, 
+                { "data": "quantity",orderable: false },
+                { "data": "perdayprice",orderable: false },
+                { "data": "quantityprice",orderable: false },
+                { "data": "price",orderable: false }, 
                 { "data": "options",orderable: false }
          ],
          "footerCallback": function ( row, data, start, end, display ) {
@@ -120,17 +149,37 @@
                     typeof i === 'number' ?
                         i : 0;
             };
- 
-            // Total over all pages
-            total = api
-                .column(6)
+  
+            // Total over this page
+            pageTotal = api
+                .column(8, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
  
+            // Update footer
+            $( api.column(8).footer() ).html(
+                '₹'+pageTotal.toFixed(3)
+            );
+
+ 
             // Total over this page
-            pageTotal = api
+            pagequantity = api
+                .column(7, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+ 
+            // Update footer
+            $( api.column(7).footer() ).html(
+                'Per day Quantity:  ₹'+pagequantity.toFixed(3)
+            );
+
+
+            // Total over this page
+            pageper = api
                 .column(6, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
@@ -139,9 +188,18 @@
  
             // Update footer
             $( api.column(6).footer() ).html(
-                '₹'+pageTotal
+                'Per day:  ₹'+pageper.toFixed(3)
             );
-        }
+
+
+        },
+        "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+               //$('td',nRow).css('color', 'white');
+               if (aData['ordered_date'] != "") {
+                  $('td', nRow).eq(5).css('background-color', 'Red');
+                  $('td', nRow).eq(5).css('color', 'white');
+               }
+         },
       });
 
     $(document).ready(function () {

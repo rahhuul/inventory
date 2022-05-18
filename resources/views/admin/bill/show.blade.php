@@ -268,7 +268,7 @@ h1, h2, h3, h4, h5, h6 {
                 $rendDate = Carbon\Carbon::parse($val->ordered_at);
                 $now = Carbon\Carbon::now();
                 $diff = $rendDate->diffInDays($now);
-                
+                $diff = ($diff < 15) ? 15 : $diff;
                 $calcQty = ($val->remain_quantity == null || $val->remain_quantity == 0) ? $val->quantity : $val->remain_quantity;
 
                 $totalRentprice = ($diff > 15) ? ($calcQty*$val->material->rentperPrice) * $diff : $calcQty * $val->material->rentperPrice * 15;
@@ -277,8 +277,9 @@ h1, h2, h3, h4, h5, h6 {
             else
             {
                 $receiveDate = Carbon\Carbon::parse($val->receive_date);
-                $rent_data = $rendDate;
+                $rent_data = Carbon\Carbon::parse($val->rent->ordered_at);
                 $diff = $receiveDate->diffInDays($rent_data) + 1;
+                $diff = ($diff < 15) ? 15 : $diff;
                 $totalRentprice = ($val->received_quantity * $val->material->rentperPrice) * $diff;
                 $receivedtotal +=$totalRentprice; 
             }

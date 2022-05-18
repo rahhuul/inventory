@@ -109,7 +109,7 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h4 style="margin: 0px;"><a href="{{URL('/admin/bill')}}" style="color: #fff;letter-spacing: 2px;">Account <br> Status</a></h4>
+                <h4 style="margin: 0px;"><a href="{{URL('/admin/account')}}" style="color: #fff;letter-spacing: 2px;">Account <br> Status</a></h4>
               </div>
             </div>
           </div>

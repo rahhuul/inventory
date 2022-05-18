@@ -56,7 +56,6 @@
                                     <th>Name</th>
                                     <th>Quantity</th>
                                     <th>Rent Price</th>
-                                    <th>Damaged Price</th>
                                     <th>Action</th>
                                  </tr>
                               </thead>
@@ -68,7 +67,6 @@
                                     <th>Name</th>
                                     <th>Quantity</th>
                                     <th>Rent Price</th>
-                                    <th>Damaged Price</th>
                                     <th>Action</th>
                                  </tr>
                               </tfoot>
@@ -98,12 +96,17 @@
             "type": "POST",
             "data":{ _token: "{{csrf_token()}}"}
          },
+         "lengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]],
+         "createdRow": function(row, data, dataIndex) {
+                let material_id = data.material_id;
+               $(row).prop('id', material_id); 
+            },
+         "order": [[1, "asc" ]],
          "columns": [
                 { "data": "id",orderable: false},
                 { "data": "name" },
                 { "data": "quantity" },
                 { "data": "rentprice" },
-                { "data": "damageprice" },
                 { "data": "options",orderable: false }
          ]	
       });
@@ -130,15 +133,17 @@
                      headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                      },
-                     url: "/admin/material/" + id,
-                     type: 'delete',
+                     //url: "/admin/material/" + id,
+                     url: "{{ route('deletematerial') }}",
+                     type: 'POST',
                      dataType: "JSON",
                      data: {
-                        "id": id
+                        "id": id,
+                        "token" : '{{ csrf_token() }}',
                      },
                      complete: function (response) {
                         toastr.error(name+" removed");
-                        //t.row("#"+id).remove().draw();
+                        table.row("#"+id).remove().draw();
                         //table.draw()
                      },
                      error: function(xhr) {
