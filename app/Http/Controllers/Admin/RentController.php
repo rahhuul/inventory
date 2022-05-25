@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Models\Received;
+use App\Models\RentChallan;
 
 class RentController extends Controller
 {
@@ -32,14 +33,15 @@ class RentController extends Controller
             1 =>'customer_id',
             2 => 'material_id',
             3 => 'ordered_at',
-            4 => 'quantity',
-            5 => 'days',
-            6 => 'rent_total',
-            7 => 'status'
+            4 => 'rent_id',
+            5 => 'quantity',
+            6 => 'ordered_at',
+            7 => 'rent_id',
+            8 => 'status'
         );
-        $customer_id = $request->input('filter_option');
+        $data = array();
+        $customer_id = $request->input('filter_option', 0);
         if(!empty($customer_id)){ 
-
                 $totalData = Rent::with('customer')->where('customer_id', $customer_id )->count();
                 $totalFiltered = $totalData; 
         }
@@ -53,22 +55,28 @@ class RentController extends Controller
         $start = $request->input('start');
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
+        $search = $request->input('search.value', null); 
 
-        if(empty($request->input('search.value')) && !empty($customer_id))
-        {            
         $rents = Rent::whereHas('customer',function ($query) use($customer_id) {
-                 $query->where('customer_id', $customer_id );
-                })
+                    $query->where('customer_id', $customer_id );
+                })->whereHas('material')
+                ->with(['customer','material' => function($q) use($search) {
+                        $q->where('name', 'LIKE', "%{$search}%");
+                    }
+                ])
                 ->offset($start)
                 ->limit($limit)
-                ->orderBy($order,$dir)
-                ->get();     
-        }
-        else {
-        $search = $request->input('search.value'); 
+                ->orderBy('ordered_at')
+                ->get();
+        /* if(empty($request->input('search.value')) && !empty($customer_id)) {
+        } else {
         $dt = date('Y-m-d', strtotime($search));
-
-        $rents =  Rent::with('customer', 'category', 'material','received')
+        
+        $rents =  Rent::whereHas('customer',function ($query) use($customer_id) {
+                $query->where('customer_id', $customer_id );
+           })->whereHas('material')->with(['material' => function($q) use($search) {
+            $q->where('name', 'LIKE', "%{$search}%"); // '=' is optional
+        }, 'category', 'received'])
                     ->orWhere('quantity', 'LIKE',"%{$search}%")
                     ->orWhere('ordered_at',$dt)
                     ->offset($start)
@@ -76,18 +84,24 @@ class RentController extends Controller
                     ->orderBy($order,$dir)
                     ->get();
 
-        $totalFiltered = Rent::with('customer', 'category', 'material','received')
+        $totalFiltered = Rent::whereHas('customer')->whereHas('material')->with(['material' => function($q) use($search) {
+            $q->where('name', 'LIKE', "%{$search}%"); // '=' is optional
+        }, 'category', 'received'])
                     ->orWhere('quantity', 'LIKE',"%{$search}%")
                     ->orWhere('ordered_at',$dt)
                     ->count();
-        }
+        } */
 
-        $data = array();
+        
         if(!empty($rents))
         {
             $c = 1;
             $total =0 ;
             $status ='';
+
+            /* echo "<pre>";
+            print_r($rents);
+            exit; */
 
             foreach ($rents as $key=>$post){
 
@@ -99,20 +113,22 @@ class RentController extends Controller
                 
                 $calcQty = ($post->remain_quantity == null || $post->remain_quantity == 0) ? $post->quantity : $post->remain_quantity;
 
-                $rentTotal = ($diff > 15) ? ($calcQty*$post->material->rentperPrice) * $diff : $calcQty * $post->material->rentperPrice * 15;
+                $rentTotal = (($post->material)) ? ($diff > 15) ? ($calcQty*$post->material->rentperPrice) * $diff : $calcQty * $post->material->rentperPrice * 15 : 0;
 
 
                 $edit =  route('rent.edit',$post->rent_id);
                 $view =  route('rent.show',$post->rent_id);
                 $received = URL('rent/addreceive').'/'.$post->rent_id;
-                $nestedData['id'] = $c;
-                $nestedData['customer'] = (null != $post->customer->name) ? $post->customer->name : '';
-                $nestedData['material'] = $post->material->name;
-                $nestedData['ordered_at'] = date('d-m-Y',strtotime($post->ordered_at));
-                $nestedData['price'] = $post->material->rentPrice;
-                $nestedData['quantity'] = $calcQty;
-                $nestedData['days'] = $diff;
-                $nestedData['renttotal'] = round($rentTotal, 2);
+                if($post->customer && $post->material){
+                    $nestedData['id'] = $c;
+                    $nestedData['customer'] = ($post->customer) ? $post->customer->name : '';
+                    $nestedData['material'] =  ($post->material) ? $post->material->name : '';
+                    $nestedData['ordered_at'] = date('d-m-Y',strtotime($post->ordered_at));
+                    $nestedData['price'] = ($post->material) ? $post->material->rentPrice : 0;
+                    $nestedData['quantity'] = $calcQty;
+                    $nestedData['days'] = $diff;
+                    $nestedData['renttotal'] = round($rentTotal, 2);
+                
                 if($post->status == 0)
                 {
                     $status = '<span class="badge badge-primary">Pending</span>';
@@ -126,23 +142,23 @@ class RentController extends Controller
                 <i class='fas fa-edit'>
                 </i>
                 </a>
-                <a data-id='{$post->rent_id}' data-name='{$post->material->name}' href='javascript:void(0)' class='btn btn-danger btn-sm'>
+                <a data-id='{$post->rent_id}' data-name='Rent' href='javascript:void(0)' class='btn btn-danger btn-sm'>
                 <i class='fas fa-trash'>
                 </i>
-                </a>
-                
-                <button onClick='showAjaxModal(\"$view\", \"$post->rent_id\")' class='btn btn-success btn-sm'>
-                <i class='fas fa-play'>
-                </i>
-                </button>";
+                </a>";
                 $data[] = $nestedData;
+                }
                 $c++;
             }
          //echo $total;
         }
         //$data[] =$total;
 
-
+        if($request->input('order.0.column') != 3){
+        	$sortKeys = ['id', 'customer', 'material', 'ordered_at', 'price', 'quantity', 'days', 'renttotal' ];
+        	$orderDir = ($request->input('order.0.dir') == 'asc') ? SORT_ASC : SORT_DESC;
+        	array_multisort(array_column($data, $sortKeys[$request->input('order.0.column')]), $orderDir, SORT_NATURAL|SORT_FLAG_CASE, $data);
+    	}
 
         $json_data = array(
             "draw"            => intval($request->input('draw')),  
@@ -218,28 +234,28 @@ class RentController extends Controller
     {
         $customer ='';
         $inputs = $request->input();
+
+        
         foreach ($inputs['quantity'] as $key => $value) {
             $inputs['material_id'] = $key;
             $inputs['quantity'] = $value;
             $inputs['remain_quantity'] = $value;
-        
+            
             $material = Material::find($key);
             $material->quantity = $material->quantity - $value;
             $material->save();
-
+            
             $inputs['ordered_at'] = date("Y-m-d", strtotime($inputs['ordered_at']));
             $customer = Rent::create($inputs);
+            $inputs['rent_id'] = $customer->rent_id;
+            
+            RentChallan::create($inputs);
         }
         if($customer){
-        return redirect()->route('rent.index')
-         ->with('message','Rent added successfully')
-         ->with('type', 'success');
-        }
-       
-       /* $material = Material::find($inputs['material_id']);
-        $material->quantity = $material->quantity - $inputs['quantity'];
-        $material->save();*/
-        
+            return redirect()->route('rent.index')
+                ->with('message','Rent added successfully')
+                ->with('type', 'success');
+        }  
     }
 
     /**

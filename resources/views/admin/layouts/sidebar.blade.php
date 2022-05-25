@@ -68,10 +68,22 @@
                         <p>Generate Bill</p>
                     </a>
                 </li>
-                 <li class="nav-item">
+                <li class="nav-item">
                     <a href="{{URL('/admin/account')}}" class="nav-link  @if((url()->current()) == url('/admin/account'))active @endif">
                         <i class="nav-icon fas fa-money-bill"></i> 
                         <p>Account status</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{URL('/admin/rentchallan')}}" class="nav-link  @if((url()->current()) == url('/admin/rentchallan'))active @endif">
+                        <i class="nav-icon fas fa-money-bill"></i> 
+                        <p>Rent Challan</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{URL('/admin/receivedchallan')}}" class="nav-link  @if((url()->current()) == url('/admin/receivedchallan'))active @endif">
+                        <i class="nav-icon fas fa-money-bill"></i> 
+                        <p>Received Challan</p>
                     </a>
                 </li>
             </ul>

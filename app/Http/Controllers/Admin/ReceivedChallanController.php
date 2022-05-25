@@ -12,7 +12,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use PDF;
 
-class BillController extends Controller
+class ReceivedChallanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,7 +23,7 @@ class BillController extends Controller
     {
         $title = "Generate Bill";
         $customers = User::all()->pluck('name', 'user_id');
-        return view('admin/bill/index',compact('title','customers'));
+        return view('admin/receivechallan/index',compact('title','customers'));
     }
 
     public function allcustmaterials(Request $request){
@@ -209,8 +209,8 @@ class BillController extends Controller
         $mixedcustomerdata = array_merge((array)json_decode($received));
         if(count($mixedcustomerdata) > 0)
         {
-           view()->share('admin/bill/show',$mixedcustomerdata,$rents);
-        $pdf = PDF::loadView('admin/bill/show', ['mixedcustomerdata' => $mixedcustomerdata,
+           view()->share('admin/receivechallan/show',$mixedcustomerdata,$rents);
+        $pdf = PDF::loadView('admin/receivechallan/show', ['mixedcustomerdata' => $mixedcustomerdata,
             'userdata'=>$userdata,
             'customer_id'=>$customer_id,
             'rents'=>$rents
@@ -219,12 +219,12 @@ class BillController extends Controller
         }
         else
         {
-          return view('admin/bill/index',compact('title','customers'));
+          return view('admin/receivechallan/index',compact('title','customers'));
         }
 
        
 
-      //  return view('admin/bill/show',compact('title','mixedcustomerdata','userdata','customer_id'));
+      //  return view('admin/receivechallan/show',compact('title','mixedcustomerdata','userdata','customer_id'));
 
 
 

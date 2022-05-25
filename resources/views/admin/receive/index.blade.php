@@ -111,17 +111,22 @@
             }
            
          },
-         "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]],
+         "createdRow": function(row, data, dataIndex) {
+            let received_id = data.received_id;
+            $(row).prop('id', received_id); 
+         },
+         "lengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]],
+         "order": [[5, "asc" ]],
          "columns": [
                 { "data": "id",orderable: false },
                 { "data": "customer" },
                 { "data": "material" },
-                { "data": "price" },
-                { "data": "from_date" },
-                { "data": "receive_date" },
+                { "data": "price",orderable: false },
+                { "data": "from_date",orderable: false },
+                { "data": "receive_date",orderable: false },
                 { "data": "days" },
-                { "data": "received_quantity" }, 
-                { "data": "received_price" }, 
+                { "data": "received_quantity",orderable: false }, 
+                { "data": "received_price",orderable: false }, 
                 { "data": "options",orderable: false },  
          ],
          "footerCallback": function ( row, data, start, end, display ) {
@@ -189,16 +194,17 @@
                      headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                      },
-                     url: baseUrl + "/admin/received/" + id,
-                     type: 'delete',
+                     url: "{{ route('deletereceived') }}",
+                     type: 'POST',
                      dataType: "JSON",
                      data: {
-                        "id": id
+                        "id": id,
+                        "token" : '{{ csrf_token() }}',
                      },
                      complete: function (response) {
                         toastr.error(name+" removed");
-                        //t.row("#"+id).remove().draw();
-                        //table.draw()
+                        table.row("#"+id).remove().draw();
+                        table.draw()
                      },
                      error: function(xhr) {
 

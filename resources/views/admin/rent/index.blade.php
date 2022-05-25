@@ -114,17 +114,18 @@
          } )
             }
          },
-         "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]],
+         "lengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]],
+         "order": [[3, "asc" ]],
          "columns": [
-                { "data": "id",orderable: false },
+                { "data": "id", orderable: false },
                 { "data": "customer" },
                 { "data": "material" },
                 { "data": "ordered_at" },
-                { "data": "price" },
-                { "data": "quantity" }, 
-                { "data": "days" }, 
-                { "data":"renttotal"},
-                { "data":"status"},
+                { "data": "price", orderable: false },
+                { "data": "quantity", orderable: false }, 
+                { "data": "days", orderable: false }, 
+                { "data":"renttotal", orderable: false},
+                { "data":"status", orderable: false},
                 { "data": "options",orderable: false }
          ],
          "footerCallback": function ( row, data, start, end, display ) {

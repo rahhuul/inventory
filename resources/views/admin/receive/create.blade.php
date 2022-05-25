@@ -81,7 +81,7 @@
                 <div class="form-group">
                   <label>Select Material</label>
 
-                   <select name="material_id" id="material_id" class="duallistbox" multiple="true">
+                   <select name="material_id" id="material_id" class="duallistbox" style="height: 360px;" multiple="true">
                   </select>
 
                 </div>
@@ -98,7 +98,7 @@
                   
                </div>
                <div class="card-footer">
-                  {!! Form::submit('save', ["class" => "btn btn-primary"]) !!}
+                  {!! Form::submit('save', ["class" => "btn btn-primary", "id" => "save_received"]) !!}
                </div>
                <!-- </form> -->
                <!-- /.card-body -->
@@ -174,6 +174,7 @@
                         data_rentid:value.rentid,
                         orderdate:value.orderdate,
                         rentquantity:value.rentquantity,
+                        received: value.status
                     }
                 ));
               
@@ -208,19 +209,21 @@
             
         }else{
             
+            let max = selected.rented - selected.received;
+            let recCl = "rec"+index;
             boxHtml += '<div class="row form-inline" id="'+selected.value+'" style="margin-bottom: 10px;">';
-            boxHtml += '<div class="col-md-6">';
+            boxHtml += '<div class="col-md-12">';
             boxHtml += '<div class="form-group">';
             boxHtml += '<label class="col-md-6 text-left" for="exampleInputName2">'+selected.name+'</label>';
-            boxHtml += '<input type="text" name="material['+selected.value+'][received_quantity]" class="form-control received" data-index="'+index+'" data-rent="'+selected.rentquantity+'" id="received_quantity-'+index+'" placeholder = "Enter Quantity" value="0">';
+            boxHtml += '<input type="text" name="material['+selected.value+'][received_quantity]" class="form-control received '+recCl+'" data-index="'+index+'" data-rent="'+selected.rented+'" data-received="'+selected.received+'" data-pending="'+max+'" id="received_quantity-'+index+'" placeholder = "Enter Quantity" value="0">';
             boxHtml += '</div>';
             boxHtml += '</div>';
-            boxHtml += '<div class="col-md-6">';
+           /*  boxHtml += '<div class="col-md-6">';
             boxHtml += '<div class="form-group">';
             boxHtml += '<label class="col-md-6 text-left" for="exampleInputEmail2">Damaged Quantity</label>';
             boxHtml += '<input type="text" name="material['+selected.value+'][damaged_quantity]" class="form-control" id="damaged_quantity" placeholder = "Damaged Quantity" value="0">';
             boxHtml += '</div>';
-            boxHtml += '</div>';
+            boxHtml += '</div>'; */
             /*
             boxHtml += '<input type="hidden" name="material['+selected.value+'][orderdate]" value="'+selected.orderdate+'"class="form-control" id="rentid" >';
             boxHtml += '<input type="hidden" name="material['+selected.value+'][material]" value="'+selected.value+'" class="form-control" id="rentid" >';
@@ -231,10 +234,21 @@
 
         /*$("#quantitybox").append('<div class="row"><div class="col-md-2"></div><div class="col-md-2"><label for="Received Quantity">Received Quantity</label></div><div class="col-md-2"><label for="Damaged Quantity">Damaged Quantity</label></div></div><div class="row"><div class="col-md-2 box" id="'+selected.value+'"><label for="'+selected.name+'">'+selected.name+'</label></div>:<div class="col-md-2"><input type="text" name="material['+selected.value+'][received_quantity]" class="form-control received" data-index="'+index+'" data-rent="'+selected.rentquantity+'" id="received_quantity-'+index+'" placeholder = "Enter Quantity" onchange="getquantity(this)" ></div><div class="col-md-2"><input type="text" name="material['+selected.value+'][damaged_quantity]" class="form-control" id="damaged_quantity" placeholder = "Damaged Quantity" ></div><input type="hidden" name="material['+selected.value+'][orderdate]" value="'+selected.orderdate+'"class="form-control" id="rentid" ><input type="hidden" name="material['+selected.value+'][material]" value="'+selected.value+'" class="form-control" id="rentid" ></div>');*/
         //inputCreated.push(selected.value) 
-        inputCreated.push({
+         inputCreated.push({
             name : selected.name,
-            value: selected.value
-          })
+            value: selected.value,
+            rented: selected.rented,
+            received: selected.received,
+         })
+
+            $('.received').each(function(ind) {
+               let cl = 'rec'+ind;
+               console.log(ind);
+               $.validator.addClassRules(cl, {
+                  minStrict: $(this).data('pending'),
+                  required: true
+               });
+            });
         }
       })
    }
@@ -304,13 +318,50 @@
           selected_array.push({
             name : $(this).text(),
             value: $(this).val(),
+            rented:$(this).attr('rentquantity'),
+            received:$(this).attr('received'),
             //data_rentid:$(this).attr("data_rentid"),
           })
       }
-      });
+      });     
   }
 
+  
+  $(document).ready(function(){
 
+      $.validator.addMethod('minStrict', function (value, el, param) {
+         return this.optional(el) || value <= param;
+      }, "please enter more than {0}");
+
+      $('#receive_form').validate({
+            rules: {
+               customer_id: {
+                  required: true
+               }
+            },
+            messages: {
+               customer_id: {
+                  required : "Please enter your customer."
+               }
+            },
+            errorElement: "em",
+            errorPlacement: function (error, element) {
+               error.addClass("help-block");
+               error.insertAfter(element);
+            },
+            highlight: function (element, errorClass, validClass) {
+               $(element).parents(".padding-leftright-null").addClass("has-error").removeClass("has-success");
+            },
+            unhighlight: function (element, errorClass, validClass) {
+               $(element).parents(".padding-leftright-null").addClass("has-success").removeClass("has-error");
+            },
+            submitHandler: function (form) {
+               form.submit();
+               $("#save_received").attr("disabled", true);
+            }
+      });
+         
+   })
   /******************************* Get selected with inputs ends here *******************************/
 </script>
 @endsection

@@ -75,17 +75,13 @@
                   </div>
                </div>
                   </div>
-        
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Select Material</label>
-
                    <select name="material_id" id="material_id" class="duallistbox" multiple="true">
  <option value="{{($rev->rent->material->material_id)}}" disabled="true">{{$rev->rent->material->name}} &nbsp [{{$rev->rent->remain_quantity}}] &nbsp &nbsp</option>
-
                   </select>
-
                 </div>
                 <!-- /.form-group -->
               </div>
@@ -96,23 +92,25 @@
                 <div class="col-md-12" id="quantitybox">
 
 @if($rev->rent->remain_quantity == 0)
- <div class="row"><div class="col-md-2 box" id="{{$rev->rent->material->material_id}}"><label for="{{$rev->rent->material->name}}">{{$rev->rent->material->name}} &nbsp [{{$rev->rent->remain_quantity}}] &nbsp &nbsp</label></div>:
+ <div class="row"><div class="col-md-3 box" id="{{$rev->rent->material->material_id}}"><label for="{{$rev->rent->material->name}}">{{$rev->rent->material->name}} &nbsp [{{$rev->rent->remain_quantity}}] &nbsp &nbsp</label></div>:
 
-                  <div class="col-md-2">
-                    <input type="text" name="received_quantity" class="form-control" id="received_quantity" placeholder = "Enter Quantity" value="{{$received->received_quantity}}" readonly="true" >
-                  </div>
-                  <div class="col-md-2"><input type="text" name="damaged_quantity" class="form-control" id="damaged_quantity" placeholder = "Damaged Quantity" readonly="true" value="{{$received->damaged_quantity}}" ></div>
-                  <div class="col-md-2"><input type="text" name="losed_quantity" class="form-control" id="losed_quantity" placeholder = "Losed Quantity" readonly="true" value="{{$received->losed_quantity}}" ></div>
-                  <div class="col-md-2"><input type="text" name="pending_material" class="form-control" id="pending_material"  readonly="true" placeholder = "Pending material" value="{{$received->pending_material}}" ></div></div>
+      <div class="col-md-4">
+         <label for="{{$rev->rent->material->name}}">Received Quantity</label>
+      <input type="text" name="received_quantity" class="form-control" id="received_quantity" placeholder = "Enter Quantity" value="{{$received->received_quantity}}" >
+      </div>
+      <div class="col-md-4">
+         <label for="{{$rev->rent->material->name}}">Pending Quantity</label>
+         <input type="text" name="pending_material" class="form-control" id="pending_material" placeholder = "Pending material" value="{{$received->pending_material}}" ></div></div>
 
 @else
- <div class="row"><div class="col-md-2 box" id="{{$rev->rent->material->material_id}}"><label for="{{$rev->rent->material->name}}">{{$rev->rent->material->name}} &nbsp [{{$rev->rent->remain_quantity}}] &nbsp &nbsp</label></div>:
-                  <div class="col-md-2">
+ <div class="row"><div class="col-md-3 box" id="{{$rev->rent->material->material_id}}"><label for="{{$rev->rent->material->name}}">{{$rev->rent->material->name}} &nbsp [{{$rev->rent->remain_quantity}}] &nbsp &nbsp</label></div>:
+                  <div class="col-md-4">
+                     <label for="{{$rev->rent->material->name}}">Received Quantity</label>
                     <input type="text" name="received_quantity" class="form-control" id="received_quantity" placeholder = "Enter Quantity" value="{{$received->received_quantity}}" >
                   </div>
-                  <div class="col-md-2"><input type="text" name="damaged_quantity" class="form-control" id="damaged_quantity" placeholder = "Damaged Quantity" value="{{$received->damaged_quantity}}" ></div>
-                  <div class="col-md-2"><input type="text" name="losed_quantity" class="form-control" id="losed_quantity" placeholder = "Losed Quantity" value="{{$received->losed_quantity}}" ></div>
-                  <div class="col-md-2"><input type="text" name="pending_material" class="form-control" id="pending_material" placeholder = "Pending material" value="{{$received->pending_material}}" ></div></div>
+                  <div class="col-md-4">
+                     <label for="{{$rev->rent->material->name}}">Pending Quantity</label>
+                     <input type="text" name="pending_material" class="form-control" id="pending_material" placeholder = "Pending material" value="{{$received->pending_material}}" ></div></div>
 @endif
                  
                 </div>

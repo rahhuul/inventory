@@ -50,21 +50,10 @@ class AccountController extends Controller
                 $diff = $diff+1;
                 $diff = ($diff < 15) ? 15 : $diff;
                 
-                $pending += ($value->material->rentperPrice*$pendingQty)*$diff;
-            }
-
-            /* if($receivedQty > 0){
-                $rendDate = Carbon::parse($value->ordered_at);
-                $recDate = Carbon::parse($value->received[0]->receive_date);
-                $recdiff = $rendDate->diffInDays($recDate);
-                $recdiff = $recdiff+1;
-                if($recdiff<15)
-                {
-                    $recdiff= 15;
+                if($value->material){
+                    $pending += ($value->material->rentperPrice*$pendingQty)*$diff;
                 }
-                
-                $received += ($value->material->rentperPrice*$receivedQty)*$recdiff;
-            } */
+            }
         }
 
         foreach ($receeiveddata as $key => $value){
@@ -79,7 +68,9 @@ class AccountController extends Controller
                 $recdiff = $recdiff+1;
                 $recdiff = ($recdiff < 15) ? 15 : $recdiff;
 
-                $received += ($value->material->rentperPrice*$receivedQty)*$recdiff;
+                if($value->material){
+                    $received += ($value->material->rentperPrice*$receivedQty)*$recdiff;
+                }
             }
         }
         $total = $pending + $received;

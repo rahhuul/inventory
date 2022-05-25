@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Received;
+use App\Models\Rent;
 use Carbon\Carbon;
 
 class UserController extends Controller
@@ -38,14 +40,12 @@ class UserController extends Controller
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
 
-        if(empty($request->input('search.value')))
-        {            
+        if(empty($request->input('search.value'))) {            
         $posts = User::offset($start)
                 ->limit($limit)
                 ->orderBy($order,$dir)
                 ->get();
-        }
-        else {
+        } else {
         $search = $request->input('search.value'); 
 
         $posts =  User::where('user_id','LIKE',"%{$search}%")
@@ -74,6 +74,7 @@ class UserController extends Controller
                 $add =  URL('user/adddeposit').'/'.$post->user_id;
             
                 $nestedData['id'] = $c;
+                $nestedData['user_id'] = $post->user_id;
                 $nestedData['name'] = $post->name;
                 $nestedData['mobile'] = $post->mobile;
                 $nestedData['amount'] = $post->amount?$post->amount:0;
@@ -85,17 +86,7 @@ class UserController extends Controller
                 <a data-id='{$post->user_id}' data-name='{$post->name}' href='javascript:void(0)' class='btn btn-danger btn-sm'>
                 <i class='fas fa-trash'>
                 </i>
-                </a>
-                <button onClick='showAjaxModal(\"$view\", \"$post->name\")' class='btn btn-success btn-sm'>
-                <i class='fas fa-play'>
-                </i>
-                </button>
-                <button onClick='showAjaxModal(\"$add\", \"$post->name\")' class='btn btn-primary btn-sm'>
-                <i class='fas fa-rupee-sign'></i>
-                </i>
-                </button>
-
-                ";
+                </a>";
                 
                 $data[] = $nestedData;
                 $c++;
@@ -206,9 +197,25 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
-        $user->delete();
+        //$user->delete();
+        $item = User::find($id);
+        $item->delete();
+        return redirect()->route('user.index')
+                        ->with('message','User deleted successfully')
+                        ->with('type', 'success');
+    }
+
+    public function userdelete(Request $request, User $user)
+    {
+        $id = $request->input('id');
+        
+        Rent::where('customer_id', $id)->delete();
+        Received::where('customer_id', $id)->delete();
+        
+        $item = User::find($id);
+        $item->delete();
         return redirect()->route('user.index')
                         ->with('message','User deleted successfully')
                         ->with('type', 'success');

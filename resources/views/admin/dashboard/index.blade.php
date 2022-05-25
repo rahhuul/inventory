@@ -33,7 +33,7 @@
 
     <!-- Main content -->
      <section class="content">
-      {{--  <div class="container-fluid">
+      <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row" style="text-align: center;">
           <div class="col-lg-3 col-6">
@@ -109,7 +109,7 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h4 style="margin: 0px;"><a href="{{URL('/admin/bill')}}" style="color: #fff;letter-spacing: 2px;">Account <br> Status</a></h4>
+                <h4 style="margin: 0px;"><a href="{{URL('/admin/account')}}" style="color: #fff;letter-spacing: 2px;">Account <br> Status</a></h4>
               </div>
             </div>
           </div>
@@ -118,7 +118,7 @@
         <!-- /.row -->
        
         <!-- /.row (main row) -->
-      </div><!-- /.container-fluid -->  --}}
+      </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
   </div>

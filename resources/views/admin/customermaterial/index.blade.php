@@ -100,7 +100,7 @@
          } )
             }
          },
-         "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]],
+         "lengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]],
          "columns": [
                 { "data": "id",orderable: false },
                 { "data": "material"},

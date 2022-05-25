@@ -104,7 +104,7 @@ class ReceivedController extends Controller
             ->get()
             ->toArray();
 
-        echo "<pre>";
+        //echo "<pre>";
         //print_r($rents);
         //print_r($materials);
         //echo "</pre>";
@@ -147,77 +147,6 @@ class ReceivedController extends Controller
             } 
         }
         
-        /* echo "<pre>";
-        print_r ($orders);
-        echo "</pre>";
-        
-        exit; */
-
-        /* $orders = [];
-        foreach($rents as $k => $v){
-            $mKey = $v['material_id'];
-            $quantity = $v['quantity'];
-            if(array_key_exists($v['material_id'],$materials)){
-                $rcvMat = $materials[$mKey]['received_quantity'];
-                if($rcvMat > $quantity){
-                    if(array_key_exists('remain',$materials[$mKey])){
-                        $end = end($orders[$mKey]);
-                        //$orders[$mKey][$k]['status'] = '1';
-                        if($end['remain'] > $quantity){
-                            $orders[$mKey][$k]['status'] = '2';
-                            $orders[$mKey][$k]['remain'] = abs($quantity - $end['remain']);
-                            $orders[$mKey][$k]['received_quantity'] = $quantity;
-                            $orders[$mKey][$k]['pending'] = 0;
-                        }else{
-                            if($end['remain'] > 0){
-                                if(abs($quantity - $end['remain']) == 0){
-                                    $orders[$mKey][$k]['status'] = '2';
-                                }else{
-                                    $orders[$mKey][$k]['status'] = '1';
-                                }
-                                $orders[$mKey][$k]['remain'] = 0;
-                                $orders[$mKey][$k]['received_quantity'] = $end['remain'];
-                                $orders[$mKey][$k]['pending'] = abs($quantity - $end['remain']);
-                            }
-                        }
-
-                    }else{
-
-                        $materials[$mKey]['remain'][] = abs($rcvMat - $quantity);
-                        $orders[$mKey][$k]['remain'] = abs($rcvMat - $quantity);
-                        if($rcvMat >= $quantity){
-                            $orders[$mKey][$k]['received_quantity'] = $quantity;
-                            $orders[$mKey][$k]['status'] = '2';
-                            $orders[$mKey][$k]['pending'] = 0;
-                        }else{
-                            $orders[$mKey][$k]['received_quantity'] = $rcvMat;
-                            $orders[$mKey][$k]['status'] = '1';
-                            $orders[$mKey][$k]['pending'] = abs($rcvMat - $quantity);
-                        }
-                    }
-                }else{
-                    if($quantity <= $rcvMat){
-                        $orders[$mKey][$k]['status'] = '2';
-                        $orders[$mKey][$k]['received_quantity'] = $quantity;
-                        $orders[$mKey][$k]['remain'] = $rcvMat - $quantity;
-                        $orders[$mKey][$k]['pending'] = 0;
-                    }else{
-                        $orders[$mKey][$k]['status'] = '1';
-                        $orders[$mKey][$k]['received_quantity'] = $rcvMat;
-                        $orders[$mKey][$k]['remain'] = $rcvMat - $quantity;
-                        $orders[$mKey][$k]['pending'] = $quantity - $rcvMat;
-                    }
-                }
-                $orders[$mKey][$k]['quantity'] = $quantity;
-                $orders[$mKey][$k]['order_date'] = $v['ordered_at'];
-                $orders[$mKey][$k]['receive_date'] = date("Y-m-d", strtotime($inputs['receive_date']));
-                $orders[$mKey][$k]['rent_id'] = $v['rent_id'];
-            }
-        } */
-
-        // echo "<pre>";
-        // print_r($orders);
-        // exit;
 
         foreach($orders as $orderKey => $orderVal){
             $totalrcvQty = 0;
@@ -257,130 +186,53 @@ class ReceivedController extends Controller
 
         }
 
-        /* cho "<pre>";
-        print_r($rents);
-        print_r($inputs);
-        print_r($orders);
-        exit; */
-
-        /* $status='';
-        foreach ($inputs['rent'] as $key => $value) {
-            $orderdate =  date("Y-m-d ", strtotime($value['orderdate']));
-           
-            $rent = Rent::where('material_id',$value['material'])
-                        ->where('customer_id',$inputs['customer_id'])
-                        ->where('rent_id',$key)
-                        ->where('ordered_at',$orderdate)
-                        ->where('status',0)
-                        ->first();
-            $rent->return_quantity = $rent->return_quantity + $value['received_quantity'];
-            $rent->remain_quantity =  $rent->quantity - $rent->return_quantity;
-            $rent->save();
-
-            $material = Material::find($value['material']);
-            $material->quantity = $material->quantity + $value['received_quantity'];
-            $material->save();
-
-            $inputs['received_quantity'] = $value['received_quantity'];
-
-            $inputs['damaged_quantity'] = ($value['damaged_quantity']!='')?$value['damaged_quantity']:0;
-            $inputs['material_id'] =  $value['material'];
-
-            $inputs['losed_quantity']=($value['losed_quantity']!='')?$value['losed_quantity']:0;
-            $inputs['pending_material']=($value['pending_material']!='')?$value['pending_material']:0;
-            $inputs['receive_date'] = date("Y-m-d", strtotime($inputs['receive_date']));
-            $inputs['rent_id'] = $key;
-            if($rent->quantity == $rent->return_quantity && $rent->remain_quantity == 0)
-            {
-                $status = '2';
-                $rent->status = 1;
-                $rent->save();
-            }
-            else if($rent->quantity != $rent->return_quantity)
-            {
-                $status = '1';
-                $rent->status = 0;
-                $rent->save();
-            }
-            else
-            {
-                $status ='0';
-                $rent->status = 0;
-                $rent->save();
-            }
-            $inputs['receive_status'] = $status;
-            $inputs['customer_id'] = $inputs['customer_id'];
-        
-            $receiveinfo = Received::create($inputs);
-        } */
-         return redirect()->route('received.index')
+        return redirect()->route('received.index')
              ->with('message','Receive added successfully')
              ->with('type', 'success');
     }
 
       public function allReceive(Request $request){
         $searchFilter = array(); 
-         $columns = array( 
+     	$limit = $request->input('length');
+        $start = $request->input('start');
+      	$customer_id = $request->input('filter_option', 0);
+        $search = $request->input('search.value', null);
+        $dt = date('Y-m-d', strtotime($search));
+        $totalData = 0;
+        $totalFiltered = 0;
+
+     	$columns = array( 
             0 =>'received_id', 
             1 =>'rent_id',
             2 => 'receive_status',
             3 => 'receive_date',
             4 => 'received_quantity',
-
         );
 
-      $customer_id = $request->input('filter_option');
-         if(!empty($customer_id)){ 
+      $data = array();
+
+        if(!empty($customer_id)){
              $received = Received::whereHas('rent', function ($query) use($customer_id) {
                $query->where('customer_id', $customer_id );
-            })->get();
-              $totalData =count($received);
-             $totalFiltered = $totalData; 
-        } 
-        else
-        {
-            $received = Received::with('rent','rent.customer','rent.category','rent.material')->orderBy('receive_date','DESC')->get();
-              $totalData =count($received);
-            $totalFiltered = $totalData;
-        }
+            })->whereHas('material',  function($q) use($search) {
+             	if($search){
+             		$q->where('name', 'LIKE', "%{$search}%");
+             	}
+            })->with([
+                'rent',
+                'rent.customer',
+                'rent.category',
+                'rent.material'
+            ])
+            ->offset($start)
+            ->limit($limit)
+            ->orderBy('receive_date')
+            ->get();
 
-         
+          	$totalData =count($received);
+         	$totalFiltered = $totalData;
+        }
         
-        $limit = $request->input('length');
-        $start = $request->input('start');
-        $order = $columns[$request->input('order.0.column')];
-        $dir = $request->input('order.0.dir');
-
-        if(empty($request->input('search.value')) && !empty($customer_id) )
-        {            
-        $received =  Received::whereHas('rent', function ($query) use($customer_id) {
-               $query->where('customer_id', $customer_id );
-            })
-                ->offset($start)
-                ->limit($limit)
-                ->orderBy($order,$dir)
-                ->get();
-        }
-        else {
-        $search = $request->input('search.value'); 
-        $dt = date('Y-m-d', strtotime($search));
-       
-        $received =  Received::with('rent','rent.customer','rent.category','rent.material', 'material')
-                    ->orWhere('received_quantity', 'LIKE',"%{$search}%")
-                    ->orWhere('receive_date',$dt)
-                    ->offset($start)
-                    ->limit($limit)
-                    ->orderBy($order,$dir)
-                    ->get();
-                    
-
-        $totalFiltered = Received::with('rent','rent.customer','rent.category','rent.material', 'material')
-                    ->orWhere('received_quantity', 'LIKE',"%{$search}%")
-                    ->orWhere('receive_date',$dt)
-                    ->count();
-        }
-
-        $data = array();
         if(!empty($received))
         {
             $c = 1;
@@ -388,42 +240,42 @@ class ReceivedController extends Controller
                 $edit =  route('received.edit',$post->received_id);
                 $view =  route('received.show',$post->received_id);
 
-                // echo "<pre>";
-                // print_r($post);
-                ///// <a data-id='{$post->received_id}' data-name='{$post->rent->customer->name}'  href='javascript:void(0)' class='btn btn-danger btn-sm'>
-                // <i class='fas fa-trash'>
-                // </i>
-                // </a> 
-
                 $rendDate = Carbon::parse($post->receive_date);
-                $rent_data = Carbon::parse($post->rent->ordered_at);
+                $rent_data = ($post->rent) ? Carbon::parse($post->rent->ordered_at) : null;
                 $diff = $rendDate->diffInDays($rent_data) + 1;
                 $diff = ($diff < 15) ? 15 : $diff;
-                $totalRentprice = ($post->received_quantity * $post->rent->material->rentperPrice) * $diff;
+                $totalRentprice = ($post->rent && $post->rent->material) ? ($post->received_quantity * $post->rent->material->rentperPrice) * $diff : 0;
 
-                $nestedData['id'] = $c;
-                $nestedData['customer'] = $post->rent->customer->name;
-                $nestedData['material'] = $post->rent->material->name;
-                $nestedData['price'] = $post->rent->material->rentPrice;
-                $nestedData['from_date'] = date('d-m-Y',strtotime($post->rent->ordered_at));
-                $nestedData['receive_date'] = date('d-m-Y',strtotime($post->receive_date));
-                $nestedData['days'] = $diff;
-                $nestedData['received_quantity'] = $post->received_quantity;
-                $nestedData['received_price'] = round($totalRentprice, 2);
-               
-                $nestedData['options'] = "<a href='".$edit."' class='btn btn-info btn-sm'>
-                <i class='fas fa-edit'>
-                </i>
-                </a>
+                if($post->rent && $post->rent->customer && $post->rent->material){
+                    $nestedData['id'] = $c;
+                    $nestedData['received_id'] = $post->received_id;
+                    $nestedData['customer'] = ($post->rent->customer) ? $post->rent->customer->name : null;
+                    $nestedData['material'] = ($post->rent->material) ? $post->rent->material->name : null;
+                    $nestedData['price'] = ($post->rent->material) ? $post->rent->material->rentPrice : 0;
+                    $nestedData['from_date'] = date('d-m-Y',strtotime($post->rent->ordered_at));
+                    $nestedData['receive_date'] = date('d-m-Y',strtotime($post->receive_date));
+                    $nestedData['days'] = $diff;
+                    $nestedData['received_quantity'] = $post->received_quantity;
+                    $nestedData['received_price'] = round($totalRentprice, 2);
+                    $nestedData['options'] = "<a href='".$edit."' class='btn btn-info btn-sm'>
+                    <i class='fas fa-edit'>
+                    </i>
+                    </a>
+                    <a data-id='{$post->received_id}' data-name='Received' href='javascript:void(0)' class='btn btn-danger btn-sm'>
+                    <i class='fas fa-trash'>
+                    </i>
+                    </a>";
+                    $data[] = $nestedData;
+                }
                 
-                <button onClick='showAjaxModal(\"$view\", \"Received\")' class='btn btn-success btn-sm received1'>
-                <i class='fas fa-play'>
-                </i>
-                </button>";
-                
-                $data[] = $nestedData;
                 $c++;
             }
+        }
+
+        if($request->input('order.0.column') != 5){
+        	$sortKeys = ['id', 'customer', 'material', 'price', 'from_date', 'receive_date', 'days', 'received_quantity', 'received_price' ];
+        	$orderDir = ($request->input('order.0.dir') == 'asc') ? SORT_ASC : SORT_DESC;
+        	array_multisort(array_column($data, $sortKeys[$request->input('order.0.column')]), $orderDir, SORT_NATURAL|SORT_FLAG_CASE, $data);
         }
       
         $json_data = array(
@@ -478,10 +330,9 @@ class ReceivedController extends Controller
     public function update(Request $request, Received $received)
     {
         $inputs = $request->input();
-        // echo "<pre>";
-        // print_r($inputs);
-        // exit;
-
+        /* echo "<pre>";
+        print_r($inputs);
+        exit; */
 
         $inputs['receive_date'] = date("Y-m-d", strtotime($inputs['receive_date']));
         $material = Material::find($inputs['exist_material_id']);
@@ -497,7 +348,7 @@ class ReceivedController extends Controller
 
                 $received->received_quantity = $inputs['received_quantity'];
                 $received->pending_material = $rent->remain_quantity;
-                $received->receive_date = Carbon::now()->format('Y-m-d');
+                $received->receive_date = $inputs['receive_date'];
                 $received->save();
 
                 $material->quantity = $material->quantity - ($inputs['exist_received_quantity'] - $inputs['received_quantity']);
@@ -510,10 +361,17 @@ class ReceivedController extends Controller
 
                 $received->received_quantity = $inputs['received_quantity'];
                 $received->pending_material = $rent->remain_quantity;
+                $received->receive_date = $inputs['receive_date'];
                 $received->save();
 
                 $material->quantity = $material->quantity + ($inputs['received_quantity'] - $inputs['exist_received_quantity']);
                 $material->save();
+
+                /* echo "<pre>";
+                print_r($rent);
+                print_r($received);
+                print_r($material);
+                exit; */
             }
        /* }
         else
@@ -523,13 +381,13 @@ class ReceivedController extends Controller
         }*/
                 
         
-        $receivedata = $received->update($inputs);
+        //$receivedata = $received->update($inputs);
 
-        if($receivedata){
+        //if($receivedata){
         return redirect()->route('received.index')
          ->with('message','Received updated successfully')
          ->with('type', 'success');
-        }
+        //}
     }
 
     /**
@@ -540,9 +398,48 @@ class ReceivedController extends Controller
      */
     public function destroy(Received $received)
     {
-       $received->delete();
-       return redirect()->route('received.index')
-                        ->with('message','Received deleted successfully')
+        $rent_id = $received->rent_id;
+        $material_id = $received->material_id;
+
+        $material = Material::find($material_id);
+        $rent = Rent::find($rent_id);
+
+        $rent->return_quantity = $rent->return_quantity - $received->received_quantity;
+        $rent->remain_quantity = $rent->remain_quantity + $received->received_quantity;
+        $rent->status = 0;
+        $rent->save();
+
+        $material->quantity = $material->quantity + $received->received_quantity;
+        $material->save();
+
+        $received->delete();
+        return redirect()->route('received.index')
+                ->with('message','Received deleted successfully')
+                ->with('type', 'success');
+    }
+
+    public function receiveddelete(Request $request, Received $received)
+    {
+        $id = $request->input('id');
+        $received = Received::find($id);
+        
+        $rent_id = $received->rent_id;
+        $material_id = $received->material_id;
+
+        $material = Material::find($material_id);
+        $rent = Rent::find($rent_id);
+
+        $rent->return_quantity = $rent->return_quantity - $received->received_quantity;
+        $rent->remain_quantity = $rent->remain_quantity + $received->received_quantity;
+        $rent->status = 0;
+        $rent->save();
+
+        $material->quantity = $material->quantity + $received->received_quantity;
+        $material->save();
+        
+        $received->delete();
+        return redirect()->route('material.index')
+                        ->with('message','Material deleted successfully')
                         ->with('type', 'success');
     }
 }

@@ -34,7 +34,9 @@
 <script src="{{URL('/')}}/assets/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script src="{{URL('/')}}/assets/admin/plugins/toastr/toastr.min.js"></script>
 {{-- extra js aaded --}}
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+{{-- <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script> --}}
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/additional-methods.js"></script>
 <script src="{{URL('/')}}/assets/admin/js/login.js"></script>
 <script src="{{URL('/')}}/assets/admin/js/main_admin.js"></script>
 <script src="{{URL('/')}}/assets/admin/js/withdraw.js"></script>
@@ -55,8 +57,12 @@ $('.select2').select2()
 
 
 
-
-
+$(document).ready(function () {
+	/*$('input[type="submit"]').click(function () {
+		$(this).attr("disabled", true);
+		return true;
+	});*/
+});
 
 
 </script>

@@ -29,17 +29,21 @@ Route::group(['middleware' => ['adminlogin']], function() {
 
     Route::get('admin/dashboard','Admin\Dashboard_Controller@index')->name('admin_dashboard.index');
 
-    Route::resource('admin/user', Admin\UserController::class); 
+    Route::resource('admin/user', Admin\UserController::class);
     Route::resource('admin/category', Admin\CategoryController::class); 
     Route::resource('admin/material', Admin\MaterialController::class);
     Route::resource('admin/rent', Admin\RentController::class);
     Route::resource('admin/received', Admin\ReceivedController::class);
     Route::resource('admin/pending', Admin\PendingController::class);
-    Route::resource('admin/deposit', Admin\DepositControlle::class);
     Route::resource('admin/bill', Admin\BillController::class);
     Route::resource('admin/account', Admin\AccountController::class);
     Route::resource('admin/customaterial', Admin\CustomaterialController::class);
+    Route::resource('admin/rentchallan', Admin\RentChallanController::class);
+    Route::resource('admin/receivedchallan', Admin\ReceivedChallanController::class);
 
+    Route::post('admin/user/delete', 'Admin\UserController@userdelete' )->name('deleteuser');
+    Route::post('admin/material/delete', 'Admin\MaterialController@materialdelete' )->name('deletematerial');
+    Route::post('admin/received/delete', 'Admin\ReceivedController@receiveddelete' )->name('deletereceived');
 
     Route::get('rent/addreceive/{id}','Admin\RentController@addreceive' );
     Route::get('user/adddeposit/{id}','Admin\UserController@adddeposit' );
@@ -53,12 +57,14 @@ Route::group(['middleware' => ['adminlogin']], function() {
     Route::post('billcustomermaterial', 'Admin\BillController@allcustmaterials' )->name('billcustomermaterial');
 
     Route::post('receivs', 'Admin\ReceivedController@allReceive' )->name('receivs');
-
     Route::post('accountstatus', 'Admin\AccountController@getaccountdetail' )->name('accountstatus');
 
 
     Route::post('rent-materials', 'Admin\RentController@getMaterials' )->name('rent-materials');
     Route::post('receive-materials', 'Admin\ReceivedController@getMaterials' )->name('receive-materials');
+
+    Route::post('rentchallan', 'Admin\RentChallanController@challans' )->name('rentchallan');
+    //Route::get('rentchallan/{id}/', 'Admin\RentChallanController@generatePDF');
 
     Route::get('generatepdf/{id}', 'Admin\BillController@generatePDF');
 

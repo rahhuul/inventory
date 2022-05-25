@@ -61,10 +61,10 @@
                      {!! Form::label('Quantity', 'Quantity') !!}
                      {!! Form::text('quantity','', ['id' => "quantity", 'class' => 'form-control', 'placeholder' => "Enter Quantity", "required" => "required"]) !!}
                   </div>
-                  <div class="form-group">
+                  <!-- <div class="form-group">
                      {!! Form::label('Damage Price', 'Damage Price') !!}
                      {!! Form::text('damagePrice','', ['id' => "damagePrice", 'class' => 'form-control', 'placeholder' => "Enter Damage Price"]) !!}
-                  </div>
+                  </div> -->
                   <div class="form-group">
                      {!! Form::label('Rental Price', 'Rental Price') !!}
                      {!! Form::text('rentPrice','', ['id' => "rentPrice", 'class' => 'form-control', 'placeholder' => "Enter Rental Price", "required" => "required"]) !!}
@@ -75,7 +75,7 @@
                   </div> --}}
                </div>
                <div class="card-footer">
-                  {!! Form::submit('save', ["class" => "btn btn-primary"]) !!}
+                  {!! Form::submit('save', ["class" => "btn btn-primary", "id" => "save_material"]) !!}
                </div>
                <!-- </form> -->
                <!-- /.card-body -->
@@ -93,5 +93,50 @@
 <!-- Main Content section end -->
 
 @section('script')
-<script src="{{URL('/')}}/assets/admin/js/jquery.validate.min.js"></script>
+    <script src="{{URL('/')}}/assets/admin/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="{{URL('/')}}/assets/admin/plugins/jquery-validation/additional-methods.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#material_form').validate({ // initialize the plugin
+                rules: {
+                    name: {
+                        required: true
+                    },
+                    quantity: {
+                        required: true
+                    },
+                    rentPrice: {
+                        required: true
+                    }
+                },
+                messages: {
+                    name: {
+                        required : "Please enter your name."
+                    },
+                    quantity: {
+                        required: "Please enter a quantity."
+                    },
+                    rentPrice: {
+                        required: "Please enter a rentPrice."
+                    },
+                },
+                errorElement: "em",
+                errorPlacement: function (error, element) {
+                    error.addClass("help-block");
+                    error.insertAfter(element);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).parents(".padding-leftright-null").addClass("has-error").removeClass("has-success");
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).parents(".padding-leftright-null").addClass("has-success").removeClass("has-error");
+                },
+                submitHandler: function (form) {
+                    form.submit();
+                    $("#save_material").attr("disabled", true);
+                }
+            })
+        })
+    </script>
 @endsection
