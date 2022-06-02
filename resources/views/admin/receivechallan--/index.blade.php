@@ -42,24 +42,8 @@
                <div class="card">
                   <div class="card-body">
                      <div>
-                         <div class="form-row">
-                            <div class="form-group col-md-6">
-                                {!! Form::label('Select Customer', 'Select Customer') !!}
-                                {!! Form::select('customer_id', $customers,null, ['id' => 'customer_id', 'class' => 'form-control select2', 'style' => 'width:100%', 'placeholder' => "Select Customer"]) !!}
-                            </div>
-                            <div class="form-group col-md-6">
-                                {!! Form::label('Order Date', 'Order Date') !!}
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            <i class="far fa-calendar-alt"></i>
-                                        </span>
-                                    </div>
-                                    <input required='required' type="text" name="filter_date" class="form-control float-right" id="filter_date">
-                                </div>
-                            </div>
-                        </div>
-                        
+                       {!! Form::label('Select Customer', 'Select Customer') !!}
+                     {!! Form::select('customer_id', $customers,null, ['id' => 'customer_id', 'class' => 'form-control select2', 'style' => 'width:100%', 'placeholder' => "Select Customer"]) !!}
                      </div>
                      <br> 
 
@@ -71,16 +55,17 @@
                                     <th>Material</th>
                                     <th>Quantity</th>
                                     <th>Order Date</th>
+                                    <th>Received Date</th>
                                     <th>Days</th>
-                                    <th>Per Day Price</th>
                                     <th>Price</th>
+                                    <th>Total</th>
                                  </tr>
                               </thead>
                               <tbody>
                               </tbody>
                                <tfoot>
                                     <tr>
-                                      <th colspan="5"></th>
+                                      <th colspan="6"></th>
                                         <th style="text-align:right">Total:</th>
                                         <th></th>
                                     </tr>
@@ -90,7 +75,7 @@
                            <div class="card-footer">
                       <!--  <input class="btn btn-primary" type="submit" value="save"> -->
                          <div class="col-12">
-                            <a id="pdf" class="btn btn-primary float-right" style="margin-right: 5px;">Generate PDF </a>
+                          <a id="pdf" class="btn btn-primary float-right" style="margin-right: 5px;">Generate PDF </a>
                          </div>
                     </div>
                   </div> 
@@ -107,66 +92,68 @@
 
 @section('script')
 <script type="text/javascript">
-    
-    let mindate = moment().format("DD-MM-YYYY");
-    $('#filter_date').daterangepicker({
-        singleDatePicker: true,
-        "locale": {
-            "format": "DD-MM-YYYY",
-            "separator": " - ",
-        },
-        showDropdowns: true,
-        autoApply: true
-    });
-    
-    $('#filter_date').on('apply.daterangepicker', function(ev, picker) {
-        console.log(picker.startDate.format('DD-MM-YYYY'));
-    });
-    
-    function toTimestamp(strDate){
-        myDate = strDate.split("-");
-        var newDate = new Date( myDate[2], myDate[1] - 1, myDate[0]);
-        var datum = new Date(newDate).getTime();
-        console.log("datum >>>>>>>>>>> ", datum)
-        return datum/1000;
-    }
-
-    let filterDate = $("#filter_date").val();
-    let filterTmestamp = toTimestamp(filterDate)
-
+   // $("#bill_form").validate({ 
+   //              rules : {
+   //                  customer_id : {
+   //                      required : true
+   //                  },
+   //              },
+   //              messages : {
+   //                  customer_id : {
+   //                      required : "Please Select anyone customer "
+   //                  },
+   //              },
+   //              errorElement: "em",
+   //              errorPlacement: function(error, element) {
+   //                error.addClass( "help-block" );
+   //                error.insertAfter( element );
+                                
+   //              },
+   //          });
      var table = $('#ex1').DataTable({
          processing: true,
          serverSide: true,
          ajax: {
-            "url": "{{ url('receivedchallan') }}",
+            "url": "{{ url('billcustomermaterial') }}",
             "dataType": "json",
             "type": "POST",
             "data":function( d ){
                 return $.extend( {}, d, {
-                    "filter_option": $("#customer_id").val().toLowerCase(),
-                    "filter_date": $("#filter_date").val(),
-                    _token: "{{csrf_token()}}"
-                })
+           "filter_option": $("#customer_id").val().toLowerCase(),
+            _token: "{{csrf_token()}}"
+         } )
             },
             "drawCallback": function (settings) { 
+                // Here the response
+                console.log("res",settings);
                 var response = settings; 
                 $("a").attr("href", response)
+                //console.log(response);
             },
+            // response:function(res){
+            
+            // }
          },
          "lengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]],
-         "order": [[3, "asc" ]],
+         "order": [[1, "asc" ]],
          "columns": [
                 { "data": "id",orderable: false },
                 { "data": "material"},
                 { "data": "quantity",orderable: false},
                 { "data": "ordered_date",orderable: false},
+                { "data": "received_date",orderable: false},
                 { "data": "days",orderable: false},
-                { "data": "perprice",orderable: false},
-                { "data": "price",orderable: false }
+                { "data": "price",orderable: false }, 
+                { "data": "total" ,orderable: false},
          ],
           "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api();
-            var response = this.api().ajax.json();
+             var response = this.api().ajax.json();
+           if(response){
+             $( this.api().column( 4 ).footer() ).html('(Renttotal['+response.renttotal+'] - Receivedtotal['+response.receivedtotal+'])');
+           }
+ 
+            // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
                     i.replace(/[\$,]/g, '')*1 :
@@ -174,39 +161,38 @@
                         i : 0;
             };
  
+            // Total over all pages
             total = api
-                .column(6)
+                .column(7)
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
  
+            // Total over this page
             pageTotal = api
-                .column(6, { page: 'current'} )
+                .column(7, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
  
-            $( api.column(6).footer() ).html('₹'+pageTotal);
+            // Update footer
+            $( api.column(7).footer() ).html('₹'+pageTotal
+            );
         },
-    });
+      
+
+      });
 
     $(document).ready(function () {
-        $('#customer_id').bind("keyup change", function(){
-            var customer_id = $("#customer_id").val().toLowerCase();
-            filterTmestamp = toTimestamp($("#filter_date").val());
-            var edit = "{{ url('admin/receivedchallan')}}"+'/'+customer_id+'/?timestamp='+filterTmestamp
-            $("#pdf").attr("href", edit);
-            table.draw();
-        });
 
-        $('#filter_date').bind("change", function(){
-            var customer_id = $("#customer_id").val().toLowerCase();
-            filterTmestamp = toTimestamp($("#filter_date").val());
-            var edit = "{{ url('admin/receivedchallan/')}}"+'/'+customer_id+'/?timestamp='+filterTmestamp
-            $("#pdf").attr("href", edit);
-            table.draw();
+        $('#customer_id').bind("keyup change", function(){
+          var  customer_id = $("#customer_id").val();
+           var edit = "{{ url('admin/bill')}}"+'/'+customer_id;
+           $("#pdf").attr("href", edit);
+         
+        table.draw();
         });
     });
 </script>

@@ -221,12 +221,10 @@ h1, h2, h3, h4, h5, h6 {
           Phone: {{$userdata->mobile}} <br>
         </address>
     </div>
-@php
-    $orderNum = rand(100000,999999);
-    $orderId = "#".$orderNum;
-@endphp
+
     <div class="" style="float: right;">
-      <b>Order ID:</b>{{$orderId}}<br>
+      <b>Invoice #007612</b><br>
+      <b>Order ID:</b>{{$rents[0]->rent_id}}<br>
     </div>
     
 
@@ -246,8 +244,7 @@ h1, h2, h3, h4, h5, h6 {
 <th>Material</th>
 <th>Quantity</th>
 <th>Order Date</th>
-<th>Receive Date</th>
-<th>Days</th>
+<th>Received Date</th>
 <th>Price</th>
 <th>Total</th>
 </tr>
@@ -260,37 +257,57 @@ h1, h2, h3, h4, h5, h6 {
     $renttotal = 0;
     $receivedtotal = 0;
     $totalRentprice = 0;
-    $total =0;
+     $total =0;
    @endphp
+
+
   @foreach ($mixedcustomerdata as $val)
   @php
-    $rendDate = Carbon\Carbon::parse($val->ordered_date);
-    $receiveDate = Carbon\Carbon::parse($val->receive_date);
-    $diff = $rendDate->diffInDays($receiveDate);
-    $diff = ($diff < 15) ? 15 : $diff;
-    $calcQty = $val->quantity;
-    $totalRentprice = ($calcQty * $val->material->rentperPrice) * $diff;
-    $total += round($totalRentprice,2);
+   if(isset($val->status))
+            {
+                $rendDate = Carbon\Carbon::parse($val->ordered_at);
+                $now = Carbon\Carbon::now();
+                $diff = $rendDate->diffInDays($now);
+                $diff = ($diff < 15) ? 15 : $diff;
+                $calcQty = ($val->remain_quantity == null || $val->remain_quantity == 0) ? $val->quantity : $val->remain_quantity;
+
+                $totalRentprice = ($diff > 15) ? ($calcQty*$val->material->rentperPrice) * $diff : $calcQty * $val->material->rentperPrice * 15;
+                $renttotal += $totalRentprice;
+            }
+            else
+            {
+                $receiveDate = Carbon\Carbon::parse($val->receive_date);
+                $rent_data = Carbon\Carbon::parse($val->rent->ordered_at);
+                $diff = $receiveDate->diffInDays($rent_data) + 1;
+                $diff = ($diff < 15) ? 15 : $diff;
+                $totalRentprice = ($val->received_quantity * $val->material->rentperPrice) * $diff;
+                $receivedtotal +=$totalRentprice; 
+            }
+            $total += round($totalRentprice,2);
  @endphp
 <tr>
 <td>{{$i}}</td>
-<td>{{$val->material->name}}</td>
-<td>{{$val->quantity}}</td>
-<td>{{date('d-m-Y',strtotime($val->ordered_date))}}</td>
-<td>{{date('d-m-Y',strtotime($val->receive_date))}}</td>
-<td>{{$diff}}</td>
+<td>{{(isset($val->status))?$val->material->name:$val->material->name}}</td>
+<td>{{(isset($val->status))?($val->quantity):((isset($val->received_id))?$val->received_quantity:0)}}</td>
+<td>{{(isset($val->status))?date('d-m-Y',strtotime($val->ordered_at)):'-'}}</td>
+<td>{{(isset($val->receive_status))?date('d-m-Y',strtotime($val->receive_date)):'-'}}</td>
 <td>{{$val->material->rentPrice}}</td>
 <td>{{ number_format($totalRentprice, 2) }}</td>
  
 </tr>
 @php $i++;
+$renttotal = round($renttotal,2);
+$receivedtotal = round($receivedtotal,2); 
 @endphp
   @endforeach
    <tr>
-    <td colspan="6"></td>
+
+    <td colspan="5">(Renttotal[{{$renttotal}}] - Receivedtotal[{{$receivedtotal}}])</td>
     <td><b>Total:</b></td>
     <td>{{$total}}</td>
   </tr>
+
+
 </tbody>
 </table>
 </div>

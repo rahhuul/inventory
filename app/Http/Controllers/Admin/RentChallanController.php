@@ -9,6 +9,7 @@ use App\Models\Received;
 use App\Models\Material;
 use App\Models\Category;
 use App\Models\User;
+use App\Models\RentChallan;
 use Carbon\Carbon;
 use PDF;
 
@@ -49,7 +50,7 @@ class RentChallanController extends Controller
 
         if($customer_id){
 
-            $rents = Rent::whereHas('customer',function ($query) use($customer_id) {
+            $rents = RentChallan::whereHas('customer',function ($query) use($customer_id) {
                         $query->where('customer_id', $customer_id );
                     })->with(['customer', 'material' => function ($query) use($search) {
                         if($search){

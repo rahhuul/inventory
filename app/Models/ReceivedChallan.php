@@ -15,7 +15,7 @@ class ReceivedChallan extends Model
     protected $keyType = 'string';
     public $incrementing = false;
     public $timestamps = true;
-    public $fillable = [ 'customer_id', 'received_id', 'material_id', 'quantity', 'receive_date'];
+    public $fillable = [ 'customer_id', 'received_id', 'rent_id', 'material_id', 'quantity', 'receive_date', 'ordered_date'];
     protected $primaryKey = "receivechallan_id";
 
     public function customer()

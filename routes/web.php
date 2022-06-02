@@ -64,6 +64,7 @@ Route::group(['middleware' => ['adminlogin']], function() {
     Route::post('receive-materials', 'Admin\ReceivedController@getMaterials' )->name('receive-materials');
 
     Route::post('rentchallan', 'Admin\RentChallanController@challans' )->name('rentchallan');
+    Route::post('receivedchallan', 'Admin\ReceivedChallanController@challans' )->name('receivedchallan');
     //Route::get('rentchallan/{id}/', 'Admin\RentChallanController@generatePDF');
 
     Route::get('generatepdf/{id}', 'Admin\BillController@generatePDF');

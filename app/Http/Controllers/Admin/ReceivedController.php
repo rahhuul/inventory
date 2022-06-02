@@ -8,6 +8,7 @@ use App\Models\Received;
 use App\Models\User;
 use App\Models\Rent;
 use App\Models\Category;
+use App\Models\ReceivedChallan;
 use App\Models\Material;
 use Carbon\Carbon;
 
@@ -177,6 +178,11 @@ class ReceivedController extends Controller
                     print_r($receive);
                     echo "</pre>"; */
                     $receiveinfo = Received::create($receive);
+
+                    $receive['quantity'] = $receive['received_quantity'];
+                    $receive['received_id'] = $rentItem->received_id;
+                    $receive['order_date'] = $order['order_date'];
+                    ReceivedChallan::create($receive);
                     $totalrcvQty += $order['received_quantity'];
                 }
             }

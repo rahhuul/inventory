@@ -215,7 +215,7 @@
             boxHtml += '<div class="col-md-12">';
             boxHtml += '<div class="form-group">';
             boxHtml += '<label class="col-md-6 text-left" for="exampleInputName2">'+selected.name+'</label>';
-            boxHtml += '<input type="text" name="material['+selected.value+'][received_quantity]" class="form-control received '+recCl+'" data-index="'+index+'" data-rent="'+selected.rented+'" data-received="'+selected.received+'" data-pending="'+max+'" id="received_quantity-'+index+'" placeholder = "Enter Quantity" value="0">';
+            boxHtml += '<input type="text" name="material['+selected.value+'][received_quantity]" class="form-control received '+recCl+'" data-index="'+index+'" data-rent="'+selected.rented+'" data-received="'+selected.received+'" data-pending="'+max+'" id="received_quantity-'+index+'" placeholder = "Enter Quantity" value="">';
             boxHtml += '</div>';
             boxHtml += '</div>';
            /*  boxHtml += '<div class="col-md-6">';
@@ -252,23 +252,6 @@
         }
       })
    }
-
-   {{--  $(document).on('change', ".received", function () {
-      let rec_val = Number($(this).val())
-      let pen_val = Number($(this).attr("data-rent"))
-      let findIndex = $(this).attr("data-index")
-      let pend = Number(pen_val) - Number(rec_val)
-      if(rec_val > pen_val){
-         alert("Enter less value then pending");
-         return false;
-      }else{
-         $(".pending").each(function(){
-            if($(this).data('index') == findIndex){
-               $(this).val(pend)
-            }
-         })
-      }
-   })  --}}
 
    const removeQuantitybox = () => {
       inputCreated.forEach((created) => {
@@ -331,7 +314,7 @@
 
       $.validator.addMethod('minStrict', function (value, el, param) {
          return this.optional(el) || value <= param;
-      }, "please enter more than {0}");
+      }, "Order quantity is not more then {0}");
 
       $('#receive_form').validate({
             rules: {
@@ -341,7 +324,7 @@
             },
             messages: {
                customer_id: {
-                  required : "Please enter your customer."
+                  required : "Please select customer."
                }
             },
             errorElement: "em",
