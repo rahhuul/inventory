@@ -40,6 +40,7 @@ Route::group(['middleware' => ['adminlogin']], function() {
     Route::resource('admin/customaterial', Admin\CustomaterialController::class);
     Route::resource('admin/rentchallan', Admin\RentChallanController::class);
     Route::resource('admin/receivedchallan', Admin\ReceivedChallanController::class);
+    Route::resource('admin/damage', Admin\DamageController::class);
 
     Route::post('admin/user/delete', 'Admin\UserController@userdelete' )->name('deleteuser');
     Route::post('admin/material/delete', 'Admin\MaterialController@materialdelete' )->name('deletematerial');
@@ -52,9 +53,11 @@ Route::group(['middleware' => ['adminlogin']], function() {
     Route::post('materials', 'Admin\MaterialController@allMaterials' )->name('materials');
     Route::post('rents', 'Admin\RentController@allRents' )->name('rents');
     Route::post('pendingmaterial', 'Admin\PendingController@allpenmaterials' )->name('pendingmaterial');
+    Route::post('damages', 'Admin\DamageController@allDamages' )->name('damages');
 
     Route::post('customermaterial', 'Admin\CustomaterialController@allcustmaterials' )->name('customermaterial');
     Route::post('billcustomermaterial', 'Admin\BillController@allcustmaterials' )->name('billcustomermaterial');
+    //Route::post('billcustomermaterial', 'Admin\BillController@allpendings' )->name('billpending');
 
     Route::post('receivs', 'Admin\ReceivedController@allReceive' )->name('receivs');
     Route::post('accountstatus', 'Admin\AccountController@getaccountdetail' )->name('accountstatus');

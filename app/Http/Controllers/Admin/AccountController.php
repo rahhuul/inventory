@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Rent;
 use App\Models\Received;
 use App\Models\Material;
-use App\Models\Category;
+use App\Models\Damage;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -35,6 +35,8 @@ class AccountController extends Controller
         $receeiveddata = Received::with('customer', 'material', 'rent')
                         ->where('customer_id', $customer_id)
                         ->get();
+
+        $damages = Damage::with('customer','material')->where('customer_id',$customer_id)->get();
         
         $pending = 0;
         $received = 0;
@@ -73,11 +75,20 @@ class AccountController extends Controller
                 }
             }
         }
-        $total = $pending + $received;
 
+        $damageTotal = 0;
+        foreach ($damages as $key => $damage){
+            $total = $damage->quantity*$damage->price;
+            $damageTotal += $total;
+        }
+        
+        $total = $pending + $received;
+        $totaldamage = $damageTotal + $total;
         $account_data['total'] = round($total, 2);
         $account_data['receivedbill'] = round($received, 2);
         $account_data['pendingbill'] = round($pending, 2);
+        $account_data['damage'] = round($damageTotal, 2);
+        $account_data['totaldamage'] = round($totaldamage, 2);
         $account_data['useramount'] = ($userdata->amount!='')?$userdata->amount:0;
         return $account_data;
         exit;

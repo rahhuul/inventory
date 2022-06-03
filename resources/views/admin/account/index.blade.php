@@ -57,6 +57,15 @@
 <li class="list-group-item">
 <b>Total</b> <a class="float-right" id="total">0</a>
 </li>
+
+<li class="list-group-item">
+<b>Damage</b> <a class="float-right" id="damage">0</a>
+</li>
+
+<li class="list-group-item">
+<b>Total withDamage</b> <a class="float-right" id="totaldamage">0</a>
+</li>
+
 </ul>
                   </div> 
                </div>
@@ -86,6 +95,8 @@
               $("#receivedbill").text('₹'+result.receivedbill);
               $("#total").text('₹'+result.total);
               $("#amount").text('₹'+result.useramount);
+              $("#damage").text('₹'+result.damage);
+              $("#totaldamage").text('₹'+result.totaldamage);
 
             console.log("result",result);
             }

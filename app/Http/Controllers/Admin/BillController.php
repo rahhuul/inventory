@@ -50,7 +50,7 @@ class BillController extends Controller
         $totalRentprice = 0;
         if(!empty($customer_id)){ 
 
-        $rents = Rent::with('customer','material', 'received')->where('customer_id',$customer_id)->orderBy('ordered_at','ASC')->get()->toArray();
+        $rents = Rent::with('customer','material', 'received')->where('customer_id',$customer_id)->orderBy('ordered_at','ASC')->get();
         $received = Received::with('customer','material', 'rent')->where('customer_id',$customer_id)->orderBy('receive_date','ASC')->get();
         //$mixedcustomerdata = array_merge((array)json_decode($rents),(array)json_decode($received));
         $mixedcustomerdata = array_merge((array)json_decode($received));
@@ -58,8 +58,6 @@ class BillController extends Controller
         $totalData = count((array)$mixedcustomerdata);
         $totalFiltered = $totalData; 
         
-
-
          if(empty($request->input('search.value')) && !empty($customer_id))
         {            
          $rents = Rent::with('customer', 'material', 'received')->whereHas('customer',function ($query) use($customer_id) {
@@ -83,6 +81,7 @@ class BillController extends Controller
                         ->get(); 
         $mixedcustomerdata = array_merge((array)json_decode($received));
         }
+        
         $pendings = [];
         if(count($rents->toArray()) > 0){
             foreach($rents as $k=>$val)
@@ -113,10 +112,6 @@ class BillController extends Controller
         
              $c = 1;
              $rendDate = '';
-            
-             /* echo "<pre>";
-             print_r($mixedcustomerdata);
-             exit; */
             
             foreach ($mixedcustomerdata as $post){
                 if($post->rent){

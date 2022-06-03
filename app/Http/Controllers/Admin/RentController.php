@@ -59,8 +59,7 @@ class RentController extends Controller
 
         $rents = Rent::whereHas('customer',function ($query) use($customer_id) {
                     $query->where('customer_id', $customer_id );
-                })->whereHas('material')
-                ->with(['customer','material' => function($q) use($search) {
+                })->with(['customer','material' => function($q) use($search) {
                         $q->where('name', 'LIKE', "%{$search}%");
                     }
                 ])
@@ -90,7 +89,7 @@ class RentController extends Controller
                     ->orWhere('quantity', 'LIKE',"%{$search}%")
                     ->orWhere('ordered_at',$dt)
                     ->count();
-        } */
+        } */ 
 
         
         if(!empty($rents))

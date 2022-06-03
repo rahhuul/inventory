@@ -24,15 +24,16 @@
             <div class="col-sm-6">
                <h1 class="m-0 text-dark"><small>{{$title}}</small></h1>
             </div>
-             <div class="col-sm-6" style="text-align: right;">
-               <a href="{{URL('/admin/received/create')}}" class="btn btn-primary addcat">Add Receive</a>
+            <div class="col-sm-6" style="text-align: right;">
+               <a href="{{URL('/admin/damage/create')}}" class="btn btn-primary addcat">Add Damage</a>
             </div>
-           {{--  <div class="col-sm-6">
+            
+            <!-- <div class="col-sm-4" >
                <ol class="breadcrumb float-sm-right">
                   <li class="breadcrumb-item"><a href="#">Home</a></li>
                   <li class="breadcrumb-item active">{{$title}}</li>
                </ol>
-            </div> --}}
+            </div> -->
          </div>
       </div>
    </div>
@@ -49,37 +50,31 @@
                          {!! Form::select('customer_id', $customers,null, ['id' => 'customer_id', 'class' => 'form-control select2', 'style' => 'width:100%', 'placeholder' => "Select Customer"]) !!}
                         </div>
                      </div>
-                     
                      <div class="card">
                         <!-- <div class="card-header">
-                           <h3 class="card-title">Received Material</h3>
+                           <h3 class="card-title">Damage</h3>
                         </div> -->
-                        {{ Form::hidden('custid', '',array('id' => 'custid')) }}
                         <div class="card-body table-responsive col-sm-12">
-                           <table id="ex2" class="table table-bordered table-striped data-table_funddep">
+                           <table id="ex1" class="table table-bordered table-striped data-table_funddep">
                               <thead>
-                                  <tr>
+                                 <tr>
                                     <th>No</th>
                                     <th>Customer</th>
                                     <th>Material</th>
+                                    <th>Quantity</th>
                                     <th>Price</th>
-                                    <th>From Date</th>
-                                    <th>Receive Date</th>
-                                    <th>Days</th>
-                                    <th>Received Quantity</th>
-                                    <th>Received Price</th>
+                                    <th>Total</th>
                                     <th>Action</th>
-                                    
                                  </tr>
                               </thead>
                               <tbody>
                               </tbody>
-                              <tfoot>
+                                <tfoot>
                                  <tr>
-                                     <th colspan="8" style="text-align:right">Received Total:</th>
+                                     <th colspan="5" style="text-align:right">Damage Total:</th>
                                      <th></th>
                                  </tr>
-                            </tfoot>
+                                </tfoot>
                            </table>
                         </div>
                      </div>
@@ -96,11 +91,12 @@
 
 @section('script')
 <script type="text/javascript">
-    var table = $('#ex2').DataTable({
+    $(document).ready(function () {
+      var table = $('#ex1').DataTable({
          processing: true,
          serverSide: true,
          ajax: {
-            "url": "{{ url('receivs') }}",
+            "url": "{{ url('damages') }}",
             "dataType": "json",
             "type": "POST",
             "data":function( d ){
@@ -109,25 +105,21 @@
                     _token: "{{csrf_token()}}"
                 })
             }
-           
-         },
-         "createdRow": function(row, data, dataIndex) {
-            let received_id = data.received_id;
-            $(row).prop('id', received_id); 
          },
          "lengthMenu": [[100, 200, 500, -1], [100, 200, 500, "All"]],
-         "order": [[5, "asc" ]],
+         "createdRow": function(row, data, dataIndex) {
+                let material_id = data.material_id;
+               $(row).prop('id', material_id); 
+            },
+         "order": [[1, "asc" ]],
          "columns": [
-                { "data": "id",orderable: false },
+                { "data": "id",orderable: false},
                 { "data": "customer" },
                 { "data": "material" },
-                { "data": "price",orderable: false },
-                { "data": "from_date",orderable: false },
-                { "data": "receive_date",orderable: false },
-                { "data": "days" },
-                { "data": "received_quantity",orderable: false }, 
-                { "data": "received_price",orderable: false }, 
-                { "data": "options",orderable: false },  
+                { "data": "price" },
+                { "data": "quantity" },
+                { "data": "total" },
+                { "data": "options",orderable: false }
          ],
          "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api();
@@ -142,7 +134,7 @@
  
             // Total over all pages
             total = api
-                .column(8)
+                .column(5)
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -150,27 +142,16 @@
  
             // Total over this page
             pageTotal = api
-                .column(8, { page: 'current'} )
+                .column(5, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
  
             // Update footer
-            $( api.column(8).footer() ).html('₹'+pageTotal);
+            $( api.column(5).footer() ).html('₹'+total);
         }
       });
-
-
-
-
-
-    $(document).ready(function () {
-      //table.draw();
-
-    $('#customer_id').bind("keyup change", function(){
-        table.draw();
-    });
 
       $(document).on('click', ".btn-danger", function() {
          var id   = $(this).data('id');
@@ -178,7 +159,7 @@
          console.log("id >>> ", id);
 
          Swal.fire({
-            title: "Delete Received",
+            title: "Delete Material",
             html: "Want to delete, <b>"+name+"</b> ?",
             buttonsStyling: false,
             confirmButtonText: "<i class='la la-times'></i> Yes",
@@ -194,7 +175,8 @@
                      headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                      },
-                     url: "{{ route('deletereceived') }}",
+                     //url: "/admin/damage/" + id,
+                     url: "{{ route('deletematerial') }}",
                      type: 'POST',
                      dataType: "JSON",
                      data: {
@@ -204,7 +186,7 @@
                      complete: function (response) {
                         toastr.error(name+" removed");
                         table.row("#"+id).remove().draw();
-                        table.draw()
+                        //table.draw()
                      },
                      error: function(xhr) {
 
@@ -214,7 +196,12 @@
          });
          });
 
-   });
+        $('#customer_id').bind("keyup change", function(){
+            table.draw();
+        });
 
+   });
+     
+   // transction_deposit._fetch_data_dep();
 </script>
 @endsection

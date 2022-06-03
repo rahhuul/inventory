@@ -86,6 +86,12 @@
                         <p>Received Challan</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{URL('/admin/damage')}}" class="nav-link  @if((url()->current()) == url('/admin/damage'))active @endif">
+                        <i class="nav-icon fas fa-money-bill"></i> 
+                        <p>Damage</p>
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>
